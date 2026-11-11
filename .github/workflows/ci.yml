@@ -16,8 +16,10 @@ jobs:
       - uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
+      - name: Tesseract (OCR de respaldo para PDF sin capa de texto)
+        run: sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-spa
       - name: Instalar dependencias (versiones fijadas en uv.lock)
-        run: uv sync --locked
+        run: uv sync --locked --extra ocr
       - name: Ruff (errores)
         run: uv run ruff check .
       - name: Ruff (formato)

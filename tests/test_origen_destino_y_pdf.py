@@ -198,10 +198,15 @@ def test_control_cruzado_html_frente_a_pdf(conn, tmp_path):
 
     r = cargar_foto(conn, crear_foto(tmp_path / "raw", F1, cambiar_od=alterar), CFG)
     avisos = [a for a in r.avisos if a.tipo == "origen_destino_no_cuadra_con_pdf"]
-    assert [(a.nivel, a.recurso, a.operador) for a in avisos] == [
-        ("aviso", "origen_destino/123", "CLH")
-    ]
-    assert "99,99" in avisos[0].texto
+    assert [(a.nivel, a.recurso) for a in avisos] == [("aviso", "origen_destino/123")]
+    # La fila del PDF de Barajas se queda sin detalle; la de Puxeiros sigue enlazada.
+    enlazados = dict(
+        conn.execute(
+            "SELECT documento, COUNT(DISTINCT id_tanque_instalacion_destino) FROM matrices_pdf "
+            "WHERE tipo = 'origen_destino' GROUP BY 1"
+        )
+    )
+    assert enlazados == {"24": 1, "32": 0}
     # El HTML es la fuente: el dato se carga igualmente.
     assert (
         conn.execute("SELECT COUNT(*) FROM precios_origen_destino WHERE precio = 99.99").fetchone()[
@@ -214,7 +219,7 @@ def test_control_cruzado_html_frente_a_pdf(conn, tmp_path):
 def test_documentos_y_filas_de_tablas(conn, tmp_path):
     cargar_foto(conn, crear_foto(tmp_path / "raw", F1), CFG)
     docs = {f["clave"]: f for f in conn.execute("SELECT * FROM documentos")}
-    assert set(docs) == {"24", "32", "capacidades"}
+    assert set(docs) == {"24", "25", "26", "27", "32", "34", "capacidades"}
     assert docs["24"]["nombre_archivo"] == "EXOLUM 2026 precios SSLL GG.pdf"
     assert docs["24"]["anio"] == 2026 and docs["24"]["paginas"] == 3 and docs["24"]["tablas"] >= 3
     assert len(docs["24"]["sha256"]) == 64
@@ -231,7 +236,7 @@ def test_pdf_desconocido_o_roto_no_aborta(conn, tmp_path):
     assert [(a.nivel, a.tipo, a.recurso) for a in r.avisos if a.es_error] == [
         ("error", "pdf_ilegible", "pdf/999")
     ]
-    assert conn.execute("SELECT COUNT(*) FROM documentos").fetchone()[0] == 3
+    assert conn.execute("SELECT COUNT(*) FROM documentos").fetchone()[0] == 7
     assert (
         conn.execute("SELECT COUNT(*) FROM incidencias WHERE tipo = 'pdf_ilegible'").fetchone()[0]
         == 1

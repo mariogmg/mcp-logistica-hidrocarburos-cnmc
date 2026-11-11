@@ -1,0 +1,10 @@
+# Nombres distintos de una misma instalación dentro de los PDF de Exolum.
+#
+# Las matrices de reconsignación y de consignación de éster se enlazan con las
+# instalaciones del portal por nombre exacto (sin tildes ni mayúsculas) contra
+# las filas de la tabla origen-destino, que sí están identificadas por sus
+# precios. Cuando una cabecera abrevia el nombre, se declara aquí su forma
+# completa. Lo que no case queda con id_tanque nulo; no se buscan parecidos.
+
+alias:
+  CIUDAD REAL (Alcázar): Ciudad Real (Alcázar de San Juan)

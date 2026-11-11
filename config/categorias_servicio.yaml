@@ -43,6 +43,7 @@ categorias:
   gestion_y_programacion: Gestión administrativa, aduanera o de aprovisionamiento
   servicio_operativo: Servicio operativo aeroportuario (etiqueta propia de Exolum Aviation)
   otros: Etiquetas que no describen un servicio comparable
+  suplemento: Suplementos, recargos o bonificaciones que modifican otro precio (notas de los PDF)
 
 etiquetas:
   # --- servicios principales ---
@@ -185,3 +186,14 @@ por_tipo_instalacion:
     Servicio logístico integrado: logistica_aeroportuaria
     Servicios de logística primaria: logistica_aeroportuaria
     Servicios logísticos integrales: logistica_aeroportuaria
+
+# Conceptos de las tarifas en PDF con categoría propia. Un precio de un PDF hereda
+# la categoría de la línea del detalle que remite a ese documento, salvo que su
+# concepto esté aquí (un mismo PDF puede traer varios servicios distintos).
+conceptos_pdf:
+  Suplemento o recargo (nota): suplemento
+  Almacenamiento adicional: almacenamiento_adicional
+  ARRENDAMIENTO CAPACIDAD DE ALMACENAMIENTO: almacenamiento
+  ARRENDAMIENTO CAPACIDAD DE ALMACENAMIENTO EN INSTALACIÓN PORTUARIA: almacenamiento
+  Mantenimiento de la calidad (Modalidad 2): analisis_calidad
+  Descuento por capacidad contratada: suplemento

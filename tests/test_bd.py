@@ -320,12 +320,8 @@ def test_bloque_desconocido_queda_registrado_con_id_operador_y_texto(conn, tmp_p
 def test_reconstruir_da_lo_mismo_que_la_carga_incremental(tmp_path):
     raiz = tmp_path / "proyecto"
     (raiz / "config").mkdir(parents=True)
-    for nombre in (
-        "categorias_servicio.yaml",
-        "indicadores_incluye.yaml",
-        "capacidades_equivalencias.yaml",
-    ):
-        (raiz / "config" / nombre).write_bytes((RAIZ / "config" / nombre).read_bytes())
+    for fichero in (RAIZ / "config").glob("*.yaml"):
+        (raiz / "config" / fichero.name).write_bytes(fichero.read_bytes())
     crear_foto(raiz / "raw", F1)
     crear_foto(raiz / "raw", F2, cambiar=subir_precio)
 

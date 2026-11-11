@@ -43,8 +43,9 @@ def crear_foto(
 ):
     """Foto con 3 instalaciones y 4 detalles reales (17, 33, 123 y 124).
 
-    Incluye las páginas origen-destino de 17 y 123, sus PDF (24 y 32) y el PDF de
-    capacidades. `cambiar(id_detalle, html) -> html` y `cambiar_od` permiten
+    Incluye las páginas origen-destino de 17 y 123, los seis PDF a los que remiten
+    esos detalles (24, 25, 26, 27, 32 y 34) y el PDF de capacidades.
+    `cambiar(id_detalle, html) -> html` y `cambiar_od` permiten
     simular un cambio en el portal; `pdfs_extra` añade (bytes, recurso, nombre).
     """
     from cnmc_logistica import portal
@@ -84,13 +85,19 @@ def crear_foto(
         guardar(portal.origen_destino(id_ti), cambiar_od(id_ti, html) if cambiar_od else html)
     for clave, recurso, nombre in (
         ("24", portal.pdf(24), "EXOLUM 2026 precios SSLL GG.pdf"),
+        ("25", portal.pdf(25), "EXOLUM 2026 precios_BONIF Y COMP CONTRATOS LP GG.pdf"),
+        ("26", portal.pdf(26), "EXOLUM 2026 precios_ALMACENAMIENTO NO OPERATIVO GG.pdf"),
+        ("27", portal.pdf(27), "EXOLUM 2026 precios_RECONSIGNACIÓN GG.pdf"),
         ("32", portal.pdf(32), "EXOLUM 2026 precios_SLB_JET_Aeroportuarias.pdf"),
+        ("34", portal.pdf(34), "EXOLUM 2026 precios_Bonif e incumplim LP_JET.pdf"),
         ("capacidades", portal.pdf_capacidades(), None),
         *pdfs_extra,
     ):
         datos = clave if isinstance(clave, bytes) else (FIXTURES / f"pdf/{clave}.pdf").read_bytes()
         cabeceras = {"content-type": "application/octet-stream"}
         if nombre:
+            # Las cabeceras HTTP van en latin-1, como las sirve el portal.
+            nombre = nombre.encode("latin-1", "replace").decode("latin-1")
             cabeceras["content-disposition"] = f'attachment;filename="{nombre}"'
         almacen.guardar(recurso, datos, url_final=recurso.url, estado_http=200, cabeceras=cabeceras)
     return almacen

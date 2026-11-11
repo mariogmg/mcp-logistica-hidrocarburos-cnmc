@@ -30,8 +30,9 @@ Este proyecto:
    scraping.
 
 Con la foto del 11/11/2026: 115 instalaciones (71 de almacenamiento y 44 aeroportuarias),
-258 detalles (un producto en una instalación), 31 operadores con instalaciones, 1.579 precios,
-2.163 rutas origen-destino y 27 PDF.
+258 detalles (un producto en una instalación), 31 operadores con instalaciones, 1.579 precios
+de las páginas, 2.163 rutas origen-destino y 27 PDF leídos por completo (66 precios de
+tarifas, 2.495 celdas de matrices, 18 bonificaciones y 365 capacidades).
 
 ## Cómo funciona
 
@@ -120,11 +121,13 @@ docker run --rm -p 8000:8000 cnmc-logistica      # MCP en http://localhost:8000/
 | `listar_operadores` | Operadores con su nº de instalaciones por tipo y nombres anteriores |
 | `listar_instalaciones` | Filtros por operador, tipo, comunidad y producto |
 | `ver_instalacion` | Ficha completa: detalles, precios, condiciones y capacidad |
-| `buscar_precios` | Precios vigentes por operador, categoría, producto, comunidad o texto |
+| `buscar_precios` | Precios vigentes (de la página y de los PDF, con su `fuente`) por operador, categoría, producto, comunidad o texto |
 | `comparar_servicio` | Compara una categoría entre instalaciones y operadores, solo entre comparables |
 | `historial_precio` | Todas las versiones de los precios de un detalle |
 | `precios_origen_destino` | Coste de llevar producto de un origen a una instalación |
 | `capacidades` | Capacidad (miles de m³) por compañía, instalación y producto |
+| `reconsignaciones` | Matrices de los PDF: reconsignación entre instalaciones, consignación de éster y origen-destino |
+| `bonificaciones` | Bonificaciones y compensaciones de los contratos a largo plazo |
 | `consulta_sql` | Un `SELECT` libre, con cuatro capas de protección de solo lectura |
 
 ### Ejemplos de preguntas
@@ -137,6 +140,9 @@ docker run --rm -p 8000:8000 cnmc-logistica      # MCP en http://localhost:8000/
 - ¿Qué mermas aplican los distintos operadores al gasóleo?
 - ¿Cuánto cuesta llevar producto desde Huelva hasta Cartagena?
 - ¿Ha cambiado el precio de las transferencias de Exolum en Puxeiros?
+- ¿Cuánto cuesta reconsignar gasóleo de Huelva a Zaragoza?
+- ¿Qué bonificaciones tienen los contratos a largo plazo de queroseno?
+- ¿Cuánto cobra DISA por los servicios logísticos de gasolinas en cada isla?
 
 ## Modelo de datos
 
@@ -155,6 +161,12 @@ del detalle, y cada detalle tiene su propio titular.
 | `precios_origen_destino`, `notas_origen_destino` | Rutas (`ofrecida` / `no_ofrecida`) y notas al pie |
 | `capacidades` | PDF global de capacidades, enlazado a `id_tanque` |
 | `documentos`, `filas_documento` | Metadatos y tablas genéricas de cada PDF |
+| `enlaces_documento` | Qué línea de precios de qué detalle remite a qué PDF |
+| `precios_pdf` | Tarifas de los PDF (concepto → precio), con categoría, unidad y año |
+| `matrices_pdf` | Matrices origen × destino de los PDF (vista `reconsignaciones`) |
+| `bonificaciones` | Bonificaciones y compensaciones: tramo, condición, valor y unidad |
+| `notas_pdf` | Texto íntegro de las notas y condiciones de cada PDF |
+| `cobertura_pdf` | Por PDF: cifras totales, guardadas, descartadas y sin cubrir |
 | `ejecuciones`, `incidencias` | Registro de cada carga: altas, cambios, desapariciones y avisos |
 
 ### Historial (SCD tipo 2)
@@ -178,6 +190,29 @@ que publica la CNMC (puede faltar) y `anio_tabla` el año cuando la fuente solo 
   [config/indicadores_incluye.yaml](config/indicadores_incluye.yaml).
 - `comparar_servicio` solo agrupa precios con la misma categoría, los mismos indicadores y la
   misma unidad, y avisa cuando hay más de un grupo.
+
+### Los PDF, leídos por completo
+
+Muchos precios no están en la página: el detalle remite a un PDF. Cada tipo de PDF tiene su
+parser (elegido por el título del documento, no por su número) que trabaja sobre palabras con
+coordenadas, y cada valor guarda página, posición y texto original para poder auditarlo.
+
+- **Sin punteros sueltos.** La vista `lineas_pdf_sin_resolver` lista las líneas con
+  `tipo_precio = 'pdf'` cuyo documento no tiene datos estructurados; debe estar vacía, y si
+  no lo está la carga registra un error.
+- **Cobertura comprobada en cada carga.** Todas las palabras con cifras de cada PDF deben
+  estar en la base (como valor, dentro de una etiqueta o en una nota guardada) o en la lista de
+  descartes justificados de [config/descartes_pdf.yaml](config/descartes_pdf.yaml). Una cifra
+  que no esté en ningún sitio es un error `cifra_pdf_sin_cubrir` y la ejecución termina en rojo.
+  El resultado queda en la tabla `cobertura_pdf`.
+- **Nada se inventa.** Una cifra que no se puede interpretar con certeza (p. ej. «01021», sin
+  coma) se guarda con valor nulo, su texto original y un aviso.
+- **OCR solo de respaldo.** Si una página no tiene capa de texto se lee con Tesseract
+  (`uv sync --extra ocr`); esos valores llevan `metodo = 'ocr'` y generan un aviso para
+  revisarlos. Nunca se pasa OCR a una página que ya tiene texto.
+- **Enlace por datos, no por nombres.** Cada fila de las tablas origen-destino del PDF se une
+  al detalle cuyos precios en la página web son exactamente los mismos; las matrices de
+  reconsignación heredan esa identificación por nombre exacto.
 
 ## Decisiones de diseño
 
@@ -218,10 +253,12 @@ uv run cnmc-logistica reconstruir --reemplazar
 - El portal no fecha las rutas origen-destino: solo se conoce el año de la tabla (del PDF).
 - Los productos se separan por comas y por « y », sin fusionar variantes («Gasóleo marino» y
   «Gasóleos marinos» son dos valores).
-- Las tablas de los PDF se guardan de forma genérica (`filas_documento`); solo el PDF de
-  capacidades tiene un parser específico.
-- El OCR (Tesseract, `uv sync --extra ocr`) solo se usa en páginas sin capa de texto; hasta hoy
-  ningún PDF lo ha necesitado.
+- Un PDF de un tipo nuevo no tiene parser: se registra el error `pdf_sin_parser`, sus cifras
+  quedan sin cubrir y hay que escribirle uno. Es deliberado: no se adivina su estructura.
+- Los precios de los PDF solo tienen año (`anio_tabla`), no fecha de vigencia.
+- El PDF de búnker de Exolum no indica la unidad de sus precios; se guarda nula.
+- Hasta hoy ningún PDF ha necesitado OCR; el respaldo está probado con una página escaneada
+  de prueba.
 
 ## Desarrollo
 

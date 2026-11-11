@@ -19,7 +19,7 @@ F1, F2 = "2026-11-11", "2026-12-11"
 HERRAMIENTAS = {
     "estado", "listar_operadores", "listar_instalaciones", "ver_instalacion", "buscar_precios",
     "comparar_servicio", "historial_precio", "precios_origen_destino", "capacidades",
-    "consulta_sql",
+    "consulta_sql", "reconsignaciones", "bonificaciones",
 }  # fmt: skip
 
 
@@ -58,7 +58,7 @@ def ok(ruta_bd, herramienta, **argumentos):
     return resultado
 
 
-def test_expone_las_diez_herramientas_documentadas(ruta_bd):
+def test_expone_las_herramientas_documentadas(ruta_bd):
     async def listar():
         async with Client(crear_servidor(ruta_bd)) as cliente:
             return (await cliente.list_tools()).tools, cliente.instructions
@@ -321,3 +321,85 @@ def test_un_codigo_corto_no_casa_por_parecido():
     assert _coincide("exolum aviation", "CLHAV", "EXOLUM AVIATION, S.A.")
     assert not _coincide("CLH", "CLHAV", "EXOLUM AVIATION, S.A.")
     assert _coincide(None, "X", "Y")
+
+
+# --- precios de los PDF ----------------------------------------------------------------
+
+
+def test_estado_incluye_cobertura_de_los_pdf(ruta_bd):
+    e = ok(ruta_bd, "estado")
+    assert e["lineas_pdf_sin_resolver"] == 0
+    assert e["cobertura_pdf"]["sin_cubrir"] == 0 and e["cobertura_pdf"]["cifras"] > 1000
+    assert e["cobertura_pdf"]["documentos"] == 7
+
+
+def test_buscar_precios_incluye_los_del_pdf_indicando_la_fuente(ruta_bd):
+    r = ok(ruta_bd, "buscar_precios", operador="CLH", categoria="almacenamiento_no_operativo")
+    del_pdf = [p for p in r["precios"] if p["fuente"] == "pdf"]
+    assert {(p["valor"], p["unidad"], p["documentos"], p["pagina_pdf"]) for p in del_pdf} == {
+        (1.8883, "€/m3 y mes", "26", 1)
+    }
+    assert {p["subetiqueta"] for p in del_pdf} == {
+        "Almacenamiento · Modalidad 2",
+        "Almacenamiento · Modalidad 3",
+    }
+    assert all(p["anio_tabla"] == 2026 and p["fecha_precio"] is None for p in del_pdf)
+    assert "Torrejón" in del_pdf[0]["observacion"]
+    # La línea de la página que remite al PDF sigue ahí, como puntero ya resuelto.
+    punteros = [p for p in r["precios"] if p["fuente"] == "html" and p["tipo_precio"] == "pdf"]
+    assert punteros and all("precios_pdf" in p["resuelto_en"] for p in punteros)
+    solo_html = ok(ruta_bd, "buscar_precios", operador="TEPSA")
+    assert {p["fuente"] for p in solo_html["precios"]} == {"html"}
+
+
+def test_comparar_servicio_incluye_precios_de_pdf(ruta_bd):
+    r = ok(ruta_bd, "comparar_servicio", categoria="almacenamiento_no_operativo")
+    filas = [f for g in r["grupos"] for f in g["filas"]]
+    assert filas and {f["fuente"] for f in filas} == {"pdf"}
+    assert {f["documentos"] for f in filas} == {"26"} and {f["valor"] for f in filas} == {1.8883}
+    assert all("resuelto_en" in s for s in r["sin_precio_numerico"])
+    suplementos = ok(ruta_bd, "comparar_servicio", categoria="suplemento")
+    assert any(f["valor"] == 4.82 for g in suplementos["grupos"] for f in g["filas"])
+
+
+def test_ver_instalacion_incluye_precios_y_documentos_pdf(ruta_bd):
+    r = ok(ruta_bd, "ver_instalacion", id_tanque=9)
+    (detalle,) = r["detalles"]
+    assert {d["documento"] for d in detalle["documentos_pdf"]} == {"24", "25", "26", "27"}
+    por_doc = {d["documento"]: d for d in detalle["documentos_pdf"]}
+    assert por_doc["27"]["celdas_de_matriz"] > 500 and por_doc["25"]["bonificaciones"] == 9
+    conceptos = {p["concepto"] for p in detalle["precios_pdf"]}
+    assert {"Modalidad 2", "Mantenimiento de la calidad (Modalidad 2)"} <= conceptos
+    assert all(p["metodo"] == "texto" and p["pagina"] >= 1 for p in detalle["precios_pdf"])
+
+
+def test_reconsignaciones(ruta_bd):
+    r = ok(ruta_bd, "reconsignaciones", origen="huelva", destino="puxeiros")
+    (fila,) = r["filas"]
+    assert (fila["origen"], fila["destino"]) == ("HUELVA", "Pontevedra (Puxeiros)")
+    assert fila["precio"] > 0 and fila["unidad"] == "€/m3" and fila["anio_tabla"] == 2026
+    assert (fila["documento"], fila["pagina"], fila["id_tanque_destino"]) == ("27", 2, 9)
+    assert r["fuente"] == "pdf" and any("recargo" in n["texto"] for n in r["notas"])
+    todas = ok(ruta_bd, "reconsignaciones", destino="Zaragoza", limite=500)
+    assert 25 <= todas["total"] <= 40
+    od = ok(ruta_bd, "reconsignaciones", tipo="origen_destino", destino="barajas", origen="huelva")
+    assert {f["modalidad"] for f in od["filas"]} >= {"RECEPCIÓN EN EXOLUM POR BUQUE TANQUE"}
+    mensaje, es_error = llamar(ruta_bd, "reconsignaciones", origen="Marte")
+    assert es_error and "Marte" in mensaje
+
+
+def test_bonificaciones(ruta_bd):
+    r = ok(ruta_bd, "bonificaciones")
+    assert [d["documento"] for d in r["documentos"]] == ["25", "34"]
+    gg = r["documentos"][0]
+    assert gg["aplica_a"]["productos"] == ["Gasolinas y Gasóleos"] and gg["anio"] == 2026
+    filas = {
+        (f["bloque"], f["tramo"], f["condicion"]): (f["valor"], f["unidad"]) for f in gg["filas"]
+    }
+    assert filas["bonificacion", "Por cada m3", "De cantidad garantizada"] == (0.0681, "€")
+    assert sorted(v[0] for v in filas.values() if v[1] == "%") == [95.0, 100.0, 120.0]
+    assert any("120%" in n for n in gg["notas"])
+    jet = ok(ruta_bd, "bonificaciones", producto="queroseno")
+    assert [d["documento"] for d in jet["documentos"]] == ["34"]
+    mensaje, es_error = llamar(ruta_bd, "bonificaciones", producto="hidrógeno")
+    assert es_error and "hidrógeno" in mensaje

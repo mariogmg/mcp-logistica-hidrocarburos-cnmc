@@ -18,7 +18,7 @@ import sqlite3
 from dataclasses import dataclass, field
 from pathlib import Path
 
-VERSION_ESQUEMA = 1
+VERSION_ESQUEMA = 2
 
 # tabla → (columnas clave, columnas de valor, DDL de las columnas)
 # La clave identifica «el mismo hecho» entre fotos; si cambia un valor con la
@@ -140,6 +140,72 @@ TABLAS: dict[str, tuple[tuple[str, ...], tuple[str, ...], str]] = {
         """documento TEXT NOT NULL, pagina INTEGER NOT NULL, tabla INTEGER NOT NULL,
         fila INTEGER NOT NULL, celdas TEXT NOT NULL  -- lista JSON de celdas""",
     ),
+    # --- contenido estructurado de los PDF ---
+    "enlaces_documento": (
+        ("id_tanque_instalacion", "seccion", "etiqueta", "subetiqueta", "ocurrencia", "documento"),
+        (),
+        """id_tanque_instalacion INTEGER NOT NULL, seccion TEXT NOT NULL, etiqueta TEXT NOT NULL,
+        subetiqueta TEXT, ocurrencia INTEGER NOT NULL,
+        documento TEXT NOT NULL            -- PDF al que remite esa línea de precios""",
+    ),
+    "precios_pdf": (
+        ("documento", "seccion", "concepto", "subconcepto", "ocurrencia"),
+        ("categoria_servicio", "valor", "unidad", "anio_tabla", "vigencia", "condicion", "metodo",
+         "pagina", "x0", "top", "x1", "bottom", "texto_original"),
+        """documento TEXT NOT NULL, seccion TEXT, concepto TEXT NOT NULL, subconcepto TEXT,
+        ocurrencia INTEGER NOT NULL, categoria_servicio TEXT NOT NULL,
+        valor REAL,                       -- NULL si la cifra es ilegible (no se inventa)
+        unidad TEXT, anio_tabla INTEGER, vigencia TEXT, condicion TEXT,
+        metodo TEXT NOT NULL CHECK (metodo IN ('texto', 'ocr')),
+        -- Dónde está la cifra en el PDF (puntos, origen arriba a la izquierda): para auditar.
+        pagina INTEGER NOT NULL, x0 REAL NOT NULL, top REAL NOT NULL, x1 REAL NOT NULL,
+        bottom REAL NOT NULL, texto_original TEXT NOT NULL""",
+    ),
+    "matrices_pdf": (
+        ("documento", "tipo", "modalidad", "destino", "origen"),
+        ("id_tanque_instalacion_destino", "id_tanque_destino", "id_tanque_origen", "estado",
+         "precio", "unidad", "anio_tabla", "marca", "metodo", "pagina", "x0", "top", "x1",
+         "bottom", "texto_original"),
+        """documento TEXT NOT NULL,
+        tipo TEXT NOT NULL
+            CHECK (tipo IN ('origen_destino', 'reconsignacion', 'consignacion_ester')),
+        modalidad TEXT, destino TEXT NOT NULL, origen TEXT NOT NULL,
+        id_tanque_instalacion_destino INTEGER,  -- detalle cuyos precios HTML coinciden con la fila
+        id_tanque_destino INTEGER, id_tanque_origen INTEGER,
+        estado TEXT NOT NULL CHECK (estado IN ('ofrecida', 'no_aplica')),
+        precio REAL, unidad TEXT, anio_tabla INTEGER,
+        marca TEXT,                       -- llamada a nota de la columna, p. ej. «(2)»
+        metodo TEXT NOT NULL CHECK (metodo IN ('texto', 'ocr')),
+        pagina INTEGER NOT NULL, x0 REAL NOT NULL, top REAL NOT NULL, x1 REAL NOT NULL,
+        bottom REAL NOT NULL, texto_original TEXT NOT NULL""",
+    ),
+    "bonificaciones": (
+        ("documento", "bloque", "tramo", "condicion"),
+        ("valor", "unidad", "anio", "metodo", "pagina", "x0", "top", "x1", "bottom",
+         "texto_original"),
+        """documento TEXT NOT NULL,
+        bloque TEXT NOT NULL CHECK (bloque IN ('bonificacion', 'compensacion')),
+        tramo TEXT NOT NULL, condicion TEXT NOT NULL, valor REAL, unidad TEXT NOT NULL,
+        anio INTEGER, metodo TEXT NOT NULL CHECK (metodo IN ('texto', 'ocr')),
+        pagina INTEGER NOT NULL, x0 REAL NOT NULL, top REAL NOT NULL, x1 REAL NOT NULL,
+        bottom REAL NOT NULL, texto_original TEXT NOT NULL""",
+    ),
+    "notas_pdf": (
+        ("documento", "pagina", "orden"),
+        ("texto", "metodo"),
+        """documento TEXT NOT NULL, pagina INTEGER NOT NULL, orden INTEGER NOT NULL,
+        texto TEXT NOT NULL, metodo TEXT NOT NULL""",
+    ),
+    "cobertura_pdf": (
+        ("documento",),
+        ("parser", "cifras", "en_valores", "en_etiquetas", "en_notas", "en_cabecera",
+         "descartadas", "ilegibles", "sin_cubrir"),
+        """documento TEXT NOT NULL, parser TEXT NOT NULL,
+        cifras INTEGER NOT NULL,          -- palabras con dígitos en el PDF
+        en_valores INTEGER NOT NULL, en_etiquetas INTEGER NOT NULL, en_notas INTEGER NOT NULL,
+        en_cabecera INTEGER NOT NULL, descartadas INTEGER NOT NULL, ilegibles INTEGER NOT NULL,
+        sin_cubrir INTEGER NOT NULL""",
+    ),
 }  # fmt: skip
 
 _REGISTRO = """
@@ -169,7 +235,8 @@ CREATE TABLE IF NOT EXISTS meta (clave TEXT PRIMARY KEY, valor TEXT NOT NULL);
 _VISTAS = (
     "instalaciones", "detalles", "detalle_productos", "precios", "condiciones",
     "servicios_incluidos", "precios_origen_destino", "notas_origen_destino", "capacidades",
-    "documentos", "filas_documento", "operadores_nombres",
+    "documentos", "filas_documento", "operadores_nombres", "enlaces_documento", "precios_pdf",
+    "matrices_pdf", "bonificaciones", "notas_pdf", "cobertura_pdf",
 )  # fmt: skip
 
 
@@ -229,6 +296,24 @@ def crear_esquema(conn: sqlite3.Connection) -> None:
            FROM operadores o
            LEFT JOIN operadores_nombres_vigentes n ON n.codigo = o.codigo
            WHERE o.ultima_vez_visto = (SELECT MAX(fecha) FROM ejecuciones)"""
+    )
+    conn.executescript(
+        """
+        CREATE VIEW IF NOT EXISTS reconsignaciones AS
+            SELECT * FROM matrices_pdf_vigentes WHERE tipo = 'reconsignacion';
+        -- Precios de PDF vistos desde cada detalle que remite al documento.
+        CREATE VIEW IF NOT EXISTS precios_pdf_por_detalle AS
+            SELECT e.id_tanque_instalacion, e.seccion AS seccion_detalle, e.etiqueta,
+                   e.subetiqueta, p.*
+            FROM enlaces_documento_vigentes e
+            JOIN precios_pdf_vigentes p ON p.documento = e.documento;
+        -- Líneas «tipo_precio = pdf» cuyo documento no tiene ningún dato estructurado.
+        CREATE VIEW IF NOT EXISTS lineas_pdf_sin_resolver AS
+            SELECT e.* FROM enlaces_documento_vigentes e
+            WHERE e.documento NOT IN (SELECT documento FROM precios_pdf_vigentes)
+              AND e.documento NOT IN (SELECT documento FROM matrices_pdf_vigentes)
+              AND e.documento NOT IN (SELECT documento FROM bonificaciones_vigentes);
+        """
     )
     conn.execute(
         "INSERT OR IGNORE INTO meta (clave, valor) VALUES ('version_esquema', ?)",

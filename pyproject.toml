@@ -1,6 +1,6 @@
 [project]
 name = "mcp-logistica-hidrocarburos-cnmc"
-version = "0.1.0"
+version = "0.2.0"
 description = "Histórico de la logística de productos petrolíferos publicada por la CNMC, consultable mediante un servidor MCP de solo lectura. Proyecto no oficial."
 readme = "README.md"
 license = "MIT"
@@ -44,3 +44,8 @@ src = ["src", "tests"]
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]
 ignore = ["RUF001", "RUF002", "RUF003"]  # textos en español: tildes y símbolos legítimos
+
+[tool.ruff.lint.per-file-ignores]
+# Parsers de PDF: expresiones largas sobre coordenadas y cierres dentro de bucles por página.
+"src/cnmc_logistica/parsers/pdf_precios.py" = ["E501", "B023", "RUF007", "SIM102"]
+"src/cnmc_logistica/parsers/pdf.py" = ["E501"]

@@ -13,16 +13,13 @@ from collections import Counter
 from .almacen import AlmacenCrudo
 from .avisos import Aviso
 from .categorias import INDICADORES, Configuracion
+from .cobertura import calcular
 from .inventario import construir_inventario
 from .parsers.detalle import Detalle, PaginaNoReconocida, parsear_detalle
-from .parsers.origen_destino import parsear_origen_destino
-from .parsers.pdf import (
-    DocumentoPdf,
-    PdfIlegible,
-    analizar_pdf,
-    numeros_por_linea,
-    parsear_capacidades,
-)
+from .parsers.origen_destino import normalizar_origen, parsear_origen_destino
+from .parsers.pdf import DocumentoPdf, PdfIlegible, analizar_pdf, parsear_capacidades
+from .parsers.pdf_lectura import leer_paginas
+from .parsers.pdf_precios import Extraccion, extraer_pdf
 
 Filas = dict[str, list[dict]]
 
@@ -56,6 +53,7 @@ def extraer_foto(almacen: AlmacenCrudo, cfg: Configuracion) -> tuple[Filas, list
         "servicios_incluidos": [],
         "precios_origen_destino": [],
         "notas_origen_destino": [],
+        "enlaces_documento": [],
         **documentos.filas,
     }
     codigo_por_nombre = {_plano(o["nombre"]): o["codigo"] for o in inventario["operadores"]}
@@ -110,7 +108,8 @@ def extraer_foto(almacen: AlmacenCrudo, cfg: Configuracion) -> tuple[Filas, list
             d, tipo_instalacion.get(det["id_tanque"]), operador, cfg, documentos, filas, avisos
         )
         if d.tiene_origen_destino:
-            _filas_origen_destino(almacen, d, operador, documentos, filas, avisos)
+            _filas_origen_destino(almacen, d, det["id_tanque"], operador, documentos, filas, avisos)
+    _enlazar_pdf(filas, documentos, cfg, avisos)
     return filas, _sin_repetir(avisos), inventario
 
 
@@ -169,6 +168,12 @@ def _filas_de_detalle(
             "documentos": ",".join(p.pdfs) or None,
             "texto_original": p.texto_original,
         }
+        for clave_pdf in dict.fromkeys(p.pdfs):
+            filas["enlaces_documento"].append(
+                {k: comun[k] for k in ("id_tanque_instalacion", "seccion", "etiqueta",
+                                       "subetiqueta", "ocurrencia")} | {"documento": clave_pdf}
+            )  # fmt: skip
+            documentos.categorias_enlace.setdefault(clave_pdf, set()).add(categoria)
         if not p.valores:
             filas["precios"].append(
                 {**comun, "tipo_valor": None, "valor": None, "unidad": None,
@@ -209,7 +214,14 @@ def _sin_repetir(avisos: list[Aviso]) -> list[Aviso]:
 class _Documentos:
     def __init__(self) -> None:
         self.analizados: dict[str, DocumentoPdf] = {}
-        self.filas: Filas = {"documentos": [], "filas_documento": [], "capacidades": []}
+        self.extracciones: dict[str, Extraccion] = {}
+        self.categorias_enlace: dict[str, set[str]] = {}  # PDF → categorías de quien lo enlaza
+        # detalle → (PDF de origen-destino, precios ofrecidos en el HTML, id_tanque)
+        self.html_od: dict[int, tuple[list[str], Counter, int]] = {}
+        self.filas: Filas = {
+            "documentos": [], "filas_documento": [], "capacidades": [], "precios_pdf": [],
+            "matrices_pdf": [], "bonificaciones": [], "notas_pdf": [], "cobertura_pdf": [],
+        }  # fmt: skip
 
     def anio_comun(self, claves: list[str]) -> int | None:
         anios = {self.analizados[c].anio for c in claves if c in self.analizados}
@@ -259,16 +271,218 @@ def _extraer_documentos(
                         "celdas": json.dumps(celdas, ensure_ascii=False),
                     }
                 )
+        usadas: dict[tuple, str] = {}
+        parser = "capacidades"
         if entrada.clave == "capacidades":
-            _filas_capacidades(datos, cfg, docs, avisos)
+            usadas = _filas_capacidades(datos, cfg, docs, avisos)
+        else:
+            ext = extraer_pdf(datos)
+            docs.extracciones[entrada.clave] = ext
+            usadas, parser = ext.usadas, ext.parser
+            _filas_de_extraccion(entrada.clave, ext, doc.anio, docs, avisos)
+        paginas = leer_paginas(datos)
+        por_ocr = [str(pag.numero) for pag in paginas if pag.metodo == "ocr"]
+        if por_ocr:
+            avisos.append(
+                Aviso("aviso", "valores_por_ocr", recurso,
+                      f"páginas sin capa de texto leídas por OCR: {', '.join(por_ocr)}; "
+                      "revisar los valores (metodo = 'ocr')")
+            )  # fmt: skip
+        cob = calcular(entrada.clave, paginas, usadas, cfg.descartes)
+        docs.filas["cobertura_pdf"].append(
+            {"documento": entrada.clave, "parser": parser, **cob.fila()}
+        )
+        for texto in cob.sin_cubrir:
+            avisos.append(Aviso("error", "cifra_pdf_sin_cubrir", recurso, texto))
     return docs
+
+
+def _coordenadas(palabra) -> dict:
+    return {
+        "metodo": palabra.metodo,
+        "pagina": palabra.pagina,
+        "x0": round(palabra.x0, 1),
+        "top": round(palabra.top, 1),
+        "x1": round(palabra.x1, 1),
+        "bottom": round(palabra.bottom, 1),
+    }
+
+
+def _filas_de_extraccion(
+    clave: str, ext: Extraccion, anio_doc: int | None, docs: _Documentos, avisos: list[Aviso]
+) -> None:
+    """Pasa lo extraído de un PDF de precios a filas de sus tablas."""
+    recurso = f"pdf/{clave}"
+    anio = ext.anio or anio_doc
+    if ext.parser == "desconocido":
+        avisos.append(
+            Aviso("error", "pdf_sin_parser", recurso, "ningún parser reconoce este documento")
+        )
+    avisos += [Aviso("aviso", tipo, recurso, texto) for tipo, texto in ext.avisos]
+    veces: Counter = Counter()
+    for v in ext.valores:
+        veces[v.seccion, v.concepto, v.subconcepto] += 1
+        docs.filas["precios_pdf"].append(
+            {
+                "documento": clave,
+                "seccion": v.seccion,
+                "concepto": v.concepto,
+                "subconcepto": v.subconcepto,
+                "ocurrencia": veces[v.seccion, v.concepto, v.subconcepto],
+                "categoria_servicio": None,  # se asigna al final, con los enlaces
+                "valor": v.valor,
+                "unidad": v.unidad,
+                "anio_tabla": anio,
+                "vigencia": ext.vigencia,
+                "condicion": v.condicion,
+                **_coordenadas(v.palabra),
+                "texto_original": v.texto_original,
+            }
+        )
+    vistas: set[tuple] = set()
+    for c in ext.celdas:
+        llave = (c.tipo, c.modalidad, c.destino, c.origen)
+        if llave in vistas:
+            avisos.append(Aviso("aviso", "celda_repetida", recurso, c.texto_original))
+            continue
+        vistas.add(llave)
+        docs.filas["matrices_pdf"].append(
+            {
+                "documento": clave,
+                "tipo": c.tipo,
+                "modalidad": c.modalidad,
+                "destino": c.destino,
+                "origen": c.origen,
+                "id_tanque_instalacion_destino": None,
+                "id_tanque_destino": None,
+                "id_tanque_origen": None,
+                "estado": c.estado,
+                "precio": c.precio,
+                "unidad": c.unidad,
+                "anio_tabla": anio,
+                "marca": c.marca,
+                **_coordenadas(c.palabra),
+                "texto_original": c.texto_original,
+            }
+        )
+    for b in ext.bonificaciones:
+        docs.filas["bonificaciones"].append(
+            {
+                "documento": clave,
+                "bloque": b.bloque,
+                "tramo": b.tramo,
+                "condicion": b.condicion,
+                "valor": b.valor,
+                "unidad": b.unidad,
+                "anio": anio,
+                **_coordenadas(b.palabra),
+                "texto_original": b.texto_original,
+            }
+        )
+    for orden, n in enumerate(ext.notas, start=1):
+        docs.filas["notas_pdf"].append(
+            {"documento": clave, "pagina": n.pagina, "orden": orden, "texto": n.texto,
+             "metodo": n.metodo}
+        )  # fmt: skip
+
+
+def _enlazar_pdf(filas: Filas, docs: _Documentos, cfg: Configuracion, avisos: list[Aviso]) -> None:
+    """Paso final: une lo extraído de los PDF con los detalles que remiten a ellos."""
+    # 1. Categoría de cada precio de PDF: la propia del concepto o la de quien enlaza el PDF.
+    for fila in filas["precios_pdf"]:
+        propia = cfg.categorias.categoria_concepto_pdf(fila["concepto"])
+        heredadas = docs.categorias_enlace.get(fila["documento"], set())
+        if propia:
+            fila["categoria_servicio"] = propia
+        elif len(heredadas) == 1:
+            fila["categoria_servicio"] = next(iter(heredadas))
+        else:
+            fila["categoria_servicio"] = "sin_categoria"
+            avisos.append(
+                Aviso("aviso", "sin_categoria", f"pdf/{fila['documento']}", fila["concepto"])
+            )
+
+    # 2. Origen-destino: cada fila del PDF se une al detalle cuyos precios HTML son
+    #    exactamente los mismos. No se compara por nombre (difieren entre HTML y PDF).
+    por_fila: dict[tuple[str, str], list[dict]] = {}
+    for fila in filas["matrices_pdf"]:
+        if fila["tipo"] == "origen_destino":
+            por_fila.setdefault((fila["documento"], fila["destino"]), []).append(fila)
+    huellas = {
+        llave: Counter(f"{c['precio']:.2f}" for c in celdas if c["precio"] is not None)
+        for llave, celdas in por_fila.items()
+    }
+    id_tanque_de: dict[str, int] = {}
+    for id_ti, (pdfs, valores_html, id_tanque) in docs.html_od.items():
+        candidatas = [k for k, h in huellas.items() if k[0] in pdfs and h == valores_html]
+        if not candidatas:
+            # El PDF puede traer algún precio que el HTML da como no ofrecido: se admite
+            # si todos los precios del HTML están en la fila y sobran como mucho dos.
+            candidatas = [
+                k
+                for k, h in huellas.items()
+                if k[0] in pdfs
+                and not (valores_html - h)
+                and 0 < sum((h - valores_html).values()) <= 2
+            ]
+            if len(candidatas) == 1:
+                sobran = sorted((huellas[candidatas[0]] - valores_html).elements())
+                avisos.append(
+                    Aviso("aviso", "pdf_con_precios_que_no_estan_en_html",
+                          f"origen_destino/{id_ti}",
+                          f"{candidatas[0][1]} (pdf/{candidatas[0][0]}): {', '.join(sobran)} €/m3 "
+                          "figura en el PDF y la página lo da como ruta no ofrecida")
+                )  # fmt: skip
+        if len(candidatas) != 1:
+            if any(c in docs.extracciones for c in pdfs):
+                avisos.append(
+                    Aviso("aviso", "origen_destino_no_cuadra_con_pdf", f"origen_destino/{id_ti}",
+                          f"{len(candidatas)} filas del PDF {pdfs} con los mismos precios")
+                )  # fmt: skip
+            continue
+        for celda in por_fila[candidatas[0]]:
+            celda["id_tanque_instalacion_destino"] = id_ti
+            celda["id_tanque_destino"] = id_tanque
+        id_tanque_de[normalizar_origen(candidatas[0][1])] = id_tanque
+
+    # 3. Reconsignación y consignación de éster: mismas instalaciones, con los mismos
+    #    nombres que las filas de origen-destino ya identificadas. Coincidencia exacta.
+    alias = {normalizar_origen(k): normalizar_origen(v) for k, v in cfg.alias_pdf.items()}
+
+    def id_de(nombre: str) -> int | None:
+        plano = normalizar_origen(nombre)
+        return id_tanque_de.get(alias.get(plano, plano))
+
+    for fila in filas["matrices_pdf"]:
+        if fila["tipo"] != "origen_destino":
+            fila["id_tanque_destino"] = id_de(fila["destino"])
+            fila["id_tanque_origen"] = id_de(fila["origen"])
+
+    # 4. Ninguna línea «pdf» puede quedarse sin datos estructurados detrás.
+    con_datos = {
+        f["documento"]
+        for tabla in ("precios_pdf", "matrices_pdf", "bonificaciones")
+        for f in filas[tabla]
+    }
+    for enlace in filas["enlaces_documento"]:
+        if enlace["documento"] not in con_datos:
+            avisos.append(
+                Aviso("error", "pdf_sin_resolver",
+                      f"detalle/{enlace['id_tanque_instalacion']}",
+                      f"{enlace['etiqueta']} → pdf/{enlace['documento']} sin datos estructurados")
+            )  # fmt: skip
 
 
 def _filas_capacidades(
     datos: bytes, cfg: Configuracion, docs: _Documentos, avisos: list[Aviso]
-) -> None:
+) -> dict[tuple, str]:
     recurso = "pdf/capacidades"
     cap = parsear_capacidades(datos)
+    for orden, (pagina, texto) in enumerate(cap.notas, start=1):
+        docs.filas["notas_pdf"].append(
+            {"documento": "capacidades", "pagina": pagina, "orden": orden, "texto": texto,
+             "metodo": "texto"}
+        )  # fmt: skip
     for texto in cap.sin_interpretar:
         avisos.append(Aviso("aviso", "capacidades_sin_interpretar", recurso, texto))
     for texto in cap.descuadres:
@@ -302,6 +516,7 @@ def _filas_capacidades(
                 "documento": "capacidades",
             }
         )
+    return cap.usadas
 
 
 # --- origen-destino ------------------------------------------------------------------
@@ -310,6 +525,7 @@ def _filas_capacidades(
 def _filas_origen_destino(
     almacen: AlmacenCrudo,
     d: Detalle,
+    id_tanque: int,
     operador: str | None,
     documentos: _Documentos,
     filas: Filas,
@@ -350,22 +566,10 @@ def _filas_origen_destino(
             {"id_tanque_instalacion": id_ti, "orden": n, "destino": od.destino, "texto": nota}
         )
 
-    # Control cruzado: el HTML es la fuente; el PDF solo confirma. Los precios
-    # ofrecidos de cada modalidad deben aparecer juntos en una línea del PDF.
-    lineas = [
-        Counter(nums) for c in pdfs_od if c in documentos.analizados
-        for nums in numeros_por_linea(documentos.analizados[c])
-    ]  # fmt: skip
-    if not lineas:
-        return
-    por_modalidad: dict[str, Counter] = {}
-    for f in od.filas:
-        if f.precio is not None:
-            valor = f"{f.precio:.2f}".replace(".", ",")
-            por_modalidad.setdefault(f.modalidad, Counter())[valor] += 1
-    for modalidad, valores in por_modalidad.items():
-        if not any(not (valores - linea) for linea in lineas):
-            avisos.append(
-                Aviso("aviso", "origen_destino_no_cuadra_con_pdf", recurso,
-                      f"{od.destino} | {modalidad}: {sorted(valores)}", operador)
-            )  # fmt: skip
+    # Control cruzado: el HTML es la fuente. Se guardan sus precios ofrecidos para
+    # unirlos después con la fila del PDF que tenga exactamente los mismos.
+    documentos.html_od[id_ti] = (
+        pdfs_od,
+        Counter(f"{f.precio:.2f}" for f in od.filas if f.precio is not None),
+        id_tanque,
+    )

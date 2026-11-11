@@ -196,6 +196,16 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
                 "GROUP BY nivel, tipo ORDER BY nivel, n DESC",
                 (ultima["id"],),
             ),
+            "cobertura_pdf": consultar(
+                "SELECT COUNT(*) AS documentos, SUM(cifras) AS cifras, "
+                "SUM(en_valores) AS en_valores, SUM(en_etiquetas + en_notas + en_cabecera) "
+                "AS en_etiquetas_y_notas, SUM(descartadas) AS descartadas, "
+                "SUM(ilegibles) AS ilegibles, SUM(sin_cubrir) AS sin_cubrir "
+                "FROM cobertura_pdf_vigentes"
+            )[0],
+            "lineas_pdf_sin_resolver": consultar(
+                "SELECT COUNT(*) AS n FROM lineas_pdf_sin_resolver"
+            )[0]["n"],
             "tablas": tablas,
             "vistas": "Cada tabla con historial tiene una vista <tabla>_vigentes.",
             "version": __version__,
@@ -306,7 +316,13 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
 
     @servidor.tool()
     def ver_instalacion(id_tanque: int) -> dict[str, Any]:
-        """Ficha completa de una instalación: detalles, precios, condiciones y capacidad."""
+        """Ficha completa de una instalación: detalles, precios, condiciones y capacidad.
+
+        De cada detalle se dan los precios de su página (`precios`), los de las tarifas
+        en PDF a las que remite (`precios_pdf`, con documento y página) y la lista de
+        esos PDF (`documentos_pdf`). Las matrices se consultan con `reconsignaciones`
+        y `precios_origen_destino`; las bonificaciones, con `bonificaciones`.
+        """
         inst = consultar("SELECT * FROM instalaciones_vigentes WHERE id_tanque = ?", (id_tanque,))
         if not inst:
             raise ToolError(f"No hay ninguna instalación vigente con id_tanque = {id_tanque}.")
@@ -330,6 +346,27 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
                 "WHERE id_tanque_instalacion = ? ORDER BY id",
                 id_ti,
             )
+            d["precios_pdf"] = [
+                {k: p[k] for k in ("documento", "pagina", "etiqueta", "seccion", "concepto",
+                                   "subconcepto", "categoria_servicio", "valor", "unidad",
+                                   "anio_tabla", "vigencia", "condicion", "metodo")}
+                for p in consultar(
+                    "SELECT * FROM precios_pdf_por_detalle WHERE id_tanque_instalacion = ? "
+                    "ORDER BY documento, id",
+                    id_ti,
+                )
+            ]  # fmt: skip
+            d["documentos_pdf"] = consultar(
+                """SELECT DISTINCT e.documento, e.etiqueta, doc.nombre_archivo, doc.anio,
+                          (SELECT COUNT(*) FROM matrices_pdf_vigentes m
+                            WHERE m.documento = e.documento) AS celdas_de_matriz,
+                          (SELECT COUNT(*) FROM bonificaciones_vigentes b
+                            WHERE b.documento = e.documento) AS bonificaciones
+                   FROM enlaces_documento_vigentes e
+                   LEFT JOIN documentos_vigentes doc ON doc.clave = e.documento
+                   WHERE e.id_tanque_instalacion = ? ORDER BY e.documento""",
+                id_ti,
+            )
             d["rutas_origen_destino"] = consultar(
                 "SELECT COUNT(*) AS n FROM precios_origen_destino_vigentes "
                 "WHERE id_tanque_instalacion = ? AND estado = 'ofrecida'",
@@ -345,15 +382,37 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
             ),
         }
 
+    def contenido_de_documentos() -> dict[str, dict[str, int]]:
+        """Para cada PDF, cuántas filas estructuradas tiene en cada tabla."""
+        contenido: dict[str, dict[str, int]] = {}
+        for tabla in ("precios_pdf", "matrices_pdf", "bonificaciones"):
+            for f in consultar(f"SELECT documento, COUNT(*) AS n FROM {tabla}_vigentes GROUP BY 1"):
+                contenido.setdefault(f["documento"], {})[tabla] = f["n"]
+        return contenido
+
     def precios_con_contexto(detalles: list[dict]) -> list[dict]:
+        """Precios vigentes de esos detalles: los de la página (fuente «html») y los de
+        las tarifas en PDF a las que remite cada detalle (fuente «pdf»)."""
         por_id = {d["id_tanque_instalacion"]: d for d in detalles}
+        contenido = contenido_de_documentos()
         salida = []
+        lineas: dict[tuple, dict] = {}
         for p in consultar("SELECT * FROM precios_vigentes ORDER BY id"):
             d = por_id.get(p["id_tanque_instalacion"])
             if d is None:
                 continue
+            lineas[p["id_tanque_instalacion"], p["seccion"], p["etiqueta"], p["subetiqueta"]] = p
+            donde = None
+            if p["tipo_precio"] == "pdf":
+                tablas = sorted(
+                    {t for c in p["documentos"].split(",") for t in contenido.get(c, {})}
+                )
+                donde = "Datos del PDF en: " + ", ".join(tablas) if tablas else "PDF sin resolver"
             salida.append(
                 {
+                    "fuente": "html",
+                    "pagina_pdf": None,
+                    "resuelto_en": donde,
                     "id_tanque_instalacion": p["id_tanque_instalacion"],
                     "id_tanque": d["id_tanque"],
                     "instalacion": d["instalacion"],
@@ -383,6 +442,42 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
                     },
                 }
             )
+        contexto = (
+            "id_tanque_instalacion", "id_tanque", "instalacion", "tipo_instalacion", "comunidad",
+            "operador", "operador_nombre", "productos",
+        )  # fmt: skip
+        base = {f["id_tanque_instalacion"]: f for f in salida}
+        for p in consultar("SELECT * FROM precios_pdf_por_detalle ORDER BY id"):
+            if p["id_tanque_instalacion"] not in por_id or p["id_tanque_instalacion"] not in base:
+                continue
+            linea = lineas.get(
+                (p["id_tanque_instalacion"], p["seccion_detalle"], p["etiqueta"], p["subetiqueta"])
+            )
+            # Los indicadores de «Incluye:» solo valen si el precio es del mismo servicio.
+            misma = linea is not None and linea["categoria_servicio"] == p["categoria_servicio"]
+            concepto = " · ".join(x for x in (p["seccion"], p["concepto"], p["subconcepto"]) if x)
+            salida.append(
+                {
+                    "fuente": "pdf",
+                    "pagina_pdf": p["pagina"],
+                    "resuelto_en": None,
+                    **{k: base[p["id_tanque_instalacion"]][k] for k in contexto},
+                    "seccion": p["seccion_detalle"],
+                    "etiqueta": p["etiqueta"],
+                    "subetiqueta": concepto,
+                    "categoria_servicio": p["categoria_servicio"],
+                    **{i: (linea[i] if misma else None) for i in INDICADORES},
+                    "tipo_precio": "numerico" if p["valor"] is not None else "texto",
+                    "tipo_valor": "unico" if p["valor"] is not None else None,
+                    "valor": p["valor"],
+                    "unidad": p["unidad"],
+                    "fecha_precio": None,
+                    "anio_tabla": p["anio_tabla"],
+                    "observacion": p["condicion"],
+                    "texto": None if p["valor"] is not None else p["texto_original"],
+                    "documentos": p["documento"],
+                }
+            )
         return salida
 
     @servidor.tool()
@@ -397,6 +492,11 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
         limite: int = 100,
     ) -> dict[str, Any]:
         """Precios vigentes con filtros. No agrupa: para comparar usa `comparar_servicio`.
+
+        Cada precio dice su `fuente`: «html» (la página del detalle) o «pdf» (una tarifa
+        en PDF a la que remite el detalle; `documentos` es el PDF y `pagina_pdf` la
+        página). Una línea «html» con tipo_precio «pdf» es solo el puntero al documento;
+        `resuelto_en` dice en qué tablas están sus datos.
 
         categoria: categoria_servicio exacta (p. ej. «almacenamiento»). texto: parte de
         la etiqueta o subetiqueta del servicio. tipo_precio puede ser numerico, regla
@@ -429,8 +529,9 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
         Solo son comparables los precios de un mismo grupo: misma categoría, mismos
         indicadores de lo que incluye el servicio (transporte, almacenamiento,
         expedición, puesta a bordo) y misma unidad. Si salen varios grupos, la
-        respuesta lo avisa: no mezcles sus cifras. Los servicios sin precio numérico
-        (remiten a un PDF, a contrato…) se listan aparte.
+        respuesta lo avisa: no mezcles sus cifras. Incluye los precios de las tarifas
+        en PDF (fuente «pdf», con su documento y página; solo tienen año, no fecha).
+        Los servicios sin precio numérico se listan aparte con `resuelto_en`.
         """
         candidatos = [
             p
@@ -453,7 +554,8 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
             if p["tipo_precio"] != "numerico":
                 sin_numero.append(
                     {k: p[k] for k in ("instalacion", "operador", "productos", "etiqueta",
-                                       "subetiqueta", "tipo_precio", "texto", "documentos")}
+                                       "subetiqueta", "tipo_precio", "texto", "documentos",
+                                       "resuelto_en")}
                 )  # fmt: skip
                 continue
             clave = (*(p[i] for i in INDICADORES), p["unidad"])
@@ -465,7 +567,8 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
                 {k: p[k] for k in ("id_tanque_instalacion", "instalacion", "tipo_instalacion",
                                    "comunidad", "operador", "productos", "etiqueta",
                                    "subetiqueta", "tipo_valor", "valor", "fecha_precio",
-                                   "observacion")}
+                                   "anio_tabla", "observacion", "fuente", "documentos",
+                                   "pagina_pdf")}
             )  # fmt: skip
         salida = []
         for g in grupos.values():
@@ -636,15 +739,115 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
         }
 
     @servidor.tool()
+    def reconsignaciones(
+        origen: str | None = None,
+        destino: str | None = None,
+        tipo: str = "reconsignacion",
+        limite: int = 200,
+    ) -> dict[str, Any]:
+        """Precios de las matrices de los PDF de Exolum entre dos instalaciones.
+
+        tipo «reconsignacion» (por defecto): cambiar la instalación de entrega de
+        gasolinas y gasóleos, de la instalación ORIGEN a la de DESTINO. tipo
+        «consignacion_ester»: consignación del éster metílico para mezcla en línea.
+        tipo «origen_destino»: las tablas origen-destino tal como vienen en el PDF
+        (para el día a día usa `precios_origen_destino`, que parte de la página web).
+        origen/destino: parte del nombre («Huelva», «Rivabellosa»). Cada precio
+        indica el PDF, la página y el año de la tabla. Estado «no_aplica» = «(*)».
+        """
+        filas = [
+            {k: f[k] for k in ("origen", "destino", "modalidad", "estado", "precio", "unidad",
+                               "anio_tabla", "marca", "id_tanque_origen", "id_tanque_destino",
+                               "documento", "pagina", "metodo")}
+            for f in consultar(
+                "SELECT * FROM matrices_pdf_vigentes WHERE tipo = ? ORDER BY id", (tipo,)
+            )
+            if _contiene(f["origen"], origen) and _contiene(f["destino"], destino)
+        ]  # fmt: skip
+        if not filas:
+            raise ToolError(
+                f"Sin filas de tipo «{tipo}» para origen «{origen}» y destino «{destino}». "
+                "Tipos: reconsignacion, consignacion_ester, origen_destino."
+            )
+        documentos = sorted({f["documento"] for f in filas})
+        marcas = ",".join("?" * len(documentos))
+        return {
+            "total": len(filas),
+            "filas": filas[: _limite(limite)],
+            "notas": consultar(
+                f"SELECT DISTINCT documento, texto FROM notas_pdf_vigentes "
+                f"WHERE documento IN ({marcas}) ORDER BY documento, pagina, orden",
+                tuple(documentos),
+            ),
+            "fuente": "pdf",
+        }
+
+    @servidor.tool()
+    def bonificaciones(producto: str | None = None) -> dict[str, Any]:
+        """Bonificaciones y compensaciones de los contratos a largo plazo (PDF de Exolum).
+
+        Por cumplir (bonificación) o incumplir (compensación) las cantidades
+        garantizadas. Hay un documento por familia de productos; `aplica_a` dice a qué
+        productos e instalaciones corresponde. producto: filtra por parte del nombre
+        («queroseno», «gasolinas»). Incluye los umbrales en % y las notas del documento.
+        """
+        aplica: dict[str, dict] = {}
+        for f in consultar(
+            """SELECT e.documento, d.productos_texto, COUNT(DISTINCT d.id_tanque_instalacion) AS n
+               FROM enlaces_documento_vigentes e
+               JOIN detalles_vigentes d USING (id_tanque_instalacion)
+               WHERE e.documento IN (SELECT documento FROM bonificaciones_vigentes)
+               GROUP BY 1, 2"""
+        ):
+            a = aplica.setdefault(f["documento"], {"productos": [], "detalles": 0})
+            a["productos"].append(f["productos_texto"])
+            a["detalles"] += f["n"]
+        salida = []
+        for doc in consultar(
+            "SELECT clave, nombre_archivo, anio FROM documentos_vigentes "
+            "WHERE clave IN (SELECT documento FROM bonificaciones_vigentes) ORDER BY clave"
+        ):
+            a = aplica.get(doc["clave"], {"productos": [], "detalles": 0})
+            if producto and not any(_contiene(p, producto) for p in a["productos"]):
+                continue
+            salida.append(
+                {
+                    "documento": doc["clave"],
+                    "nombre_archivo": doc["nombre_archivo"],
+                    "anio": doc["anio"],
+                    "aplica_a": a,
+                    "filas": consultar(
+                        "SELECT bloque, tramo, condicion, valor, unidad, pagina, metodo "
+                        "FROM bonificaciones_vigentes WHERE documento = ? ORDER BY id",
+                        (doc["clave"],),
+                    ),
+                    "notas": [
+                        n["texto"]
+                        for n in consultar(
+                            "SELECT texto FROM notas_pdf_vigentes WHERE documento = ? "
+                            "ORDER BY pagina, orden",
+                            (doc["clave"],),
+                        )
+                    ],
+                }
+            )
+        if not salida:
+            raise ToolError(f"Sin bonificaciones para el producto «{producto}».")
+        return {"documentos": salida, "fuente": "pdf"}
+
+    @servidor.tool()
     def consulta_sql(sql: str, limite: int = 200) -> dict[str, Any]:
         """Ejecuta una única sentencia SELECT (o WITH … SELECT) sobre la base, en solo lectura.
 
         Tablas principales: instalaciones, detalles, detalle_productos, operadores,
         operadores_nombres, precios, condiciones, servicios_incluidos,
         precios_origen_destino, notas_origen_destino, capacidades, documentos,
-        filas_documento, ejecuciones, incidencias. Cada tabla con historial tiene una
-        vista <tabla>_vigentes con lo visto en la última foto. La función plano(texto)
-        quita tildes y mayúsculas. Usa `estado` para ver las columnas.
+        filas_documento, enlaces_documento, precios_pdf, matrices_pdf, bonificaciones,
+        notas_pdf, cobertura_pdf, ejecuciones, incidencias. Vistas útiles:
+        precios_pdf_por_detalle, reconsignaciones, lineas_pdf_sin_resolver. Cada tabla
+        con historial tiene una vista <tabla>_vigentes con lo visto en la última foto.
+        La función plano(texto) quita tildes y mayúsculas. Usa `estado` para ver las
+        columnas.
         """
         tope = _limite(limite)
         conn = abrir_solo_lectura(ruta_bd)

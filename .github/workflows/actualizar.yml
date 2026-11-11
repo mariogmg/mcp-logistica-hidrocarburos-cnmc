@@ -26,7 +26,9 @@ jobs:
       - uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
-      - run: uv sync --locked --no-dev
+      # OCR de respaldo: solo se usa si algún PDF llega sin capa de texto.
+      - run: sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-spa
+      - run: uv sync --locked --no-dev --extra ocr
 
       - name: Fecha de la foto
         id: foto

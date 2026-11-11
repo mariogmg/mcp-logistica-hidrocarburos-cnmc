@@ -1,0 +1,19 @@
+# Cifras de los PDF que NO se guardan en la base, con su justificación.
+#
+# Para qué sirve: en cada carga se comprueba que todas las palabras con cifras
+# de cada PDF están en la base (como valor, como parte de una etiqueta o dentro
+# de una nota guardada) o encajan en una de estas reglas. Una cifra que no esté
+# en ninguno de los dos sitios genera una incidencia de nivel error
+# («cifra_pdf_sin_cubrir») y la ejecución termina en rojo.
+#
+# Cada regla necesita un `motivo` y al menos uno de:
+#   linea:   expresión regular que debe cumplir la línea entera donde está la cifra
+#   palabra: expresión regular que debe cumplir la palabra entera
+# Opcional: `documentos`, lista de claves de PDF a los que se limita la regla.
+#
+# Aparte de estas reglas, los totales por compañía del PDF de capacidades se
+# descartan solos cuando la suma de sus instalaciones coincide (total verificado).
+
+reglas:
+  - motivo: Número de página
+    linea: '^Página \d+ de \d+$'

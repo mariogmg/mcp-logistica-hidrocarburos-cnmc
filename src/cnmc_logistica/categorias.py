@@ -3,6 +3,7 @@
 - categorias_servicio.yaml: etiqueta (+ tipo de instalación) → categoría.
 - indicadores_incluye.yaml: texto de «Incluye:» → indicadores del servicio.
 - capacidades_equivalencias.yaml: instalación del PDF de capacidades → idTanque.
+- descartes_pdf.yaml: cifras de los PDF que no se guardan, con su motivo.
 
 En ambos casos la correspondencia es exacta y revisable; el código no deduce
 nada con expresiones regulares. Lo que no está en el fichero se marca y avisa.
@@ -15,6 +16,8 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import yaml
+
+from .cobertura import Descartes
 
 SIN_CATEGORIA = "sin_categoria"
 INDICADORES = (
@@ -37,7 +40,8 @@ class Categorizador:
             tipo: {_clave(k): v for k, v in (tabla or {}).items()}
             for tipo, tabla in (datos.get("por_tipo_instalacion") or {}).items()
         }
-        usadas = set(self._etiquetas.values())
+        self._conceptos_pdf = {_clave(k): v for k, v in (datos.get("conceptos_pdf") or {}).items()}
+        usadas = set(self._etiquetas.values()) | set(self._conceptos_pdf.values())
         for tabla in self._por_tipo.values():
             usadas |= set(tabla.values())
         if sobran := usadas - set(self.categorias):
@@ -55,6 +59,10 @@ class Categorizador:
         if clave in self._etiquetas:
             return self._etiquetas[clave], True
         return SIN_CATEGORIA, False
+
+    def categoria_concepto_pdf(self, concepto: str) -> str | None:
+        """Categoría propia de un concepto de un PDF, si el fichero la declara."""
+        return self._conceptos_pdf.get(_clave(concepto))
 
 
 class Indicadores:
@@ -128,6 +136,8 @@ class Configuracion:
     categorias: Categorizador
     indicadores: Indicadores
     equivalencias: Equivalencias
+    descartes: Descartes
+    alias_pdf: dict[str, str]  # nombre abreviado en un PDF → nombre completo
 
     @classmethod
     def de_directorio(cls, config: Path) -> Configuracion:
@@ -135,4 +145,9 @@ class Configuracion:
             Categorizador.de_fichero(config / "categorias_servicio.yaml"),
             Indicadores.de_fichero(config / "indicadores_incluye.yaml"),
             Equivalencias.de_fichero(config / "capacidades_equivalencias.yaml"),
+            Descartes.de_fichero(config / "descartes_pdf.yaml"),
+            (
+                yaml.safe_load((config / "alias_instalaciones_pdf.yaml").read_text("utf-8")) or {}
+            ).get("alias")
+            or {},
         )

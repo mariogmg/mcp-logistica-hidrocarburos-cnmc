@@ -3,7 +3,6 @@
 import csv
 import gzip
 import hashlib
-import io
 import sqlite3
 import zipfile
 
@@ -82,9 +81,7 @@ def test_zip_por_formato(exportacion):
             assert all(n.startswith(f"{formato}/") and n.endswith(sufijo) for n in nombres)
             assert z.testzip() is None
     with zipfile.ZipFile(salida / "csv.zip") as z:
-        primera = gzip.open(
-            io.BytesIO(z.read("csv/detalles.csv.gz")), "rt", encoding="utf-8"
-        ).readline()
+        primera = gzip.decompress(z.read("csv/detalles.csv.gz")).decode("utf-8").splitlines()[0]
     assert primera.startswith("id;")
 
 

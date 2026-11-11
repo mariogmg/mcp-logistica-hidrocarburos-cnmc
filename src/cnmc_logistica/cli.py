@@ -8,6 +8,7 @@ servidor solo lee la base de datos.
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from collections.abc import Callable, Sequence
 from datetime import date
@@ -21,14 +22,6 @@ from .config import USER_AGENT, Rutas
 # Códigos de salida: 0 correcto, 1 terminó pero con errores registrados
 # (el workflow se marca en rojo), 2 uso incorrecto u orden no disponible.
 SALIDA_OK, SALIDA_CON_ERRORES, SALIDA_USO = 0, 1, 2
-
-
-def _pendiente(nombre: str) -> Callable[[argparse.Namespace], int]:
-    def orden(_: argparse.Namespace) -> int:
-        print(f"«{nombre}» todavía no está implementada.", file=sys.stderr)
-        return SALIDA_USO
-
-    return orden
 
 
 def _hoy() -> str:
@@ -135,6 +128,19 @@ def _reconstruir(args: argparse.Namespace) -> int:
     return _resumir(avisos)
 
 
+def _servir(args: argparse.Namespace) -> int:
+    # Único import del servidor: no arrastra descargador ni parsers.
+    from .servidor import servir
+
+    rutas = Rutas(args.raiz)
+    ruta_bd = Path(os.environ.get("CNMC_BD") or rutas.base_datos)
+    if not ruta_bd.exists():
+        print(f"No existe {ruta_bd}: ejecuta antes «actualizar».", file=sys.stderr)
+        return SALIDA_USO
+    servir(ruta_bd, args.transporte, args.host, args.puerto)
+    return SALIDA_OK
+
+
 def _info(args: argparse.Namespace) -> int:
     rutas = Rutas(args.raiz)
     print(f"versión:     {__version__}")
@@ -169,7 +175,7 @@ ORDENES: dict[str, tuple[str, Callable[[argparse.Namespace], int]]] = {
     "descubrir": ("Mapas + buscador → config/inventario.json", _descubrir),
     "actualizar": ("Descarga todo el inventario a raw/ y carga la base", _actualizar),
     "reconstruir": ("Crea una base nueva a partir de raw/", _reconstruir),
-    "servir": ("Arranca el servidor MCP (solo lectura)", _pendiente("servir")),
+    "servir": ("Arranca el servidor MCP (solo lectura)", _servir),
     "info": ("Muestra versión, rutas y estado local", _info),
 }
 
@@ -184,6 +190,12 @@ def crear_parser() -> argparse.ArgumentParser:
     for nombre, (ayuda, funcion) in ORDENES.items():
         orden = sub.add_parser(nombre, help=ayuda)
         orden.set_defaults(funcion=funcion)
+        if nombre == "servir":
+            orden.add_argument(
+                "--transporte", choices=("stdio", "streamable-http"), default="stdio"
+            )
+            orden.add_argument("--host", default="127.0.0.1")
+            orden.add_argument("--puerto", type=int, default=8000)
         if nombre == "reconstruir":
             orden.add_argument("--salida", type=Path, help="Fichero de la base nueva")
             orden.add_argument(

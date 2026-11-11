@@ -101,8 +101,10 @@ TABLAS: dict[str, tuple[tuple[str, ...], tuple[str, ...], str]] = {
     ),
     "precios_origen_destino": (
         ("id_tanque_instalacion", "modalidad", "origen"),
-        ("origen_normalizado", "estado", "precio", "unidad", "anio_tabla", "texto_original"),
+        ("destino", "origen_normalizado", "estado", "precio", "unidad", "anio_tabla",
+         "texto_original"),
         """id_tanque_instalacion INTEGER NOT NULL,   -- el destino se identifica por id
+        destino TEXT,                     -- nombre que muestra la página; solo informativo
         modalidad TEXT NOT NULL, origen TEXT NOT NULL, origen_normalizado TEXT NOT NULL,
         estado TEXT NOT NULL CHECK (estado IN ('ofrecida', 'no_ofrecida')),
         precio REAL,                      -- NULL si no_ofrecida: 0,00 no es un precio

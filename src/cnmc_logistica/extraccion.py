@@ -334,6 +334,7 @@ def _filas_origen_destino(
         filas["precios_origen_destino"].append(
             {
                 "id_tanque_instalacion": id_ti,
+                "destino": od.destino,
                 "modalidad": f.modalidad,
                 "origen": f.origen,
                 "origen_normalizado": f.origen_normalizado,

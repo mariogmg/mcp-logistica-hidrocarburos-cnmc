@@ -1426,1549 +1426,1807 @@
       "id_tanque_instalacion": 2,
       "id_tanque": 2,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 4,
       "id_tanque": 2,
       "operador": "CLH",
-      "producto": "Bioetanol"
+      "producto": "Bioetanol",
+      "producto_buscador": "Bioetanol"
     },
     {
       "id_tanque_instalacion": 6,
       "id_tanque": 3,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 7,
       "id_tanque": 3,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 17,
       "id_tanque": 9,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 18,
       "id_tanque": 10,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 19,
       "id_tanque": 10,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 20,
       "id_tanque": 10,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 21,
       "id_tanque": 11,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 22,
       "id_tanque": 11,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 23,
       "id_tanque": 11,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 25,
       "id_tanque": 13,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 26,
       "id_tanque": 13,
       "operador": "CLH",
-      "producto": "Búnker"
+      "producto": "Búnker",
+      "producto_buscador": "Búnker"
     },
     {
       "id_tanque_instalacion": 27,
       "id_tanque": 13,
       "operador": "CLH",
-      "producto": "Biodiésel"
+      "producto": "Biodiésel",
+      "producto_buscador": "Biodiésel"
     },
     {
       "id_tanque_instalacion": 29,
       "id_tanque": 15,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 30,
       "id_tanque": 15,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 31,
       "id_tanque": 15,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 33,
       "id_tanque": 17,
       "operador": "TEPSA",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 34,
       "id_tanque": 17,
       "operador": "TEPSA",
-      "producto": "Biodiésel"
+      "producto": "Biodiésel",
+      "producto_buscador": "Biodiésel"
     },
     {
       "id_tanque_instalacion": 35,
       "id_tanque": 18,
       "operador": "ESERGUI",
-      "producto": "EN PROCESO DE ACTUALIZACIÓN 2026 - Ciérvana (Gasolinas y Gasóleos)"
+      "producto": "EN PROCESO DE ACTUALIZACIÓN 2026 - Ciérvana (Gasolinas y Gasóleos)",
+      "producto_buscador": "EN PROCESO DE ACTUALIZACIÓN 2026 - Ciérvana (Gasolinas y Gasóleos)"
     },
     {
       "id_tanque_instalacion": 36,
       "id_tanque": 19,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 37,
       "id_tanque": 19,
       "operador": "CLH",
-      "producto": "Bioetanol"
+      "producto": "Bioetanol",
+      "producto_buscador": "Bioetanol"
     },
     {
       "id_tanque_instalacion": 38,
       "id_tanque": 19,
       "operador": "CLH",
-      "producto": "Biodiésel"
+      "producto": "Biodiésel",
+      "producto_buscador": "Biodiésel"
     },
     {
       "id_tanque_instalacion": 39,
       "id_tanque": 19,
       "operador": "CLH",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 40,
       "id_tanque": 20,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 41,
       "id_tanque": 20,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 42,
       "id_tanque": 20,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 45,
       "id_tanque": 22,
       "operador": "SLCA",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 46,
       "id_tanque": 22,
       "operador": "SLCA",
-      "producto": "Gasolinas de aviación"
+      "producto": "Gasolinas de aviación",
+      "producto_buscador": "Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 47,
       "id_tanque": 23,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 48,
       "id_tanque": 24,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 49,
       "id_tanque": 24,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 50,
       "id_tanque": 24,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 51,
       "id_tanque": 25,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 52,
       "id_tanque": 26,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 53,
       "id_tanque": 26,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 54,
       "id_tanque": 26,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 55,
       "id_tanque": 27,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 57,
       "id_tanque": 27,
       "operador": "CLH",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 58,
       "id_tanque": 28,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 59,
       "id_tanque": 28,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 61,
       "id_tanque": 29,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 63,
       "id_tanque": 31,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 64,
       "id_tanque": 32,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 65,
       "id_tanque": 32,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 66,
       "id_tanque": 32,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 68,
       "id_tanque": 34,
       "operador": "TEPSA",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 70,
       "id_tanque": 34,
       "operador": "TEPSA",
-      "producto": "Biodiésel"
+      "producto": "Biodiésel",
+      "producto_buscador": "Biodiésel"
     },
     {
       "id_tanque_instalacion": 72,
       "id_tanque": 35,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 73,
       "id_tanque": 35,
       "operador": "CLH",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 75,
       "id_tanque": 35,
       "operador": "CLH",
-      "producto": "Bioetanol"
+      "producto": "Bioetanol",
+      "producto_buscador": "Bioetanol"
     },
     {
       "id_tanque_instalacion": 76,
       "id_tanque": 35,
       "operador": "CLH",
-      "producto": "Biodiésel"
+      "producto": "Biodiésel",
+      "producto_buscador": "Biodiésel"
     },
     {
       "id_tanque_instalacion": 79,
       "id_tanque": 37,
       "operador": "DECAL",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 80,
       "id_tanque": 37,
       "operador": "DECAL",
-      "producto": "Búnker"
+      "producto": "Búnker",
+      "producto_buscador": "Búnker"
     },
     {
       "id_tanque_instalacion": 82,
       "id_tanque": 37,
       "operador": "DECAL",
-      "producto": "Biodiésel"
+      "producto": "Biodiésel",
+      "producto_buscador": "Biodiésel"
     },
     {
       "id_tanque_instalacion": 83,
       "id_tanque": 38,
       "operador": "RELISA",
-      "producto": "Biodiésel"
+      "producto": "Biodiésel",
+      "producto_buscador": "Biodiésel"
     },
     {
       "id_tanque_instalacion": 86,
       "id_tanque": 39,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 89,
       "id_tanque": 41,
       "operador": "QUIMS",
-      "producto": "Gasolinas de aviación"
+      "producto": "Gasolinas de aviación",
+      "producto_buscador": "Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 90,
       "id_tanque": 42,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 91,
       "id_tanque": 42,
       "operador": "CLH",
-      "producto": "Fuelóleos"
+      "producto": "Fuelóleos",
+      "producto_buscador": "Fuelóleos"
     },
     {
       "id_tanque_instalacion": 93,
       "id_tanque": 43,
       "operador": "EUROE",
-      "producto": "Gasóleos, Biodiésel y HVO"
+      "producto": "Gasóleos, Biodiésel y HVO",
+      "producto_buscador": "Gasóleos, Biodiésel y HVO"
     },
     {
       "id_tanque_instalacion": 96,
       "id_tanque": 45,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 99,
       "id_tanque": 47,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 100,
       "id_tanque": 47,
       "operador": "CLH",
-      "producto": "Bioetanol"
+      "producto": "Bioetanol",
+      "producto_buscador": "Bioetanol"
     },
     {
       "id_tanque_instalacion": 104,
       "id_tanque": 48,
       "operador": "TEPSA",
-      "producto": "Fuelóleos"
+      "producto": "Fuelóleos",
+      "producto_buscador": "Fuelóleos"
     },
     {
       "id_tanque_instalacion": 109,
       "id_tanque": 51,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 110,
       "id_tanque": 51,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 111,
       "id_tanque": 51,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 112,
       "id_tanque": 52,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 113,
       "id_tanque": 52,
       "operador": "CLH",
-      "producto": "Bioetanol"
+      "producto": "Bioetanol",
+      "producto_buscador": "Bioetanol"
     },
     {
       "id_tanque_instalacion": 114,
       "id_tanque": 53,
       "operador": "SLCA",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 115,
       "id_tanque": 54,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 118,
       "id_tanque": 56,
       "operador": "CLH",
-      "producto": "Gasóleos"
+      "producto": "Gasóleos",
+      "producto_buscador": "Gasóleos"
     },
     {
       "id_tanque_instalacion": 119,
       "id_tanque": 57,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 120,
       "id_tanque": 57,
       "operador": "CLH",
-      "producto": "Bioetanol"
+      "producto": "Bioetanol",
+      "producto_buscador": "Bioetanol"
     },
     {
       "id_tanque_instalacion": 123,
       "id_tanque": 59,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 124,
       "id_tanque": 59,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 125,
       "id_tanque": 60,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 126,
       "id_tanque": 60,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 127,
       "id_tanque": 60,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 128,
       "id_tanque": 61,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 129,
       "id_tanque": 61,
       "operador": "CLH",
-      "producto": "Bioetanol"
+      "producto": "Bioetanol",
+      "producto_buscador": "Bioetanol"
     },
     {
       "id_tanque_instalacion": 136,
       "id_tanque": 65,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 138,
       "id_tanque": 67,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 142,
       "id_tanque": 70,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 144,
       "id_tanque": 71,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 145,
       "id_tanque": 71,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 146,
       "id_tanque": 71,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 147,
       "id_tanque": 72,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 153,
       "id_tanque": 76,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 155,
       "id_tanque": 76,
       "operador": "CLH",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 156,
       "id_tanque": 76,
       "operador": "CLH",
-      "producto": "Bioetanol"
+      "producto": "Bioetanol",
+      "producto_buscador": "Bioetanol"
     },
     {
       "id_tanque_instalacion": 159,
       "id_tanque": 78,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 160,
       "id_tanque": 78,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 162,
       "id_tanque": 79,
       "operador": "SECICAR",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 164,
       "id_tanque": 80,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 165,
       "id_tanque": 80,
       "operador": "CLH",
-      "producto": "Biodiésel"
+      "producto": "Biodiésel",
+      "producto_buscador": "Biodiésel"
     },
     {
       "id_tanque_instalacion": 166,
       "id_tanque": 81,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 167,
       "id_tanque": 81,
       "operador": "CLH",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 168,
       "id_tanque": 82,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 169,
       "id_tanque": 82,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 170,
       "id_tanque": 82,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 172,
       "id_tanque": 84,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 173,
       "id_tanque": 84,
       "operador": "CLH",
-      "producto": "Búnker y Gasóleos marinos"
+      "producto": "Búnker y Gasóleos marinos",
+      "producto_buscador": "Búnker y Gasóleos marinos"
     },
     {
       "id_tanque_instalacion": 174,
       "id_tanque": 85,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 175,
       "id_tanque": 86,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 176,
       "id_tanque": 86,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 177,
       "id_tanque": 86,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 178,
       "id_tanque": 87,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 179,
       "id_tanque": 87,
       "operador": "CLH",
-      "producto": "Biodiésel"
+      "producto": "Biodiésel",
+      "producto_buscador": "Biodiésel"
     },
     {
       "id_tanque_instalacion": 181,
       "id_tanque": 88,
       "operador": "DECAL",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 182,
       "id_tanque": 88,
       "operador": "DECAL",
-      "producto": "Búnker"
+      "producto": "Búnker",
+      "producto_buscador": "Búnker"
     },
     {
       "id_tanque_instalacion": 183,
       "id_tanque": 88,
       "operador": "DECAL",
-      "producto": "Biodiésel"
+      "producto": "Biodiésel",
+      "producto_buscador": "Biodiésel"
     },
     {
       "id_tanque_instalacion": 184,
       "id_tanque": 89,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 185,
       "id_tanque": 89,
       "operador": "CLH",
-      "producto": "Bioetanol"
+      "producto": "Bioetanol",
+      "producto_buscador": "Bioetanol"
     },
     {
       "id_tanque_instalacion": 187,
       "id_tanque": 90,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 188,
       "id_tanque": 90,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 189,
       "id_tanque": 90,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 190,
       "id_tanque": 91,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 191,
       "id_tanque": 92,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 192,
       "id_tanque": 92,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 193,
       "id_tanque": 92,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 194,
       "id_tanque": 93,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 195,
       "id_tanque": 94,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 196,
       "id_tanque": 94,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 197,
       "id_tanque": 94,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 198,
       "id_tanque": 95,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 199,
       "id_tanque": 95,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 200,
       "id_tanque": 95,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 201,
       "id_tanque": 96,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 202,
       "id_tanque": 97,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 203,
       "id_tanque": 97,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 204,
       "id_tanque": 97,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 206,
       "id_tanque": 99,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 208,
       "id_tanque": 99,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 209,
       "id_tanque": 100,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 213,
       "id_tanque": 102,
       "operador": "CLH",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 214,
       "id_tanque": 103,
       "operador": "DISA",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 215,
       "id_tanque": 104,
       "operador": "DISA",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 216,
       "id_tanque": 105,
       "operador": "DISA",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 217,
       "id_tanque": 106,
       "operador": "CEPSAAVI",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 220,
       "id_tanque": 109,
       "operador": "PETROCAN",
-      "producto": "Gasóleos, HVO, Diesel Oil, Fuelóleos, Biofuel y Búnker"
+      "producto": "Gasóleos, HVO, Diesel Oil, Fuelóleos, Biofuel y Búnker",
+      "producto_buscador": "Gasóleos, HVO, Diesel Oil, Fuelóleos, Biofuel y Búnker"
     },
     {
       "id_tanque_instalacion": 221,
       "id_tanque": 110,
       "operador": "TERCA",
-      "producto": "Gasolinas, Gasóleos, Fuelóleos y Búnker"
+      "producto": "Gasolinas, Gasóleos, Fuelóleos y Búnker",
+      "producto_buscador": "Gasolinas, Gasóleos, Fuelóleos y Búnker"
     },
     {
       "id_tanque_instalacion": 222,
       "id_tanque": 111,
       "operador": "CEPSAAVI",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 223,
       "id_tanque": 112,
       "operador": "DISA",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 224,
       "id_tanque": 112,
       "operador": "DISA",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 225,
       "id_tanque": 113,
       "operador": "CMD",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 226,
       "id_tanque": 114,
       "operador": "DISA",
-      "producto": "Gasolinas, Gasóleos y Querosenos"
+      "producto": "Gasolinas, Gasóleos y Querosenos",
+      "producto_buscador": "Gasolinas, Gasóleos y Querosenos"
     },
     {
       "id_tanque_instalacion": 227,
       "id_tanque": 115,
       "operador": "CMD",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 228,
       "id_tanque": 116,
       "operador": "CMD",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 230,
       "id_tanque": 118,
       "operador": "DISA",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 231,
       "id_tanque": 118,
       "operador": "DISA",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 232,
       "id_tanque": 119,
       "operador": "TERCA",
-      "producto": "Gasolinas, Gasóleos, Fuelóleos y Búnker"
+      "producto": "Gasolinas, Gasóleos, Fuelóleos y Búnker",
+      "producto_buscador": "Gasolinas, Gasóleos, Fuelóleos y Búnker"
     },
     {
       "id_tanque_instalacion": 234,
       "id_tanque": 121,
       "operador": "PETROLOG",
-      "producto": "Gasóleos y Fuelóleos"
+      "producto": "Gasóleos y Fuelóleos",
+      "producto_buscador": "Gasóleos y Fuelóleos"
     },
     {
       "id_tanque_instalacion": 236,
       "id_tanque": 123,
       "operador": "PETROCAN",
-      "producto": "Gasóleos, HVO, Diesel Oil, Fuelóleos, Biofuel y Búnker"
+      "producto": "Gasóleos, HVO, Diesel Oil, Fuelóleos, Biofuel y Búnker",
+      "producto_buscador": "Gasóleos, HVO, Diesel Oil, Fuelóleos, Biofuel y Búnker"
     },
     {
       "id_tanque_instalacion": 241,
       "id_tanque": 128,
       "operador": "DUCAR",
-      "producto": "Gasóleos y Fuelóleos"
+      "producto": "Gasóleos y Fuelóleos",
+      "producto_buscador": "Gasóleos y Fuelóleos"
     },
     {
       "id_tanque_instalacion": 243,
       "id_tanque": 39,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 245,
       "id_tanque": 127,
       "operador": "ATLAS",
-      "producto": "Productos Energéticos"
+      "producto": "Productos Energéticos",
+      "producto_buscador": "Productos Energéticos"
     },
     {
       "id_tanque_instalacion": 246,
       "id_tanque": 48,
       "operador": "TEPSA",
-      "producto": "Biodiésel"
+      "producto": "Biodiésel",
+      "producto_buscador": "Biodiésel"
     },
     {
       "id_tanque_instalacion": 248,
       "id_tanque": 133,
       "operador": "MEROIL",
-      "producto": "Gasolinas, Gasóleos, Querosenos y Biodiésel"
+      "producto": "Gasolinas, Gasóleos, Querosenos y Biodiésel",
+      "producto_buscador": "Gasolinas, Gasóleos, Querosenos y Biodiésel"
     },
     {
       "id_tanque_instalacion": 251,
       "id_tanque": 136,
       "operador": "ATLAS",
-      "producto": "Productos Energéticos"
+      "producto": "Productos Energéticos",
+      "producto_buscador": "Productos Energéticos"
     },
     {
       "id_tanque_instalacion": 253,
       "id_tanque": 133,
       "operador": "MEROIL",
-      "producto": "Fuelóleos"
+      "producto": "Fuelóleos",
+      "producto_buscador": "Fuelóleos"
     },
     {
       "id_tanque_instalacion": 258,
       "id_tanque": 138,
       "operador": "TRADEBE",
-      "producto": "Gasolinas, Gasóleos, Biodiésel y HVO"
+      "producto": "Gasolinas, Gasóleos, Biodiésel y HVO",
+      "producto_buscador": "Gasolinas, Gasóleos, Biodiésel y HVO"
     },
     {
       "id_tanque_instalacion": 265,
       "id_tanque": 57,
       "operador": "CLH",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 268,
       "id_tanque": 74,
       "operador": "TLC",
-      "producto": "Gasolinas, Gasóleos y Biodiésel"
+      "producto": "Gasolinas, Gasóleos y Biodiésel",
+      "producto_buscador": "Gasolinas, Gasóleos y Biodiésel"
     },
     {
       "id_tanque_instalacion": 274,
       "id_tanque": 18,
       "operador": "ESERGUI",
-      "producto": "EN PROCESO DE ACTUALIZACIÓN 2026 - Ciérvana (Biodiésel)"
+      "producto": "EN PROCESO DE ACTUALIZACIÓN 2026 - Ciérvana (Biodiésel)",
+      "producto_buscador": "EN PROCESO DE ACTUALIZACIÓN 2026 - Ciérvana (Biodiésel)"
     },
     {
       "id_tanque_instalacion": 276,
       "id_tanque": 151,
       "operador": "DBA BILBAO PORT",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 277,
       "id_tanque": 34,
       "operador": "TEPSA",
-      "producto": "Bioetanol"
+      "producto": "Bioetanol",
+      "producto_buscador": "Bioetanol"
     },
     {
       "id_tanque_instalacion": 278,
       "id_tanque": 48,
       "operador": "TEPSA",
-      "producto": "Búnker y Gasóleos marinos"
+      "producto": "Búnker y Gasóleos marinos",
+      "producto_buscador": "Búnker y Gasóleos marinos"
     },
     {
       "id_tanque_instalacion": 279,
       "id_tanque": 17,
       "operador": "TEPSA",
-      "producto": "Fuelóleos"
+      "producto": "Fuelóleos",
+      "producto_buscador": "Fuelóleos"
     },
     {
       "id_tanque_instalacion": 280,
       "id_tanque": 28,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 282,
       "id_tanque": 138,
       "operador": "TRADEBE",
-      "producto": "Fuelóleos"
+      "producto": "Fuelóleos",
+      "producto_buscador": "Fuelóleos"
     },
     {
       "id_tanque_instalacion": 283,
       "id_tanque": 35,
       "operador": "CLH",
-      "producto": "Búnker"
+      "producto": "Búnker",
+      "producto_buscador": "Búnker"
     },
     {
       "id_tanque_instalacion": 284,
       "id_tanque": 42,
       "operador": "CLH",
-      "producto": "Búnker"
+      "producto": "Búnker",
+      "producto_buscador": "Búnker"
     },
     {
       "id_tanque_instalacion": 285,
       "id_tanque": 73,
       "operador": "SLCA",
-      "producto": "Gasolinas de aviación"
+      "producto": "Gasolinas de aviación",
+      "producto_buscador": "Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 286,
       "id_tanque": 73,
       "operador": "SLCA",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 287,
       "id_tanque": 66,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 288,
       "id_tanque": 66,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 290,
       "id_tanque": 3,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 291,
       "id_tanque": 5,
       "operador": "SLCA",
-      "producto": "Gasolinas de aviación"
+      "producto": "Gasolinas de aviación",
+      "producto_buscador": "Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 292,
       "id_tanque": 5,
       "operador": "SLCA",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 294,
       "id_tanque": 2,
       "operador": "CLH",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 295,
       "id_tanque": 110,
       "operador": "TERCA",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 296,
       "id_tanque": 119,
       "operador": "TERCA",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 298,
       "id_tanque": 36,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 299,
       "id_tanque": 36,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 300,
       "id_tanque": 36,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 301,
       "id_tanque": 40,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 302,
       "id_tanque": 40,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 303,
       "id_tanque": 40,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 304,
       "id_tanque": 21,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 305,
       "id_tanque": 21,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 306,
       "id_tanque": 21,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 307,
       "id_tanque": 69,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 308,
       "id_tanque": 69,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 309,
       "id_tanque": 69,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 310,
       "id_tanque": 64,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 311,
       "id_tanque": 64,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 312,
       "id_tanque": 83,
       "operador": "CLHAV",
-      "producto": "Servicios hasta la instalación aeroportuaria"
+      "producto": "Servicios hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 313,
       "id_tanque": 83,
       "operador": "CLHAV",
-      "producto": "Servicios en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 314,
       "id_tanque": 83,
       "operador": "CLHAV",
-      "producto": "Servicios en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 315,
       "id_tanque": 125,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 316,
       "id_tanque": 107,
       "operador": "CLHAV",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 317,
       "id_tanque": 78,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
     },
     {
       "id_tanque_instalacion": 318,
       "id_tanque": 75,
       "operador": "TANCAR",
-      "producto": "Gasóleos y Biodiésel"
+      "producto": "Gasóleos y Biodiésel",
+      "producto_buscador": "Gasóleos y Biodiésel"
     },
     {
       "id_tanque_instalacion": 319,
       "id_tanque": 41,
       "operador": "QUIMS",
-      "producto": "Bioetanol"
+      "producto": "Bioetanol",
+      "producto_buscador": "Bioetanol"
     },
     {
       "id_tanque_instalacion": 320,
       "id_tanque": 41,
       "operador": "QUIMS",
-      "producto": "Biodiésel"
+      "producto": "Biodiésel",
+      "producto_buscador": "Biodiésel"
     },
     {
       "id_tanque_instalacion": 321,
       "id_tanque": 125,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria",
+      "producto_buscador": "Servicios logísticos hasta la instalación aeroportuaria"
     },
     {
       "id_tanque_instalacion": 322,
       "id_tanque": 145,
       "operador": "ODT",
-      "producto": "Gasóleos y Biodiésel"
+      "producto": "Gasóleos y Biodiésel",
+      "producto_buscador": "Gasóleos y Biodiésel"
     },
     {
       "id_tanque_instalacion": 323,
       "id_tanque": 129,
       "operador": "EVOS",
-      "producto": "Fuelóleos y Gasóleos marinos"
+      "producto": "Fuelóleos y Gasóleos marinos",
+      "producto_buscador": "Fuelóleos y Gasóleos marinos"
     },
     {
       "id_tanque_instalacion": 329,
       "id_tanque": 152,
       "operador": "VISTA",
-      "producto": "Gasóleos y Biodiésel"
+      "producto": "Gasóleos y Biodiésel",
+      "producto_buscador": "Gasóleos y Biodiésel"
     },
     {
       "id_tanque_instalacion": 331,
       "id_tanque": 150,
       "operador": "FORES",
-      "producto": "Gasóleos y Biodiésel"
+      "producto": "Gasóleos y Biodiésel",
+      "producto_buscador": "Gasóleos y Biodiésel"
     },
     {
       "id_tanque_instalacion": 332,
       "id_tanque": 112,
       "operador": "DISA",
-      "producto": "Gasóleo Marino"
+      "producto": "Gasóleo Marino",
+      "producto_buscador": "Gasóleo Marino"
     },
     {
       "id_tanque_instalacion": 335,
       "id_tanque": 88,
       "operador": "DECAL",
-      "producto": "Bioetanol"
+      "producto": "Bioetanol",
+      "producto_buscador": "Bioetanol"
     },
     {
       "id_tanque_instalacion": 338,
       "id_tanque": 151,
       "operador": "DBA BILBAO PORT",
-      "producto": "Biodiesel"
+      "producto": "Biodiesel",
+      "producto_buscador": "Biodiesel"
     },
     {
       "id_tanque_instalacion": 339,
       "id_tanque": 79,
       "operador": "SECICAR",
-      "producto": "Biodiesel"
+      "producto": "Biodiesel",
+      "producto_buscador": "Biodiesel"
     },
     {
       "id_tanque_instalacion": 340,
       "id_tanque": 157,
       "operador": "SLCA",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 341,
       "id_tanque": 157,
       "operador": "SLCA",
-      "producto": "Gasolinas Aviación"
+      "producto": "Gasolinas Aviación",
+      "producto_buscador": "Gasolinas Aviación"
     },
     {
       "id_tanque_instalacion": 342,
       "id_tanque": 102,
       "operador": "CLH",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 344,
       "id_tanque": 66,
       "operador": "CLHAV",
-      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación",
+      "producto_buscador": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 347,
       "id_tanque": 17,
       "operador": "TEPSA",
-      "producto": "Bioetanol"
+      "producto": "Bioetanol",
+      "producto_buscador": "Bioetanol"
     },
     {
       "id_tanque_instalacion": 351,
       "id_tanque": 35,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - Gasóleos"
+      "producto": "Servicios diferenciados de almacenamiento - Gasóleos",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - Gasóleos"
     },
     {
       "id_tanque_instalacion": 352,
       "id_tanque": 87,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - Gasolinas, Gasóleos y Querosenos"
+      "producto": "Servicios diferenciados de almacenamiento - Gasolinas, Gasóleos y Querosenos",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - Gasolinas, Gasóleos y Querosenos"
     },
     {
       "id_tanque_instalacion": 353,
       "id_tanque": 19,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - Gasolinas y Gasóleos"
+      "producto": "Servicios diferenciados de almacenamiento - Gasolinas y Gasóleos",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 354,
       "id_tanque": 42,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - Gasóleos"
+      "producto": "Servicios diferenciados de almacenamiento - Gasóleos",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - Gasóleos"
     },
     {
       "id_tanque_instalacion": 355,
       "id_tanque": 76,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - Gasolinas"
+      "producto": "Servicios diferenciados de almacenamiento - Gasolinas",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - Gasolinas"
     },
     {
       "id_tanque_instalacion": 356,
       "id_tanque": 19,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - HVO"
+      "producto": "Servicios diferenciados de almacenamiento - HVO",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - HVO"
     },
     {
       "id_tanque_instalacion": 357,
       "id_tanque": 35,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - Éster Metílico"
+      "producto": "Servicios diferenciados de almacenamiento - Éster Metílico",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - Éster Metílico"
     },
     {
       "id_tanque_instalacion": 358,
       "id_tanque": 19,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - Éster Metílico"
+      "producto": "Servicios diferenciados de almacenamiento - Éster Metílico",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - Éster Metílico"
     },
     {
       "id_tanque_instalacion": 359,
       "id_tanque": 87,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - Éster Metílico"
+      "producto": "Servicios diferenciados de almacenamiento - Éster Metílico",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - Éster Metílico"
     },
     {
       "id_tanque_instalacion": 360,
       "id_tanque": 35,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - HVO"
+      "producto": "Servicios diferenciados de almacenamiento - HVO",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - HVO"
     },
     {
       "id_tanque_instalacion": 361,
       "id_tanque": 76,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - HVO"
+      "producto": "Servicios diferenciados de almacenamiento - HVO",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - HVO"
     },
     {
       "id_tanque_instalacion": 362,
       "id_tanque": 87,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - HVO"
+      "producto": "Servicios diferenciados de almacenamiento - HVO",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - HVO"
     },
     {
       "id_tanque_instalacion": 363,
       "id_tanque": 57,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - HVO"
+      "producto": "Servicios diferenciados de almacenamiento - HVO",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - HVO"
     },
     {
       "id_tanque_instalacion": 365,
       "id_tanque": 27,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - HVO"
+      "producto": "Servicios diferenciados de almacenamiento - HVO",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - HVO"
     },
     {
       "id_tanque_instalacion": 366,
       "id_tanque": 35,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - Búnker"
+      "producto": "Servicios diferenciados de almacenamiento - Búnker",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - Búnker"
     },
     {
       "id_tanque_instalacion": 367,
       "id_tanque": 84,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - Búnker"
+      "producto": "Servicios diferenciados de almacenamiento - Búnker",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - Búnker"
     },
     {
       "id_tanque_instalacion": 372,
       "id_tanque": 61,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - HVO"
+      "producto": "Servicios diferenciados de almacenamiento - HVO",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - HVO"
     },
     {
       "id_tanque_instalacion": 373,
       "id_tanque": 159,
       "operador": "SKYTANKING",
-      "producto": "Querosenos y Gasolinas de aviación"
+      "producto": "Querosenos y Gasolinas de aviación",
+      "producto_buscador": "Querosenos y Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 374,
       "id_tanque": 88,
       "operador": "DECAL",
-      "producto": "Fuelóleos"
+      "producto": "Fuelóleos",
+      "producto_buscador": "Fuelóleos"
     },
     {
       "id_tanque_instalacion": 375,
       "id_tanque": 160,
       "operador": "SLCA",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 376,
       "id_tanque": 160,
       "operador": "SLCA",
-      "producto": "Gasolinas de aviación"
+      "producto": "Gasolinas de aviación",
+      "producto_buscador": "Gasolinas de aviación"
     },
     {
       "id_tanque_instalacion": 377,
       "id_tanque": 47,
       "operador": "CLH",
-      "producto": "Querosenos"
+      "producto": "Querosenos",
+      "producto_buscador": "Querosenos"
     },
     {
       "id_tanque_instalacion": 379,
       "id_tanque": 118,
       "operador": "DISA",
-      "producto": "HVO"
+      "producto": "HVO",
+      "producto_buscador": "HVO"
     },
     {
       "id_tanque_instalacion": 381,
       "id_tanque": 1,
       "operador": "FOATL",
-      "producto": "HVO"
+      "producto": "HVO",
+      "producto_buscador": "HVO"
     },
     {
       "id_tanque_instalacion": 382,
       "id_tanque": 1,
       "operador": "FOATL",
-      "producto": "Fuelóleos"
+      "producto": "Fuelóleos",
+      "producto_buscador": "Fuelóleos"
     },
     {
       "id_tanque_instalacion": 383,
       "id_tanque": 37,
       "operador": "DECAL",
-      "producto": "Bioetanol"
+      "producto": "Bioetanol",
+      "producto_buscador": "Bioetanol"
     },
     {
       "id_tanque_instalacion": 384,
       "id_tanque": 161,
       "operador": "HCG",
-      "producto": "Gasóleos"
+      "producto": "Gasóleos",
+      "producto_buscador": "Gasóleos"
     },
     {
       "id_tanque_instalacion": 385,
       "id_tanque": 158,
       "operador": "PETRONOVA",
-      "producto": "Gasolinas y Gasóleos"
+      "producto": "Gasolinas y Gasóleos",
+      "producto_buscador": "Gasolinas y Gasóleos"
     },
     {
       "id_tanque_instalacion": 387,
       "id_tanque": 35,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - Querosenos"
+      "producto": "Servicios diferenciados de almacenamiento - Querosenos",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - Querosenos"
     },
     {
       "id_tanque_instalacion": 389,
       "id_tanque": 57,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - Gasóleos"
+      "producto": "Servicios diferenciados de almacenamiento - Gasóleos",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - Gasóleos"
     },
     {
       "id_tanque_instalacion": 390,
       "id_tanque": 76,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - Querosenos"
+      "producto": "Servicios diferenciados de almacenamiento - Querosenos",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - Querosenos"
     },
     {
       "id_tanque_instalacion": 391,
       "id_tanque": 52,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - Gasolina renovable"
+      "producto": "Servicios diferenciados de almacenamiento - Gasolina renovable",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - Gasolina renovable"
     },
     {
       "id_tanque_instalacion": 392,
       "id_tanque": 35,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - Gasolina renovable"
+      "producto": "Servicios diferenciados de almacenamiento - Gasolina renovable",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - Gasolina renovable"
     },
     {
       "id_tanque_instalacion": 393,
       "id_tanque": 61,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - Gasolina renovable"
+      "producto": "Servicios diferenciados de almacenamiento - Gasolina renovable",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - Gasolina renovable"
     },
     {
       "id_tanque_instalacion": 394,
       "id_tanque": 57,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - Gasolina renovable"
+      "producto": "Servicios diferenciados de almacenamiento - Gasolina renovable",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - Gasolina renovable"
     },
     {
       "id_tanque_instalacion": 395,
       "id_tanque": 19,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - Gasolina renovable"
+      "producto": "Servicios diferenciados de almacenamiento - Gasolina renovable",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - Gasolina renovable"
     },
     {
       "id_tanque_instalacion": 396,
       "id_tanque": 100,
       "operador": "CLH",
-      "producto": "Servicios diferenciados de almacenamiento - HVO"
+      "producto": "Servicios diferenciados de almacenamiento - HVO",
+      "producto_buscador": "Servicios diferenciados de almacenamiento - HVO"
     }
   ],
   "control_cruzado": {

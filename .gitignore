@@ -29,3 +29,6 @@ verificacion/
 datos/
 !.env.example
 exportacion/
+
+# Configuración local del asistente de programación (no se versiona)
+.claude/

@@ -1,7 +1,7 @@
 """Exportación de la base para publicarla como Release de datos.
 
 Genera en una carpeta: la base SQLite y su sha256, un CSV y un Parquet por
-tabla con el estado vigente, un Parquet por tabla con el historial completo
+tabla con el estado vigente, cuatro tablas planas listas para Excel, un Parquet por tabla con el historial completo
 (todas las versiones de cada fila) y un diccionario de datos. Así quien solo
 quiere los datos no necesita instalar nada del proyecto: abre el CSV en una
 hoja de cálculo o el Parquet en pandas.
@@ -10,7 +10,6 @@ hoja de cálculo o el Parquet en pandas.
 from __future__ import annotations
 
 import csv
-import gzip
 import hashlib
 import re
 import shutil
@@ -18,7 +17,9 @@ import sqlite3
 import zipfile
 from pathlib import Path
 
+from . import consultas
 from .bd import TABLAS
+from .config import BASE_PORTAL
 
 # Tablas de registro: se exportan enteras (no tienen «vigentes»).
 REGISTRO = ("ejecuciones", "incidencias")
@@ -148,6 +149,211 @@ COMUNES = {
 }
 
 
+PLANAS = {
+    "precios_completos": "Todos los precios vigentes, los de las páginas (fuente = web) y los de "
+    "las tarifas en PDF (fuente = pdf), una fila por precio y detalle.",
+    "condiciones_completas": "Mermas, plazos y demás condiciones vigentes, de las páginas y de "
+    "las notas de los PDF.",
+    "origen_destino_completo": "Precio de llevar producto de cada origen a cada instalación de "
+    "destino, por modalidad (páginas origen-destino del portal).",
+    "capacidades_completas": "Capacidad de almacenamiento por compañía, instalación y producto.",
+}
+COLUMNAS_PLANAS = {
+    "fuente": "web (página del portal) o pdf (tarifa en PDF enlazada desde la página).",
+    "operador": "Nombre del operador (titular de la página).",
+    "operador_codigo": "Código estable del operador en el buscador de la CNMC.",
+    "instalacion": "Nombre de la instalación.",
+    "tipo_instalacion": "almacenamiento o aeroportuaria.",
+    "comunidad": "Comunidad autónoma.",
+    "productos": "Productos del detalle, tal como los publica la página.",
+    "seccion": "principal u otros_servicios.",
+    "servicio": "Nombre del servicio o de la condición tal como aparece en la página.",
+    "detalle_servicio": "Subapartado; en los precios de PDF, el concepto de la tarifa.",
+    "categoria": "Categoría normalizada del servicio: compare solo dentro de la misma.",
+    "documento_pdf": "Clave del PDF del que sale el dato o al que remite la página (varias, separadas por |).",
+    "pagina_pdf": "Página del PDF donde está la cifra.",
+    "url_cnmc": "Página de la CNMC de la que sale el dato.",
+    "url_pdf": "Descarga del PDF en el portal de la CNMC.",
+    "foto": "Fecha de la descarga del portal a la que corresponde el fichero.",
+    "destino": "Instalación de destino.",
+    "id_tanque_instalacion": "Identificador del detalle en el portal (idTanqueInstalacion).",
+    "ambito": "almacenamiento o aeroportuaria (tabla del PDF de capacidades).",
+    "producto": "Producto; TOTAL es la suma de la instalación.",
+}
+
+
+def _url_detalle(id_ti: int) -> str:
+    return f"{BASE_PORTAL}/detalle.htm?idTanqueInstalacion={id_ti}"
+
+
+def _url_pdf(claves: str | None) -> str | None:
+    """Enlace de descarga cuando el dato remite a un único PDF de tarifas."""
+    if not claves or "," in claves:
+        return None
+    if claves == "capacidades":
+        return f"{BASE_PORTAL}/downloadfile.htm?directorioPadre=carpdfpub"
+    return f"{BASE_PORTAL}/downloadfile.htm?directorioPadre=pdfpub&directorioHijo={claves}"
+
+
+def _contexto(d: dict) -> dict:
+    return {
+        "operador": d["operador_nombre"] or d["titular"],
+        "operador_codigo": d["operador"],
+        "instalacion": d["instalacion"],
+        "tipo_instalacion": d["tipo"],
+        "comunidad": d["comunidad_nombre"] or d["comunidad"],
+        "productos": d["productos_texto"],
+    }
+
+
+def _ids(d: dict, foto: str) -> dict:
+    return {
+        "id_tanque": d["id_tanque"],
+        "id_tanque_instalacion": d["id_tanque_instalacion"],
+        "url_cnmc": _url_detalle(d["id_tanque_instalacion"]),
+        "foto": foto,
+    }
+
+
+def tablas_planas(conn: sqlite3.Connection, foto: str) -> dict[str, list[dict]]:
+    """Tablas listas para usar: lo vigente con los nombres ya cruzados, una fila por dato.
+
+    Usan las mismas consultas que el MCP y la API, así que dicen lo mismo que ellos.
+    """
+    detalles = {d["id_tanque_instalacion"]: d for d in consultas.detalles_vigentes(conn)}
+    titulares = {
+        f["id_tanque_instalacion"]: f["titular"]
+        for f in consultas.consultar(
+            conn, "SELECT id_tanque_instalacion, titular FROM detalles_vigentes"
+        )
+    }
+    for i, d in detalles.items():
+        d["titular"] = titulares.get(i)
+
+    precios = []
+    for p in consultas.precios_con_contexto(conn, list(detalles.values())):
+        d = detalles[p["id_tanque_instalacion"]]
+        precios.append(
+            {"fuente": "web" if p["fuente"] == "html" else "pdf"}
+            | _contexto(d)
+            | {
+                "seccion": p["seccion"],
+                "servicio": p["etiqueta"],
+                "detalle_servicio": p["subetiqueta"],
+                "categoria": p["categoria_servicio"],
+                **{i: p[i] for i in consultas.INDICADORES},
+                "tipo_precio": p["tipo_precio"],
+                "tipo_valor": p["tipo_valor"],
+                "valor": p["valor"],
+                "unidad": p["unidad"],
+                "fecha_precio": p["fecha_precio"],
+                "anio_tabla": p["anio_tabla"],
+                "observacion": p["observacion"],
+                "texto": p["texto"],
+                # «24,25» en Excel sería el número 24,25: las claves se separan con « | ».
+                "documento_pdf": (p["documentos"] or "").replace(",", " | ") or None,
+                "pagina_pdf": p["pagina_pdf"],
+                "url_pdf": _url_pdf(p["documentos"]),
+            }
+            | _ids(d, foto)
+        )
+
+    condiciones = []
+    for c in consultas.consultar(conn, "SELECT * FROM condiciones_vigentes ORDER BY id"):
+        if (d := detalles.get(c["id_tanque_instalacion"])) is None:
+            continue
+        condiciones.append(
+            {"fuente": "web"}
+            | _contexto(d)
+            | {
+                "servicio": c["etiqueta"],
+                "detalle_servicio": c["subetiqueta"],
+                "tipo_valor": c["tipo_valor"],
+                "valor": c["valor"],
+                "unidad": c["unidad"],
+                "texto": c["texto"],
+                "documento_pdf": None,
+                "pagina_pdf": None,
+                "url_pdf": None,
+            }
+            | _ids(d, foto)
+        )
+    # Las condiciones de un PDF valen para todos los detalles que remiten a él.
+    for c in consultas.consultar(
+        conn,
+        """SELECT DISTINCT e.id_tanque_instalacion, c.documento, c.texto, c.unidad, c.valor,
+                  c.pagina, c.id
+           FROM condiciones_pdf_vigentes c
+           JOIN (SELECT DISTINCT id_tanque_instalacion, documento
+                 FROM enlaces_documento_vigentes) e ON e.documento = c.documento
+           ORDER BY e.id_tanque_instalacion, c.id""",
+    ):
+        if (d := detalles.get(c["id_tanque_instalacion"])) is None:
+            continue
+        condiciones.append(
+            {"fuente": "pdf"}
+            | _contexto(d)
+            | {
+                "servicio": "Condición del PDF",
+                "detalle_servicio": None,
+                "tipo_valor": "unico",
+                "valor": c["valor"],
+                "unidad": c["unidad"],
+                "texto": c["texto"],
+                "documento_pdf": c["documento"],
+                "pagina_pdf": c["pagina"],
+                "url_pdf": _url_pdf(c["documento"]),
+            }
+            | _ids(d, foto)
+        )
+
+    rutas = []
+    for r in consultas.consultar(conn, "SELECT * FROM precios_origen_destino_vigentes ORDER BY id"):
+        if (d := detalles.get(r["id_tanque_instalacion"])) is None:
+            continue
+        contexto = _contexto(d)
+        rutas.append(
+            {
+                "operador": contexto["operador"],
+                "operador_codigo": contexto["operador_codigo"],
+                "origen": r["origen"],
+                "destino": contexto["instalacion"],
+                "tipo_instalacion": contexto["tipo_instalacion"],
+                "comunidad": contexto["comunidad"],
+                "productos": contexto["productos"],
+                "modalidad": r["modalidad"],
+                "estado": r["estado"],
+                "precio": r["precio"],
+                "unidad": r["unidad"],
+                "anio_tabla": r["anio_tabla"],
+                "id_tanque": d["id_tanque"],
+                "id_tanque_instalacion": d["id_tanque_instalacion"],
+                "url_cnmc": f"{BASE_PORTAL}/precio-producto.htm"
+                f"?idTanqueInstalacion={d['id_tanque_instalacion']}",
+                "foto": foto,
+            }
+        )
+
+    capacidades = [
+        f | {"url_cnmc": _url_pdf("capacidades"), "foto": foto}
+        for f in consultas.consultar(
+            conn,
+            """SELECT c.compania, c.instalacion, c.ambito, i.tipo AS tipo_instalacion,
+                      COALESCE(i.comunidad_nombre, i.comunidad) AS comunidad, c.producto,
+                      c.capacidad_miles_m3, c.anio, c.id_tanque
+               FROM capacidades_vigentes c
+               LEFT JOIN instalaciones_vigentes i ON i.id_tanque = c.id_tanque
+               ORDER BY c.id""",
+        )
+    ]
+    return {
+        "precios_completos": precios,
+        "condiciones_completas": condiciones,
+        "origen_destino_completo": rutas,
+        "capacidades_completas": capacidades,
+    }
+
+
 def _comentarios_ddl(tabla: str) -> dict[str, str]:
     """Comentarios «-- …» escritos junto a cada columna en el esquema (bd.py)."""
     notas: dict[str, str] = {}
@@ -165,11 +371,38 @@ def diccionario(conn: sqlite3.Connection, foto: str) -> str:
         f"# Diccionario de datos · foto {foto}\n",
         "Logística de productos petrolíferos publicada por la CNMC. Proyecto no oficial, no "
         "afiliado a la CNMC ni a ningún operador; datos públicos publicados por la CNMC.\n",
+        "## Empiece por aquí: las tablas completas\n",
+        "Cuatro tablas listas para abrir en Excel, con los nombres ya cruzados (operador, "
+        "instalación, tipo, comunidad, producto…), una fila por dato y un enlace a la página de "
+        "la CNMC de la que sale. Contienen lo **vigente** en la foto. Están en `csv.zip` y, con "
+        "el mismo contenido, en `parquet.zip`.\n",
+        "| Fichero | Contenido |\n|---|---|\n"
+        + "\n".join(f"| `{n}.csv` | {d} |" for n, d in PLANAS.items())
+        + "\n",
+        "- En `precios_completos`, filtre siempre por `categoria` y mire la `unidad` antes de "
+        "comparar: cada operador define sus servicios a su manera. Los indicadores `incluye_*` "
+        "dicen si el servicio principal incluye transporte, almacenamiento, expedición o puesta "
+        "a bordo.\n"
+        "- Un precio de PDF que vale para varios detalles aparece una vez por detalle.\n"
+        "- `valor` vacío con `tipo_precio` = regla, texto o pdf: el precio no es una cifra; "
+        "lea `texto` o el PDF de `url_pdf`.\n"
+        "- En `origen_destino_completo`, `estado` = no_ofrecida significa que el portal muestra "
+        "0,00: la ruta no se ofrece, no es gratis.\n"
+        "- En `capacidades_completas`, `producto` = TOTAL es la suma de la instalación: no la "
+        "sume con los productos.\n",
+        "Columnas propias de estas tablas (el resto se explican más abajo, en la tabla "
+        "normalizada correspondiente):\n",
+        "| Columna | Significado |\n|---|---|\n"
+        + "\n".join(f"| `{c}` | {d} |" for c, d in COLUMNAS_PLANAS.items())
+        + "\n",
         "## Cómo leer los ficheros\n",
         "- `cnmc_logistica.db`: base SQLite con todo el historial. Cada tabla tiene una vista "
         "`<tabla>_vigentes` con lo visto en la última foto.\n"
-        "- `csv/` y `parquet/`: un fichero por tabla con las filas **vigentes** (las de registro, "
-        "`ejecuciones` e `incidencias`, van enteras). CSV en UTF-8, separador `;`, comprimido con gzip.\n"
+        "- `csv/` y `parquet/`: las cuatro tablas completas y un fichero por tabla normalizada "
+        "con las filas **vigentes** (las de registro, `ejecuciones` e `incidencias`, van enteras).\n"
+        "- Los CSV están pensados para Excel en español: UTF-8 con BOM, separador `;` y coma "
+        "decimal. Se abren con doble clic. Para leerlos con pandas: "
+        "`pd.read_csv(f, sep=';', decimal=',')`; o use los Parquet, que llevan tipos.\n"
         "- `historial/` (en `historial_parquet.zip`): un Parquet por tabla con **todas las "
         "versiones de cada fila**, vigentes o no. Lleva las mismas columnas más `vigente` "
         "(1 si la fila sigue en la última foto, 0 si es una versión anterior o algo que "
@@ -233,12 +466,7 @@ def exportar(ruta_bd: Path, salida: Path, con_parquet: bool = True) -> dict:
         columnas = [c[0] for c in cursor.description]
         filas = cursor.fetchall()
         filas_por_tabla[tabla] = len(filas)
-        with gzip.open(
-            salida / "csv" / f"{tabla}.csv.gz", "wt", encoding="utf-8", newline=""
-        ) as fh:
-            escritor = csv.writer(fh, delimiter=";")
-            escritor.writerow(columnas)
-            escritor.writerows(filas)
+        _escribir_csv(salida / "csv" / f"{tabla}.csv", columnas, filas)
         if con_parquet:
             _escribir_parquet(conn, tabla, columnas, filas, salida / "parquet")
             if tabla not in REGISTRO:
@@ -247,29 +475,58 @@ def exportar(ruta_bd: Path, salida: Path, con_parquet: bool = True) -> dict:
                 )
                 columnas_h = [c[0] for c in todas.description]
                 _escribir_parquet(conn, tabla, columnas_h, todas.fetchall(), salida / "historial")
+    for nombre, registros in tablas_planas(conn, foto).items():
+        columnas = list(registros[0])
+        filas = [tuple(r[c] for c in columnas) for r in registros]
+        filas_por_tabla[nombre] = len(filas)
+        _escribir_csv(salida / "csv" / f"{nombre}.csv", columnas, filas)
+        if con_parquet:
+            _escribir_parquet(conn, None, columnas, filas, salida / "parquet", nombre)
     conn.close()
     # Un zip por formato, con un fichero por tabla dentro: cómodo de descargar de una Release.
     formatos = {"csv": "csv.zip"}
     if con_parquet:
         formatos |= {"parquet": "parquet.zip", "historial": "historial_parquet.zip"}
     for carpeta, nombre in formatos.items():
-        with zipfile.ZipFile(salida / nombre, "w", zipfile.ZIP_STORED) as z:
+        with zipfile.ZipFile(salida / nombre, "w", zipfile.ZIP_DEFLATED) as z:
             for f in sorted((salida / carpeta).iterdir()):
                 z.write(f, f"{carpeta}/{f.name}")
     return {"foto": foto, "sha256": resumen, "tablas": filas_por_tabla}
 
 
-def _escribir_parquet(conn, tabla: str, columnas: list[str], filas: list, carpeta: Path) -> None:
+def _escribir_csv(ruta: Path, columnas: list[str], filas: list) -> None:
+    """CSV para Excel en español: UTF-8 con BOM, separador «;» y coma decimal."""
+    with ruta.open("w", encoding="utf-8-sig", newline="") as fh:
+        escritor = csv.writer(fh, delimiter=";")
+        escritor.writerow(columnas)
+        for fila in filas:
+            escritor.writerow(
+                [repr(v).replace(".", ",") if isinstance(v, float) else v for v in fila]
+            )
+
+
+def _escribir_parquet(
+    conn, tabla: str | None, columnas: list[str], filas: list, carpeta: Path,
+    nombre: str | None = None,
+) -> None:  # fmt: skip
     import pyarrow as pa
     import pyarrow.parquet as pq
 
     carpeta.mkdir(exist_ok=True)
-    tipos = {f["name"]: f["type"] for f in conn.execute(f"PRAGMA table_info({tabla})")} | {
-        "vigente": "INTEGER"
-    }
+    datos = {c: [f[i] for f in filas] for i, c in enumerate(columnas)}
+    if tabla is None:  # tabla plana: el tipo sale de los valores
+        tipos = {}
+        for c, valores in datos.items():
+            clases = {type(v) for v in valores if v is not None}
+            tipos[c] = "REAL" if float in clases else "INTEGER" if clases == {int} else "TEXT"
+    else:
+        tipos = {f["name"]: f["type"] for f in conn.execute(f"PRAGMA table_info({tabla})")} | {
+            "vigente": "INTEGER"
+        }
     a_arrow = {"INTEGER": pa.int64(), "REAL": pa.float64()}
     esquema = pa.schema([(c, a_arrow.get(tipos.get(c, "TEXT"), pa.string())) for c in columnas])
-    datos = {c: [f[i] for f in filas] for i, c in enumerate(columnas)}
     pq.write_table(
-        pa.table(datos, schema=esquema), carpeta / f"{tabla}.parquet", compression="zstd"
+        pa.table(datos, schema=esquema),
+        carpeta / f"{nombre or tabla}.parquet",
+        compression="zstd",
     )

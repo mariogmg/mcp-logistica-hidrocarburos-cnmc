@@ -1,7 +1,6 @@
 """Exportación para la Release de datos: base, sha256, CSV, Parquet y diccionario."""
 
 import csv
-import gzip
 import hashlib
 import sqlite3
 import zipfile
@@ -12,7 +11,7 @@ from ayuda import RAIZ, crear_foto
 from cnmc_logistica.bd import TABLAS, conectar
 from cnmc_logistica.carga import cargar_foto, leer_config
 from cnmc_logistica.config import Rutas
-from cnmc_logistica.exportar import exportar
+from cnmc_logistica.exportar import PLANAS, exportar
 
 CFG = leer_config(Rutas(RAIZ))
 
@@ -51,14 +50,16 @@ def test_un_csv_y_un_parquet_por_tabla_con_las_filas_vigentes(exportacion):
     import pyarrow.parquet as pq
 
     resumen, salida, original = exportacion
-    esperadas = {*TABLAS, "ejecuciones", "incidencias"}
-    assert {p.name.removesuffix(".csv.gz") for p in (salida / "csv").iterdir()} == esperadas
+    esperadas = {*TABLAS, "ejecuciones", "incidencias", *PLANAS}
+    assert {p.name.removesuffix(".csv") for p in (salida / "csv").iterdir()} == esperadas
     assert {p.stem for p in (salida / "parquet").iterdir()} == esperadas
     conn = sqlite3.connect(original)
     vigentes = conn.execute("SELECT COUNT(*) FROM precios_vigentes").fetchone()[0]
     total = conn.execute("SELECT COUNT(*) FROM precios").fetchone()[0]
     assert total == vigentes + 1  # el precio antiguo no se exporta: el historial está en la base
-    with gzip.open(salida / "csv/precios.csv.gz", "rt", encoding="utf-8", newline="") as fh:
+    assert (salida / "csv/precios.csv").read_bytes().startswith(b"\xef\xbb\xbf")  # BOM: Excel
+    assert ";2,4577;" in (salida / "csv/precios.csv").read_text(encoding="utf-8")  # coma decimal
+    with (salida / "csv/precios.csv").open(encoding="utf-8-sig", newline="") as fh:
         filas = list(csv.DictReader(fh, delimiter=";"))
     assert len(filas) == vigentes == resumen["tablas"]["precios"]
     assert {"valor", "unidad", "categoria_servicio", "primera_vez_visto"} <= set(filas[0])
@@ -99,16 +100,45 @@ def test_historial_en_parquet_con_todas_las_versiones(exportacion):
     assert "historial_parquet.zip" in (salida / "DICCIONARIO.md").read_text(encoding="utf-8")
 
 
+def test_tablas_completas_con_nombres_cruzados_y_enlace(exportacion):
+    import pyarrow.parquet as pq
+
+    resumen, salida, original = exportacion
+    with (salida / "csv/precios_completos.csv").open(encoding="utf-8-sig", newline="") as fh:
+        precios = list(csv.DictReader(fh, delimiter=";"))
+    conn = sqlite3.connect(original)
+    web = conn.execute("SELECT COUNT(*) FROM precios_vigentes").fetchone()[0]
+    assert len(precios) == resumen["tablas"]["precios_completos"]
+    assert sum(p["fuente"] == "web" for p in precios) == web
+    assert {p["fuente"] for p in precios} <= {"web", "pdf"}
+    for p in precios:
+        assert p["operador"] and p["instalacion"] and p["comunidad"] and p["categoria"]
+        assert p["tipo_instalacion"] in ("almacenamiento", "aeroportuaria")
+        assert p["url_cnmc"].endswith(
+            f"detalle.htm?idTanqueInstalacion={p['id_tanque_instalacion']}"
+        )
+    tabla = pq.read_table(salida / "parquet/precios_completos.parquet")
+    assert tabla.num_rows == len(precios)
+    assert str(tabla.schema.field("valor").type) == "double"
+    for nombre in PLANAS:
+        with (salida / f"csv/{nombre}.csv").open(encoding="utf-8-sig", newline="") as fh:
+            filas = list(csv.DictReader(fh, delimiter=";"))
+        assert filas and all(f["url_cnmc"].startswith("https://") for f in filas), nombre
+        assert pq.read_table(salida / f"parquet/{nombre}.parquet").num_rows == len(filas)
+    diccionario = (salida / "DICCIONARIO.md").read_text(encoding="utf-8")
+    assert diccionario.index("precios_completos.csv") < diccionario.index("## `operadores`")
+
+
 def test_zip_por_formato(exportacion):
     _, salida, _ = exportacion
-    for formato, sufijo in (("csv", ".csv.gz"), ("parquet", ".parquet")):
+    for formato, sufijo in (("csv", ".csv"), ("parquet", ".parquet")):
         with zipfile.ZipFile(salida / f"{formato}.zip") as z:
             nombres = z.namelist()
-            assert len(nombres) == len(TABLAS) + 2
+            assert len(nombres) == len(TABLAS) + 2 + len(PLANAS)
             assert all(n.startswith(f"{formato}/") and n.endswith(sufijo) for n in nombres)
             assert z.testzip() is None
     with zipfile.ZipFile(salida / "csv.zip") as z:
-        primera = gzip.decompress(z.read("csv/detalles.csv.gz")).decode("utf-8").splitlines()[0]
+        primera = z.read("csv/detalles.csv").decode("utf-8-sig").splitlines()[0]
     assert primera.startswith("id;")
 
 

@@ -25,7 +25,8 @@ Cada mes se publica una Release
 | Fichero | Contenido |
 |---|---|
 | `historial_parquet.zip` | **Historial completo**: un Parquet por tabla con todas las versiones de cada fila y una columna `vigente`. Es lo que el portal no ofrece: allí solo se ve el estado de hoy |
-| `parquet.zip` / `csv.zip` | Solo lo vigente, un fichero por tabla (CSV en UTF-8, separador `;`) |
+| `csv.zip` | **Para Excel**: cuatro tablas completas (`precios_completos`, `condiciones_completas`, `origen_destino_completo`, `capacidades_completas`) con operador, instalación, comunidad, producto, categoría, valor, unidad, fecha y enlace a la página de la CNMC ya cruzados; y las tablas normalizadas con lo vigente. CSV en UTF-8 con BOM, separador `;` y coma decimal: se abren con doble clic |
+| `parquet.zip` | Lo mismo que `csv.zip`, en Parquet y con tipos |
 | `cnmc_logistica.db` + `.sha256` | La base SQLite entera (historial, vistas `<tabla>_vigentes`, registro de ejecuciones) |
 | `DICCIONARIO.md` | Cada tabla, cada columna, sus unidades y cómo leer el historial |
 

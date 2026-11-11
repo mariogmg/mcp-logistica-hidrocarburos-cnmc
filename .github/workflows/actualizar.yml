@@ -90,7 +90,7 @@ jobs:
           cd exportacion
           gh release create "datos-$FECHA" cnmc_logistica.db cnmc_logistica.db.sha256 csv.zip parquet.zip historial_parquet.zip DICCIONARIO.md \
             --title "Datos de logística de hidrocarburos (CNMC) · $FECHA" \
-            --notes "Base SQLite con todo el historial, su sha256, las tablas vigentes en CSV y Parquet, el historial completo en Parquet (todas las versiones de cada fila; un fichero por tabla) y el diccionario de datos. Foto del portal del $FECHA. Proyecto no oficial; datos públicos publicados por la CNMC."
+            --notes "Base SQLite con todo el historial, su sha256, las tablas vigentes en CSV (para Excel) y Parquet, incluidas cuatro tablas completas con los nombres ya cruzados, el historial completo en Parquet (todas las versiones de cada fila; un fichero por tabla) y el diccionario de datos. Foto del portal del $FECHA. Proyecto no oficial; datos públicos publicados por la CNMC."
 
       - name: Commit de la base de datos y del inventario
         if: always()

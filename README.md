@@ -2,8 +2,9 @@
 
 [![CI](https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc/actions/workflows/ci.yml/badge.svg)](https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc/actions/workflows/ci.yml)
 
-Histórico de la **logística de productos petrolíferos** que publica la CNMC, consultable en
-lenguaje natural a través de un servidor [MCP](https://modelcontextprotocol.io) de solo lectura.
+Pipeline de ingeniería de datos que convierte la información pública de logística de hidrocarburos de la CNMC en un dataset histórico, verificado y actualizado cada mes.
+
+Extracción (HTML y PDF) · Modelo con historial SCD2 · Capas bronze/silver/gold · Publicación mensual en CSV, Parquet y SQLite · API REST y servidor MCP
 
 > **Aviso legal.** Proyecto no oficial, no afiliado a la CNMC ni a ningún operador. Los datos
 > son públicos y los publica la CNMC en
@@ -13,22 +14,24 @@ lenguaje natural a través de un servidor [MCP](https://modelcontextprotocol.io)
 
 ## Cómo usarlo
 
-Hay dos formas: bajarse los datos y trabajar con ellos por tu cuenta, o clonar el repositorio
-y consultarlos con Claude Desktop (MCP) o con la API local.
+Hay dos formas de uso: descargar los datos de la última Release `datos-*`, o clonar el
+repositorio y consultarlos con un cliente MCP o con la API REST local.
 
 ### 1. Descargar los datos
 
 Cada mes se publica una Release
 [`datos-AAAA-MM-DD`](https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc/releases)
-(la última es la más reciente). No hace falta instalar nada del proyecto para usarla:
+con la capa gold y la capa silver completa. Su uso no requiere instalar el proyecto. Contiene
+seis ficheros:
 
 | Fichero | Contenido |
 |---|---|
-| `historial_parquet.zip` | **Historial completo**: un Parquet por tabla con todas las versiones de cada fila y una columna `vigente`. Es lo que el portal no ofrece: allí solo se ve el estado de hoy |
-| `csv.zip` | **Para Excel**: cuatro tablas completas (`precios_completos`, `condiciones_completas`, `origen_destino_completo`, `capacidades_completas`) con operador, instalación, comunidad, producto, categoría, valor, unidad, fecha y enlace a la página de la CNMC ya cruzados; y las tablas normalizadas con lo vigente. CSV en UTF-8 con BOM, separador `;` y coma decimal: se abren con doble clic |
-| `parquet.zip` | Lo mismo que `csv.zip`, en Parquet y con tipos |
-| `cnmc_logistica.db` + `.sha256` | La base SQLite entera (historial, vistas `<tabla>_vigentes`, registro de ejecuciones) |
-| `DICCIONARIO.md` | Cada tabla, cada columna, sus unidades y cómo leer el historial |
+| `csv.zip` | 26 ficheros CSV con las filas vigentes: 4 tablas planas (`precios_completos`, `condiciones_completas`, `origen_destino_completo`, `capacidades_completas`) con operador, instalación, comunidad, producto, categoría, valor, unidad, fecha y enlace a la página de la CNMC; y las 22 tablas normalizadas. UTF-8 con BOM, separador `;` y coma decimal (formato de Excel en español) |
+| `parquet.zip` | Las mismas 26 tablas en Parquet, con tipos de columna |
+| `historial_parquet.zip` | 20 ficheros Parquet, uno por tabla con historial, con todas las versiones de cada fila y una columna `vigente`. El portal de la CNMC solo publica el estado actual |
+| `cnmc_logistica.db` | Base SQLite completa: historial, vistas `<tabla>_vigentes` y registro de ejecuciones |
+| `cnmc_logistica.db.sha256` | Huella sha256 de la base |
+| `DICCIONARIO.md` | Descripción de cada tabla y columna, unidades y lectura del historial |
 
 ```python
 import pandas as pd
@@ -39,8 +42,9 @@ cambios = precios[precios.vigente == 0]  # versiones anteriores y precios retira
 
 ### 2. Consultarlos clonando el repositorio
 
-Requiere [uv](https://docs.astral.sh/uv/) (instala Python 3.12 por su cuenta). El repositorio
-trae la base ya cargada (`data/cnmc_logistica.db`); el servidor solo la lee, nunca hace scraping.
+Requiere [uv](https://docs.astral.sh/uv/), que instala Python 3.12. El repositorio incluye la
+base cargada (`data/cnmc_logistica.db`). El servidor solo lee esa base; no hace peticiones al
+portal de la CNMC.
 
 ```bash
 git clone https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc
@@ -49,10 +53,11 @@ uv sync
 uv run cnmc-logistica info
 ```
 
-**Claude Desktop (MCP).** Añade este bloque a su fichero de configuración, cambiando la ruta, y
-reinícialo (también está en
-[ejemplos/claude_desktop_config.json](ejemplos/claude_desktop_config.json); más detalles en
-[ejemplos/LEEME.md](ejemplos/LEEME.md)):
+**Cliente MCP.** El servidor usa el transporte stdio por defecto. Para Claude Desktop, añadir
+este bloque a su fichero de configuración con la ruta del repositorio y reiniciar la aplicación.
+El bloque está también en
+[ejemplos/claude_desktop_config.json](ejemplos/claude_desktop_config.json); las rutas del
+fichero de configuración y el transporte HTTP están en [ejemplos/LEEME.md](ejemplos/LEEME.md).
 
 ```json
 {
@@ -65,108 +70,113 @@ reinícialo (también está en
 }
 ```
 
-**API REST local.** Arranca el servidor por HTTP y abre la documentación interactiva en
-<http://localhost:8000/docs>:
+**API REST local.** Con el transporte HTTP, la misma aplicación sirve el MCP en `/mcp`, la API
+REST en `/api/v1` (14 rutas `GET`, paginadas con `limit` y `offset`), la comprobación `/salud`
+y la documentación OpenAPI en <http://localhost:8000/docs>:
 
 ```bash
 uv run cnmc-logistica servir --transporte http
 curl "http://localhost:8000/api/v1/precios?categoria=almacenamiento&limit=5"
 ```
 
-Desplegarlo en un servidor propio (MCP + API detrás de Caddy con HTTPS) es opcional y está
-documentado en [despliegue/LEEME.md](despliegue/LEEME.md); no hay ninguna instancia pública.
+El despliegue en un servidor (MCP y API detrás de Caddy con HTTPS) es opcional y está
+documentado en [despliegue/LEEME.md](despliegue/LEEME.md). No hay ninguna instancia pública.
 
 ## Qué es
 
 La CNMC publica las condiciones de acceso a las instalaciones de almacenamiento y transporte de
 productos petrolíferos de todos los operadores: precios, mermas, servicios incluidos, rutas
-origen-destino y capacidades. El portal solo muestra el estado actual y cada operador redacta sus
-servicios a su manera.
+origen-destino y capacidades. El portal solo muestra el estado actual, y cada operador describe
+sus servicios con sus propios términos.
 
 Este proyecto:
 
-1. **Descarga** una vez al mes todo el portal (unas 600 páginas y PDF), con educación: una
-   petición por segundo como máximo, `robots.txt` en cada ejecución y un User-Agent identificable.
-2. **Guarda el crudo** tal cual (`raw/AAAA-MM-DD/`, con sha256 y manifiesto) y **nunca borra
-   nada**: cada cambio de un precio o de una condición se conserva como una versión nueva.
-3. **Normaliza** lo justo para poder comparar: categoría de servicio, tipo de precio, unidad,
-   qué incluye cada servicio.
-4. **Lo expone** mediante un servidor MCP que solo lee una base SQLite. El servidor nunca hace
-   scraping.
+1. **Descarga** el portal una vez al mes (569 recursos entre páginas HTML y PDF en la primera
+   ejecución, el 11/11/2026), con un intervalo mínimo de 1 s entre peticiones, reintentos con
+   espera exponencial y un User-Agent que identifica el proyecto. Consulta `robots.txt` en cada
+   ejecución.
+2. **Bronze: guarda el crudo** sin modificar en `raw/AAAA-MM-DD/`, con el sha256 de cada fichero
+   y un manifiesto al que solo se añaden líneas.
+3. **Silver: carga un modelo normalizado con historial** en SQLite. No se borra ni se
+   sobrescribe ninguna fila: cada cambio de un precio o de una condición es una versión nueva.
+   La normalización se limita a lo necesario para comparar: categoría de servicio, tipo de
+   precio, unidad y servicios incluidos.
+4. **Gold: publica** las vistas vigentes y cuatro tablas planas en CSV y Parquet, en una Release
+   mensual.
+5. **Sirve** los datos con una API REST y un servidor MCP que solo leen la base SQLite.
 
-Con la foto del 11/11/2026: 115 instalaciones (71 de almacenamiento y 44 aeroportuarias),
-258 detalles (un producto en una instalación), 31 operadores con instalaciones, 1.579 precios
-de las páginas, 2.163 rutas origen-destino y 27 PDF leídos por completo (66 precios de
-tarifas, 2.495 celdas de matrices, 18 bonificaciones, 21 condiciones con cantidad y 365
-capacidades).
+Cifras de la foto del 11/11/2026: 115 instalaciones (71 de almacenamiento y 44 aeroportuarias),
+258 detalles (un producto en una instalación), 44 operadores en el buscador de la CNMC (31 con
+instalaciones), 1.579 precios de las páginas, 2.163 rutas origen-destino y 27 PDF (66 precios
+de tarifas, 2.495 celdas de matrices, 18 bonificaciones, 21 condiciones con cantidad y 365
+capacidades). Las 3.237 cifras de esos PDF están en la base o en la lista de descartes
+justificados.
 
-## Cómo funciona
+## Arquitectura
 
-```mermaid
-flowchart LR
-    portal[("hidrocarburos.cnmc.es")]
-    subgraph ETL["ETL (mensual, GitHub Actions)"]
-        descubrir["descubrir<br/>mapas + buscador"]
-        actualizar["actualizar<br/>fichas, detalles,<br/>origen-destino, PDF"]
-        raw[("raw/AAAA-MM-DD/<br/>bytes + sha256 + manifiesto")]
-        parsers["parsers<br/>(guiados por etiquetas de texto)"]
-    end
-    bd[("SQLite con historial<br/>data/cnmc_logistica.db")]
-    mcp["servidor MCP<br/>solo lectura"]
-    cliente["Claude u otro<br/>cliente MCP"]
+![Arquitectura del proyecto](docs/arquitectura.png)
 
-    portal --> descubrir --> actualizar --> raw --> parsers --> bd
-    raw -. "reconstruir (sin red)" .-> bd
-    bd --> mcp --> cliente
-    config[/"config/*.yaml<br/>correspondencias revisables"/] --> parsers
-```
+Bronze: crudo inmutable de cada ejecución. Silver: modelo normalizado con historial. Gold: vistas vigentes y tablas planas para consumo.
 
-- **ETL y servidor están separados.** El servidor no importa ni una línea del descargador o de
-  los parsers (hay un test que lo comprueba).
-- **El crudo es la fuente de verdad.** La base se puede regenerar entera desde `raw/` con
-  `reconstruir`; por eso un fallo de interpretación nunca pierde información.
-- **Nada aborta por contenido inesperado.** Un bloque o un PDF que no se entiende se anota en la
-  tabla `incidencias` (recurso, operador y texto), se conserva su crudo y se sigue. La orden
-  termina con código distinto de cero si hubo errores, para que el workflow se marque en rojo.
+- **ETL y servidor están separados.** El servidor, la API y la capa de consultas no importan el
+  descargador ni los parsers. Tres tests lo comprueban.
+- **La capa bronze es la fuente de verdad.** `reconstruir` regenera la capa silver completa a
+  partir de `raw/`, sin red. Un error de interpretación se corrige sin volver a descargar.
+- **El contenido inesperado no detiene la carga.** Un bloque o un PDF que no se puede
+  interpretar se registra en la tabla `incidencias` (recurso, operador y texto), su crudo se
+  conserva y la carga continúa. Si hubo errores, la orden termina con código distinto de cero y
+  el workflow queda marcado como fallido.
 
 ## Uso
 
-Para consultar los datos, véase [Cómo usarlo](#cómo-usarlo). Para generar la base (descargar
-el portal y cargarlo) hacen falta además las dependencias del ETL: `uv sync --extra etl`.
+La consulta de los datos se describe en [Cómo usarlo](#cómo-usarlo). La descarga del portal y
+la carga de la base requieren las dependencias del ETL: `uv sync --extra etl`. `exportar`
+requiere además `--extra exportar` para generar Parquet.
 
 ### Órdenes de la CLI
 
 | Orden | Qué hace | ¿Usa la red? |
 |---|---|---|
-| `descubrir` | Mapas + buscador → `config/inventario.json`, con control cruzado | Sí |
-| `actualizar` | Descarga todo el inventario a `raw/` y carga la foto en la base | Sí |
+| `descubrir` | Recorre los mapas y el buscador y escribe `config/inventario.json`, con control cruzado entre ambos | Sí |
+| `actualizar` | Descarga el inventario a `raw/` (bronze) y carga la foto en la base (silver) | Sí |
 | `reconstruir` | Crea una base nueva a partir de todas las fotos de `raw/` | No |
-| `exportar` | Exporta la base a CSV, Parquet y diccionario (lo que lleva la Release de datos) | No |
-| `descargar-releases` | Baja a `raw/` todo el crudo publicado en las Releases | Solo GitHub |
-| `servir` | Arranca el MCP (`--transporte stdio`) o MCP + API REST (`--transporte http`) | Solo GitHub (datos) |
+| `exportar` | Genera los ficheros de la Release `datos-*`: base, sha256, CSV, Parquet y diccionario | No |
+| `descargar-releases` | Descarga a `raw/` el crudo publicado en las Releases `raw-*` | Solo GitHub |
+| `servir` | Arranca el MCP (`--transporte stdio`) o el MCP y la API REST (`--transporte http`) | No, si existe `data/cnmc_logistica.db`; en otro caso descarga la base de la última Release `datos-*` |
 | `info` | Versión, fotos disponibles y filas de cada tabla | No |
 
 ```bash
-uv run cnmc-logistica descubrir      # ~1 min si ya hay foto del día; ~4 min desde cero
-uv run cnmc-logistica actualizar     # ~10 min desde cero (1 petición por segundo)
+uv run cnmc-logistica descubrir
+uv run cnmc-logistica actualizar     # al menos 1 s por recurso
 uv run cnmc-logistica reconstruir --salida /tmp/nueva.db
-uv run cnmc-logistica servir --transporte streamable-http --puerto 8000
+uv run cnmc-logistica exportar --salida exportacion
+uv run cnmc-logistica servir --transporte http --puerto 8000
 ```
 
-Variables de entorno del servidor HTTP: `CNMC_MCP_TOKEN` (si se define, se exige como token
-Bearer) y `CNMC_MCP_HOSTS_PERMITIDOS` (cabeceras `Host` admitidas, separadas por comas; por
-defecto solo local). `CNMC_BD` cambia la ruta de la base.
+Variables de entorno del servidor:
+
+| Variable | Efecto |
+|---|---|
+| `CNMC_BD` | Ruta de la base que se sirve |
+| `CNMC_MCP_TOKEN` | Si se define, `/mcp` exige ese token Bearer. No afecta a la API REST |
+| `CNMC_MCP_HOSTS_PERMITIDOS` | Cabeceras `Host` admitidas en `/mcp`, separadas por comas. Por defecto, solo las locales |
+| `CNMC_DIR_DATOS` | Carpeta de la base cuando se ejecuta fuera del repositorio |
+| `CNMC_SIN_ACTUALIZAR` | Con valor `1`, desactiva la comprobación diaria de una Release `datos-*` más reciente fuera del repositorio |
 
 ### Docker
 
 ```bash
 docker build -t cnmc-logistica .
-docker run --rm -p 8000:8000 cnmc-logistica      # MCP en http://localhost:8000/mcp
+docker run --rm -p 8000:8000 cnmc-logistica      # MCP en /mcp y API REST en /api/v1
 ```
 
 ## Herramientas MCP
 
-| Herramienta | Para qué |
+El servidor MCP expone 12 herramientas de solo lectura. La API REST usa la misma capa de
+consultas (`consultas.py`), por lo que ambas devuelven los mismos datos. El SQL libre solo
+está disponible en el MCP.
+
+| Herramienta | Función |
 |---|---|
 | `estado` | Última foto, volumen de datos, incidencias y esquema de tablas |
 | `listar_operadores` | Operadores con su nº de instalaciones por tipo y nombres anteriores |
@@ -179,9 +189,9 @@ docker run --rm -p 8000:8000 cnmc-logistica      # MCP en http://localhost:8000/
 | `capacidades` | Capacidad (miles de m³) por compañía, instalación y producto |
 | `reconsignaciones` | Matrices de los PDF: reconsignación entre instalaciones, consignación de éster y origen-destino |
 | `bonificaciones` | Bonificaciones y compensaciones de los contratos a largo plazo |
-| `consulta_sql` | Un `SELECT` libre, con cuatro capas de protección de solo lectura |
+| `consulta_sql` | Una sentencia `SELECT`, con cuatro protecciones: base abierta en solo lectura, `query_only`, autorizador que solo admite lectura y límite de trabajo y de filas |
 
-### Ejemplos de preguntas
+### Ejemplos de preguntas para un cliente MCP
 
 - ¿Cuántos operadores hay y cuántas instalaciones tiene cada uno?
 - ¿Qué cuota de instalaciones tiene Exolum por tipo?
@@ -197,9 +207,10 @@ docker run --rm -p 8000:8000 cnmc-logistica      # MCP en http://localhost:8000/
 
 ## Modelo de datos
 
-Dos niveles de identificador, los mismos que usa el portal: **instalación** (`id_tanque`) y
-**detalle** (`id_tanque_instalacion`, un producto dentro de una instalación). Los precios cuelgan
-del detalle, y cada detalle tiene su propio titular.
+La capa silver tiene 22 tablas: 20 con historial y 2 de registro (`ejecuciones` e
+`incidencias`). Usa los dos niveles de identificador del portal: **instalación** (`id_tanque`)
+y **detalle** (`id_tanque_instalacion`, un producto dentro de una instalación). Los precios
+pertenecen al detalle, y cada detalle tiene su titular.
 
 | Tabla | Contenido |
 |---|---|
@@ -221,15 +232,20 @@ del detalle, y cada detalle tiene su propio titular.
 | `cobertura_pdf` | Por PDF: cifras totales, guardadas, descartadas y sin cubrir |
 | `ejecuciones`, `incidencias` | Registro de cada carga: altas, cambios, desapariciones y avisos |
 
-Cada `actualizar` deja además su resumen (fecha y hora, versión, cifras e incidencias) en
-`raw/AAAA-MM-DD/ejecuciones.jsonl`. Así `reconstruir` recupera el historial de ejecuciones
-reales (`origen = 'registro'`) y se anota a sí misma como un evento `tipo = 'reconstruccion'`.
+La capa gold son las vistas `<tabla>_vigentes` y las cuatro tablas planas de la Release
+(`precios_completos`, `condiciones_completas`, `origen_destino_completo` y
+`capacidades_completas`), descritas en `DICCIONARIO.md`.
+
+Cada `actualizar` escribe su resumen (fecha y hora, versión, cifras e incidencias) en
+`raw/AAAA-MM-DD/ejecuciones.jsonl`. `reconstruir` recupera de ahí las ejecuciones originales
+(`origen = 'registro'`) y se registra a sí misma con `tipo = 'reconstruccion'`.
 
 ### Historial (SCD tipo 2)
 
 Cada fila lleva `primera_vez_visto` y `ultima_vez_visto` (fechas de foto). Si el dato sigue igual
-solo avanza `ultima_vez_visto`; si cambia, la fila antigua se queda y se inserta otra. Unos
-*triggers* rechazan cualquier `DELETE` y cualquier `UPDATE` que no sea avanzar `ultima_vez_visto`.
+solo avanza `ultima_vez_visto`; si cambia, la fila antigua se conserva y se inserta otra. Los
+*triggers* de la base rechazan cualquier `DELETE` y cualquier `UPDATE` que no sea avanzar
+`ultima_vez_visto`.
 Las vistas `<tabla>_vigentes` muestran lo visto en la última foto. `fecha_precio` es la vigencia
 que publica la CNMC (puede faltar) y `anio_tabla` el año cuando la fuente solo da el año.
 
@@ -239,37 +255,39 @@ que publica la CNMC (puede faltar) y `anio_tabla` el año cuando la fuente solo 
   (remite a un documento). Si no es numérico, `valor` es nulo y se guarda el texto original.
 - `tipo_valor`: `unico`, `max` o `min`, cada uno con su fecha.
 - `categoria_servicio`: sale de [config/categorias_servicio.yaml](config/categorias_servicio.yaml)
-  (etiqueta + tipo de instalación → categoría). No hay expresiones regulares que adivinen: lo que
-  no está en el fichero queda como `sin_categoria` y genera un aviso.
+  (etiqueta + tipo de instalación → categoría). No se infiere con expresiones regulares: una
+  etiqueta que no está en el fichero queda como `sin_categoria` y genera un aviso.
 - Indicadores `incluye_transporte`, `incluye_almacenamiento`, `incluye_expedicion` e
   `incluye_puesta_a_bordo`, derivados de la lista «Incluye:» mediante
   [config/indicadores_incluye.yaml](config/indicadores_incluye.yaml).
 - `comparar_servicio` solo agrupa precios con la misma categoría, los mismos indicadores y la
   misma unidad, y avisa cuando hay más de un grupo.
 
-### Los PDF, leídos por completo
+### Extracción de los PDF
 
-Muchos precios no están en la página: el detalle remite a un PDF. Cada tipo de PDF tiene su
-parser (elegido por el título del documento, no por su número) que trabaja sobre palabras con
-coordenadas, y cada valor guarda página, posición y texto original para poder auditarlo.
+Parte de los precios no está en la página: el detalle remite a un PDF. Cada tipo de PDF tiene
+un parser, elegido por el título del documento, que trabaja sobre palabras con coordenadas.
+Cada valor guarda página, posición y texto original para su auditoría.
 
-- **Sin punteros sueltos.** La vista `lineas_pdf_sin_resolver` lista las líneas con
+- **Todas las remisiones a PDF se resuelven.** La vista `lineas_pdf_sin_resolver` lista las líneas con
   `tipo_precio = 'pdf'` cuyo documento no tiene datos estructurados; debe estar vacía, y si
   no lo está la carga registra un error.
-- **Cobertura comprobada en cada carga.** Todas las palabras con cifras de cada PDF deben
-  estar en la base (como valor, dentro de una etiqueta o en una nota guardada) o en la lista de
+- **La cobertura se comprueba en cada carga.** Cada palabra con cifras de cada PDF debe estar
+  en la base (como valor, dentro de una etiqueta o en una nota guardada) o en la lista de
   descartes justificados de [config/descartes_pdf.yaml](config/descartes_pdf.yaml). Una cifra
-  que no esté en ningún sitio es un error `cifra_pdf_sin_cubrir` y la ejecución termina en rojo.
-  El resultado queda en la tabla `cobertura_pdf`.
-- **Nada se inventa.** Una cifra que no se puede interpretar con certeza (p. ej. «01021», sin
-  coma) se guarda con valor nulo, su texto original y un aviso.
-- **OCR solo de respaldo.** Si una página no tiene capa de texto se lee con Tesseract
-  (`uv sync --extra ocr`); esos valores llevan `metodo = 'ocr'` y generan un aviso para
-  revisarlos. Nunca se pasa OCR a una página que ya tiene texto.
-- **Sin repeticiones.** Una tarifa en PDF vale para todos los detalles que remiten a ella:
-  `buscar_precios` y `comparar_servicio` la devuelven una sola vez, con `aplica_a` (nº de
-  detalles e instalaciones, y la lista con `detallar_aplicacion=true`).
-- **Enlace por datos, no por nombres.** Cada fila de las tablas origen-destino del PDF se une
+  sin cubrir es un error `cifra_pdf_sin_cubrir` y la ejecución termina como fallida. El
+  resultado se guarda en la tabla `cobertura_pdf`. En la foto del 11/11/2026: 3.237 cifras,
+  97 descartadas con justificación, 1 ilegible y 0 sin cubrir.
+- **No se infieren valores.** Una cifra que no se puede interpretar con certeza (p. ej.
+  «01021», sin coma) se guarda con valor nulo, su texto original y un aviso.
+- **El OCR es un respaldo.** Una página sin capa de texto se lee con Tesseract
+  (`uv sync --extra ocr`). Esos valores llevan `metodo = 'ocr'` y generan un aviso de revisión.
+  El OCR no se aplica a páginas con capa de texto.
+- **Las tarifas compartidas no se repiten en las consultas.** Una tarifa en PDF se aplica a
+  todos los detalles que remiten a ella. `buscar_precios` y `comparar_servicio` la devuelven una
+  vez, con `aplica_a` (nº de detalles e instalaciones, y la lista con
+  `detallar_aplicacion=true`). En la tabla plana `precios_completos` aparece una vez por detalle.
+- **El enlace se hace por datos, no por nombres.** Cada fila de las tablas origen-destino del PDF se une
   al detalle cuyos precios en la página web son exactamente los mismos; las matrices de
   reconsignación heredan esa identificación por nombre exacto.
 
@@ -277,26 +295,28 @@ coordenadas, y cada valor guarda página, posición y texto original para poder 
 
 | Decisión | Motivo |
 |---|---|
-| Crudo inmutable + base reconstruible | Un fallo de un parser se arregla sin perder ni volver a descargar nada |
+| Capa bronze inmutable y capa silver reconstruible | Un error de un parser se corrige sin perder datos y sin volver a descargar |
 | Parsers guiados por etiquetas de texto («PRODUCTOS:», «Incluye:»…) | El texto visible cambia menos que las clases CSS |
-| Correspondencias en YAML revisable | Las decisiones de negocio se leen y se discuten sin leer código |
+| Correspondencias en ficheros YAML | Las reglas de negocio se revisan sin leer código |
 | Operador = código del buscador | Los nombres cambian (Cepsa → Moeve); el código no |
-| Control cruzado fichas ↔ buscador y HTML ↔ PDF | Detecta descargas incompletas; ya cazó un fallo real de paginación |
-| Peticiones sin cookies | El buscador guarda la página en la sesión y contaminaba la búsqueda siguiente |
+| Control cruzado fichas ↔ buscador y HTML ↔ PDF | Detecta descargas incompletas; detectó un error de paginación durante el desarrollo |
+| Peticiones sin cookies | El buscador guarda la paginación en la sesión, lo que alteraba la búsqueda siguiente |
 | Decodificación cabecera → UTF-8 → ISO-8859-1 | El portal declara ISO-8859-1 en el `<meta>` pero sirve UTF-8 |
 | `0,00` = ruta no ofrecida | En origen-destino un cero no es un precio; se guarda `NULL` + estado |
-| SQLite en el repositorio | Clonar basta para consultar; el histórico viaja con el código |
+| SQLite en el repositorio | La consulta solo requiere clonar; el historial se versiona con el código |
 
 ## Actualización automática y reconstrucción
 
-- **CI** en cada push: `ruff` y `pytest` (los tests usan páginas reales guardadas como fixtures y
-  no tocan la red).
-- **Actualización mensual** (día 2): ejecuta `descubrir` y `actualizar`, hace commit de la base
-  y del inventario, y sube `raw/AAAA-MM-DD` como `.tar.gz` a una
-  [Release](https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc/releases). Si hubo
-  errores, el trabajo queda en rojo después de conservar todo lo descargado.
+- **CI** en cada push a una rama: `ruff`, `pytest`, construcción del paquete, construcción de
+  la imagen Docker y arranque del despliegue con `docker compose`. Los tests usan páginas y PDF
+  del portal guardados como fixtures y no acceden a la red.
+- **Actualización mensual** (día 2 de cada mes, o manual): ejecuta `descubrir` y `actualizar`,
+  publica el crudo en una Release `raw-AAAA-MM-DD` (bronze), publica la Release
+  `datos-AAAA-MM-DD` (silver y gold) si la carga terminó sin errores, y hace commit de la base
+  y del inventario. Si hubo errores, el trabajo queda como fallido después de conservar lo
+  descargado.
 
-Para reconstruir la base desde cero en cualquier máquina bastan dos órdenes:
+La base se reconstruye desde cero con dos órdenes:
 
 ```bash
 uv run cnmc-logistica descargar-releases     # baja a raw/ todo el crudo publicado
@@ -306,38 +326,41 @@ uv run cnmc-logistica reconstruir --reemplazar
 `descargar-releases` baja todos los ficheros de todas las Releases `raw-*`, comprueba su
 sha256, deja cada foto en `raw/AAAA-MM-DD/` (las descargas adicionales de un mismo día, en
 `_ejecuciones/N/`) y une sus `ejecuciones.jsonl` sin duplicar líneas. `reconstruir` recupera
-así todas las actualizaciones reales y añade la reconstrucción como un evento propio.
+todas las actualizaciones registradas y añade la reconstrucción como una ejecución más.
 
 ## Limitaciones conocidas
 
-- El histórico empieza el 11/11/2026; no hay datos anteriores.
+- El historial empieza el 11/11/2026; no hay datos anteriores. Con una sola foto, el historial
+  coincide con lo vigente.
+- El paso del workflow mensual que publica la Release `datos-*` no se ha ejecutado todavía en
+  GitHub Actions: la Release `datos-2026-11-11` se generó con `exportar` y se subió a mano.
 - La provincia no se publica de forma estructurada y no se guarda en esta versión.
 - El portal no fecha las rutas origen-destino: solo se conoce el año de la tabla (del PDF).
 - Los productos se separan por comas y por « y », sin fusionar variantes («Gasóleo marino» y
   «Gasóleos marinos» son dos valores).
 - Un PDF de un tipo nuevo no tiene parser: se registra el error `pdf_sin_parser`, sus cifras
-  quedan sin cubrir y hay que escribirle uno. Es deliberado: no se adivina su estructura.
+  quedan sin cubrir y requiere un parser nuevo. No se infiere su estructura.
 - Los precios de los PDF solo tienen año (`anio_tabla`), no fecha de vigencia.
 - El PDF de búnker de Exolum no indica la unidad de sus precios; se guarda nula.
-- Hasta hoy ningún PDF ha necesitado OCR; el respaldo está probado con una página escaneada
-  de prueba.
+- A 11/11/2026 ningún PDF del portal ha necesitado OCR. El respaldo se prueba con una página
+  escaneada de prueba; esos tests se omiten si Tesseract no está instalado.
 
 ## Desarrollo
 
 ```bash
-uv sync --extra etl --extra ocr --extra exportar   # todo: ETL, OCR y exportación
+uv sync --extra etl --extra ocr --extra exportar   # ETL, OCR y exportación
 uv run ruff check . && uv run ruff format --check .
 uv run pytest
 ```
 
-Tras clonar, activa los *hooks* del repositorio (una sola vez):
+Los *hooks* del repositorio se activan una vez por copia:
 
 ```bash
 git config core.hooksPath .githooks
 ```
 
-El hook `commit-msg` elimina de los mensajes de commit cualquier línea de coautoría añadida por
-asistentes de IA, para que el historial solo refleje al autor.
+El hook `commit-msg` elimina de los mensajes de commit las líneas de coautoría añadidas por
+herramientas automáticas.
 
 ## Licencia
 

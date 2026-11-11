@@ -1,8 +1,9 @@
 # Despliegue en un VPS
 
-Qué queda en marcha: una sola aplicación (MCP en `/mcp`, API REST en `/api/v1`, documentación
-en `/docs` y `/salud`) detrás de Caddy, que pone el HTTPS con Let's Encrypt. El servidor **no
-hace scraping**: una vez al mes copia la base de datos que GitHub Actions deja en el repo.
+El despliegue es opcional y no hay ninguna instancia pública. Consta de una aplicación (MCP en
+`/mcp`, API REST en `/api/v1`, documentación en `/docs` y comprobación en `/salud`) detrás de
+Caddy, que gestiona el HTTPS con Let's Encrypt. El servidor no hace peticiones al portal de la
+CNMC: una vez al mes copia la base de datos que GitHub Actions publica en el repositorio.
 
 ```
 Internet ──443──► Caddy (HTTPS, límite por IP) ──► app (uvicorn :8000, solo lectura)
@@ -11,7 +12,9 @@ Internet ──443──► Caddy (HTTPS, límite por IP) ──► app (uvicorn
 
 ## 1. Requisitos
 
-- VPS con Linux reciente (probado el flujo en Ubuntu/Debian), 1 vCPU y 1 GB de RAM bastan.
+- VPS con Linux y systemd. Las órdenes de esta guía son para Ubuntu o Debian. El arranque con
+  `docker compose` se prueba en el CI de GitHub Actions; la guía completa no se ha ejecutado en
+  un VPS.
 - Docker Engine con el plugin `docker compose`, `git`, `curl` y `python3`.
 - Un dominio o subdominio cuyo registro **A** (y **AAAA** si hay IPv6) apunte a la IP del VPS.
   Caddy no puede obtener el certificado hasta que el DNS resuelva.
@@ -39,8 +42,8 @@ PasswordAuthentication no
 PermitRootLogin no
 ```
 
-Antes de aplicar (`sudo systemctl reload ssh`), comprueba desde **otra** terminal que entras con
-tu clave; si no, te quedas fuera.
+Antes de aplicar el cambio (`sudo systemctl reload ssh`), comprobar desde otra terminal que el
+acceso con clave funciona. En caso contrario se pierde el acceso al servidor.
 
 ## 3. Primer arranque
 
@@ -85,11 +88,11 @@ systemctl list-timers cnmc-datos.timer
 sudo -u cnmc DIR_DATOS=/opt/cnmc/datos /opt/cnmc/despliegue/actualizar_datos.sh --en-seco
 ```
 
-El día 3 de cada mes el script descarga `data/cnmc_logistica.db` del repo, ejecuta
+El día 3 de cada mes el script descarga `data/cnmc_logistica.db` del repositorio, ejecuta
 `PRAGMA integrity_check`, comprueba que su última foto es más reciente que la que está en
-servicio y la sustituye con un `rename` atómico. No hay que reiniciar nada: la aplicación abre
+servicio y la sustituye con un `rename` atómico. No requiere reinicio: la aplicación abre
 la base en cada petición. Si la base nueva tiene la misma fecha (p. ej. una reconstrucción),
-hay que lanzarlo a mano con `--forzar`.
+el script debe ejecutarse a mano con `--forzar`.
 
 ## 5. Actualizar el código
 

@@ -169,7 +169,7 @@ COLUMNAS_PLANAS = {
     "seccion": "principal u otros_servicios.",
     "servicio": "Nombre del servicio o de la condición tal como aparece en la página.",
     "detalle_servicio": "Subapartado; en los precios de PDF, el concepto de la tarifa.",
-    "categoria": "Categoría normalizada del servicio: compare solo dentro de la misma.",
+    "categoria": "Categoría normalizada del servicio; solo son comparables los precios de la misma categoría.",
     "documento_pdf": "Clave del PDF del que sale el dato o al que remite la página (varias, separadas por |).",
     "pagina_pdf": "Página del PDF donde está la cifra.",
     "url_cnmc": "Página de la CNMC de la que sale el dato.",
@@ -371,47 +371,48 @@ def diccionario(conn: sqlite3.Connection, foto: str) -> str:
         f"# Diccionario de datos · foto {foto}\n",
         "Logística de productos petrolíferos publicada por la CNMC. Proyecto no oficial, no "
         "afiliado a la CNMC ni a ningún operador; datos públicos publicados por la CNMC.\n",
-        "## Empiece por aquí: las tablas completas\n",
-        "Cuatro tablas listas para abrir en Excel, con los nombres ya cruzados (operador, "
-        "instalación, tipo, comunidad, producto…), una fila por dato y un enlace a la página de "
-        "la CNMC de la que sale. Contienen lo **vigente** en la foto. Están en `csv.zip` y, con "
-        "el mismo contenido, en `parquet.zip`.\n",
+        "## Tablas planas (capa gold)\n",
+        "Cuatro tablas con los nombres ya cruzados (operador, instalación, tipo, comunidad, "
+        "producto…), una fila por dato y un enlace a la página de la CNMC de la que procede. "
+        "Contienen las filas **vigentes** en la foto. Están en `csv.zip` y, con el mismo "
+        "contenido, en `parquet.zip`.\n",
         "| Fichero | Contenido |\n|---|---|\n"
         + "\n".join(f"| `{n}.csv` | {d} |" for n, d in PLANAS.items())
         + "\n",
-        "- En `precios_completos`, filtre siempre por `categoria` y mire la `unidad` antes de "
-        "comparar: cada operador define sus servicios a su manera. Los indicadores `incluye_*` "
+        "- En `precios_completos`, la comparación de precios requiere la misma `categoria` y "
+        "la misma `unidad`: cada operador define sus servicios con sus propios términos. Los "
+        "indicadores `incluye_*` "
         "dicen si el servicio principal incluye transporte, almacenamiento, expedición o puesta "
         "a bordo.\n"
         "- Un precio de PDF que vale para varios detalles aparece una vez por detalle.\n"
-        "- `valor` vacío con `tipo_precio` = regla, texto o pdf: el precio no es una cifra; "
-        "lea `texto` o el PDF de `url_pdf`.\n"
+        "- `valor` vacío con `tipo_precio` = regla, texto o pdf: el precio no es una cifra. "
+        "Está descrito en `texto` o en el PDF de `url_pdf`.\n"
         "- En `origen_destino_completo`, `estado` = no_ofrecida significa que el portal muestra "
-        "0,00: la ruta no se ofrece, no es gratis.\n"
-        "- En `capacidades_completas`, `producto` = TOTAL es la suma de la instalación: no la "
-        "sume con los productos.\n",
+        "0,00: la ruta no se ofrece; no es un precio.\n"
+        "- En `capacidades_completas`, `producto` = TOTAL es la suma de la instalación y no "
+        "debe sumarse con los productos.\n",
         "Columnas propias de estas tablas (el resto se explican más abajo, en la tabla "
         "normalizada correspondiente):\n",
         "| Columna | Significado |\n|---|---|\n"
         + "\n".join(f"| `{c}` | {d} |" for c, d in COLUMNAS_PLANAS.items())
         + "\n",
         "## Cómo leer los ficheros\n",
-        "- `cnmc_logistica.db`: base SQLite con todo el historial. Cada tabla tiene una vista "
+        "- `cnmc_logistica.db`: base SQLite con el modelo normalizado y todo el historial "
+        "(capa silver). Cada tabla tiene una vista "
         "`<tabla>_vigentes` con lo visto en la última foto.\n"
-        "- `csv/` y `parquet/`: las cuatro tablas completas y un fichero por tabla normalizada "
+        "- `csv/` y `parquet/`: las cuatro tablas planas y un fichero por tabla normalizada "
         "con las filas **vigentes** (las de registro, `ejecuciones` e `incidencias`, van enteras).\n"
-        "- Los CSV están pensados para Excel en español: UTF-8 con BOM, separador `;` y coma "
-        "decimal. Se abren con doble clic. Para leerlos con pandas: "
-        "`pd.read_csv(f, sep=';', decimal=',')`; o use los Parquet, que llevan tipos.\n"
+        "- Los CSV usan el formato de Excel en español: UTF-8 con BOM, separador `;` y coma "
+        "decimal. Lectura con pandas: `pd.read_csv(f, sep=';', decimal=',')`. Los Parquet "
+        "llevan tipos de columna.\n"
         "- `historial/` (en `historial_parquet.zip`): un Parquet por tabla con **todas las "
         "versiones de cada fila**, vigentes o no. Lleva las mismas columnas más `vigente` "
         "(1 si la fila sigue en la última foto, 0 si es una versión anterior o algo que "
-        "dejó de publicarse). Es lo que el portal de la CNMC no ofrece: allí solo se ve el "
-        "estado de hoy.\n"
+        "dejó de publicarse). El portal de la CNMC solo publica el estado actual.\n"
         "- Dos niveles: **instalación** (`id_tanque`) y **detalle**, un producto en una instalación "
-        "(`id_tanque_instalacion`). Los precios cuelgan del detalle.\n"
+        "(`id_tanque_instalacion`). Los precios pertenecen al detalle.\n"
         "- Historial: `primera_vez_visto` y `ultima_vez_visto` dicen entre qué fotos se vio cada "
-        "fila. Nunca se borra ni se corrige nada: un cambio es una fila nueva.\n",
+        "fila. No se borra ni se modifica ninguna fila: un cambio es una fila nueva.\n",
         "## Cómo usar el historial\n",
         "Cada fila de `historial/<tabla>.parquet` es una versión, válida entre "
         "`primera_vez_visto` y `ultima_vez_visto` (ambas incluidas; son fechas de foto, y hay "
@@ -424,8 +425,8 @@ def diccionario(conn: sqlite3.Connection, foto: str) -> str:
         "- **Solo lo actual**: `vigente = 1`; es lo mismo que hay en `parquet/` y `csv/`.\n\n"
         "`ejecuciones` e `incidencias` no tienen versiones: están completas en `parquet/` y `csv/`. "
         "La foto de este fichero es la más reciente; las fotos cargadas están en `ejecuciones`.\n"
-        "- No compare precios de servicios distintos: use `categoria_servicio`, los indicadores "
-        "`incluye_*` y la `unidad`.\n",
+        "- Los precios de servicios distintos no son comparables. La comparación requiere la "
+        "misma `categoria_servicio`, los mismos indicadores `incluye_*` y la misma `unidad`.\n",
         "## Unidades\n",
         "Precios en euros sin impuestos, en la unidad publicada (`€/m3`, `€/m3 y mes`, "
         "`€/m3 y día`, `€/Tm`, `€/operación`…). Mermas y descuentos en `%`. Capacidades en miles "

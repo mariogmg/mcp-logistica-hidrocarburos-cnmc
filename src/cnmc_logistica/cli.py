@@ -141,7 +141,7 @@ def _servir(args: argparse.Namespace) -> int:
 
     ruta_bd, gestionada = elegir_base(args.raiz)
     if gestionada:
-        # Base del usuario (instalación con uvx/pip): se trae o se pone al día sola.
+        # Base del usuario (fuera del repositorio): se trae o se pone al día sola.
         actualizar_si_procede(ruta_bd)
     if not ruta_bd.exists():
         print(
@@ -263,12 +263,6 @@ def crear_parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     args = crear_parser().parse_args(argv)
     return args.funcion(args)
-
-
-def main_mcp(argv: Sequence[str] | None = None) -> int:
-    """Punto de entrada con el nombre del paquete: sin argumentos, arranca el MCP por stdio."""
-    argumentos = list(sys.argv[1:] if argv is None else argv)
-    return main(argumentos or ["servir"])
 
 
 if __name__ == "__main__":

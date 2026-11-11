@@ -32,8 +32,6 @@ exportar = ["pyarrow>=17"]  # Parquet de la Release de datos
 
 [project.scripts]
 cnmc-logistica = "cnmc_logistica.cli:main"
-# Con el nombre del paquete, para `uvx mcp-logistica-hidrocarburos-cnmc`: sin argumentos, MCP por stdio.
-mcp-logistica-hidrocarburos-cnmc = "cnmc_logistica.cli:main_mcp"
 
 [dependency-groups]
 dev = ["pytest>=8", "ruff>=0.6"]

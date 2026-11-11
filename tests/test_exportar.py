@@ -72,6 +72,33 @@ def test_un_csv_y_un_parquet_por_tabla_con_las_filas_vigentes(exportacion):
     assert ejecuciones.num_rows == 2  # las tablas de registro van enteras
 
 
+def test_historial_en_parquet_con_todas_las_versiones(exportacion):
+    import pyarrow.parquet as pq
+
+    _, salida, original = exportacion
+    assert {p.stem for p in (salida / "historial").iterdir()} == set(TABLAS)  # sin las de registro
+    conn = sqlite3.connect(original)
+    total = conn.execute("SELECT COUNT(*) FROM precios").fetchone()[0]
+    vigentes = conn.execute("SELECT COUNT(*) FROM precios_vigentes").fetchone()[0]
+    tabla = pq.read_table(salida / "historial/precios.parquet")
+    assert tabla.num_rows == total == vigentes + 1
+    assert str(tabla.schema.field("vigente").type) == "int64"
+    filas = tabla.to_pylist()
+    assert sum(f["vigente"] for f in filas) == vigentes
+    (antigua,) = [f for f in filas if not f["vigente"]]
+    assert antigua["ultima_vez_visto"] < max(f["ultima_vez_visto"] for f in filas)
+    # La versión antigua y la nueva de la misma clave están las dos.
+    misma_clave = [
+        f for f in filas
+        if (f["id_tanque_instalacion"], f["etiqueta"]) == (antigua["id_tanque_instalacion"], antigua["etiqueta"])
+    ]  # fmt: skip
+    assert {f["vigente"] for f in misma_clave} == {0, 1}
+    with zipfile.ZipFile(salida / "historial_parquet.zip") as z:
+        assert sorted(z.namelist()) == sorted(f"historial/{t}.parquet" for t in TABLAS)
+        assert z.testzip() is None
+    assert "historial_parquet.zip" in (salida / "DICCIONARIO.md").read_text(encoding="utf-8")
+
+
 def test_zip_por_formato(exportacion):
     _, salida, _ = exportacion
     for formato, sufijo in (("csv", ".csv.gz"), ("parquet", ".parquet")):
@@ -106,3 +133,4 @@ def test_exportar_sin_parquet_no_necesita_pyarrow(tmp_path, exportacion):
     r = exportar(original, tmp_path / "solo_csv", con_parquet=False)
     assert r["tablas"]["detalles"] == 4
     assert (tmp_path / "solo_csv/csv.zip").exists() and not (tmp_path / "solo_csv/parquet").exists()
+    assert not (tmp_path / "solo_csv/historial").exists()

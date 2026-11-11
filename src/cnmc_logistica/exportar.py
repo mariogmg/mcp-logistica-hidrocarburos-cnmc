@@ -1,9 +1,10 @@
 """Exportación de la base para publicarla como Release de datos.
 
 Genera en una carpeta: la base SQLite y su sha256, un CSV y un Parquet por
-tabla (el estado vigente; el historial completo está en la base) y un
-diccionario de datos. Así quien solo quiere los datos no necesita instalar
-nada del proyecto: abre el CSV en una hoja de cálculo o el Parquet en pandas.
+tabla con el estado vigente, un Parquet por tabla con el historial completo
+(todas las versiones de cada fila) y un diccionario de datos. Así quien solo
+quiere los datos no necesita instalar nada del proyecto: abre el CSV en una
+hoja de cálculo o el Parquet en pandas.
 """
 
 from __future__ import annotations
@@ -169,10 +170,27 @@ def diccionario(conn: sqlite3.Connection, foto: str) -> str:
         "`<tabla>_vigentes` con lo visto en la última foto.\n"
         "- `csv/` y `parquet/`: un fichero por tabla con las filas **vigentes** (las de registro, "
         "`ejecuciones` e `incidencias`, van enteras). CSV en UTF-8, separador `;`, comprimido con gzip.\n"
+        "- `historial/` (en `historial_parquet.zip`): un Parquet por tabla con **todas las "
+        "versiones de cada fila**, vigentes o no. Lleva las mismas columnas más `vigente` "
+        "(1 si la fila sigue en la última foto, 0 si es una versión anterior o algo que "
+        "dejó de publicarse). Es lo que el portal de la CNMC no ofrece: allí solo se ve el "
+        "estado de hoy.\n"
         "- Dos niveles: **instalación** (`id_tanque`) y **detalle**, un producto en una instalación "
         "(`id_tanque_instalacion`). Los precios cuelgan del detalle.\n"
         "- Historial: `primera_vez_visto` y `ultima_vez_visto` dicen entre qué fotos se vio cada "
-        "fila. Nunca se borra ni se corrige nada: un cambio es una fila nueva.\n"
+        "fila. Nunca se borra ni se corrige nada: un cambio es una fila nueva.\n",
+        "## Cómo usar el historial\n",
+        "Cada fila de `historial/<tabla>.parquet` es una versión, válida entre "
+        "`primera_vez_visto` y `ultima_vez_visto` (ambas incluidas; son fechas de foto, y hay "
+        "una foto al mes, así que un cambio se sitúa entre dos fotos consecutivas).\n\n"
+        "- **Cambio de un precio**: la misma clave (detalle, sección, etiqueta…) aparece en "
+        "dos filas; la antigua con `vigente = 0` y la nueva con `primera_vez_visto` posterior.\n"
+        "- **Algo que dejó de publicarse**: su última fila tiene `vigente = 0` y ninguna "
+        "posterior con la misma clave.\n"
+        "- **Estado en una fecha F**: las filas con `primera_vez_visto <= F <= ultima_vez_visto`.\n"
+        "- **Solo lo actual**: `vigente = 1`; es lo mismo que hay en `parquet/` y `csv/`.\n\n"
+        "`ejecuciones` e `incidencias` no tienen versiones: están completas en `parquet/` y `csv/`. "
+        "La foto de este fichero es la más reciente; las fotos cargadas están en `ejecuciones`.\n"
         "- No compare precios de servicios distintos: use `categoria_servicio`, los indicadores "
         "`incluye_*` y la `unidad`.\n",
         "## Unidades\n",
@@ -222,24 +240,36 @@ def exportar(ruta_bd: Path, salida: Path, con_parquet: bool = True) -> dict:
             escritor.writerow(columnas)
             escritor.writerows(filas)
         if con_parquet:
-            import pyarrow as pa
-            import pyarrow.parquet as pq
-
-            (salida / "parquet").mkdir(exist_ok=True)
-            tipos = {f["name"]: f["type"] for f in conn.execute(f"PRAGMA table_info({tabla})")}
-            a_arrow = {"INTEGER": pa.int64(), "REAL": pa.float64()}
-            esquema = pa.schema(
-                [(c, a_arrow.get(tipos.get(c, "TEXT"), pa.string())) for c in columnas]
-            )
-            datos = {c: [f[i] for f in filas] for i, c in enumerate(columnas)}
-            pq.write_table(
-                pa.table(datos, schema=esquema), salida / "parquet" / f"{tabla}.parquet",
-                compression="zstd",
-            )  # fmt: skip
+            _escribir_parquet(conn, tabla, columnas, filas, salida / "parquet")
+            if tabla not in REGISTRO:
+                todas = conn.execute(
+                    f"SELECT *, ultima_vez_visto = ? AS vigente FROM {tabla} ORDER BY 1", (foto,)
+                )
+                columnas_h = [c[0] for c in todas.description]
+                _escribir_parquet(conn, tabla, columnas_h, todas.fetchall(), salida / "historial")
     conn.close()
     # Un zip por formato, con un fichero por tabla dentro: cómodo de descargar de una Release.
-    for formato in ("csv", "parquet") if con_parquet else ("csv",):
-        with zipfile.ZipFile(salida / f"{formato}.zip", "w", zipfile.ZIP_STORED) as z:
-            for f in sorted((salida / formato).iterdir()):
-                z.write(f, f"{formato}/{f.name}")
+    formatos = {"csv": "csv.zip"}
+    if con_parquet:
+        formatos |= {"parquet": "parquet.zip", "historial": "historial_parquet.zip"}
+    for carpeta, nombre in formatos.items():
+        with zipfile.ZipFile(salida / nombre, "w", zipfile.ZIP_STORED) as z:
+            for f in sorted((salida / carpeta).iterdir()):
+                z.write(f, f"{carpeta}/{f.name}")
     return {"foto": foto, "sha256": resumen, "tablas": filas_por_tabla}
+
+
+def _escribir_parquet(conn, tabla: str, columnas: list[str], filas: list, carpeta: Path) -> None:
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+
+    carpeta.mkdir(exist_ok=True)
+    tipos = {f["name"]: f["type"] for f in conn.execute(f"PRAGMA table_info({tabla})")} | {
+        "vigente": "INTEGER"
+    }
+    a_arrow = {"INTEGER": pa.int64(), "REAL": pa.float64()}
+    esquema = pa.schema([(c, a_arrow.get(tipos.get(c, "TEXT"), pa.string())) for c in columnas])
+    datos = {c: [f[i] for f in filas] for i, c in enumerate(columnas)}
+    pq.write_table(
+        pa.table(datos, schema=esquema), carpeta / f"{tabla}.parquet", compression="zstd"
+    )

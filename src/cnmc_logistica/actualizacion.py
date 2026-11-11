@@ -1,6 +1,6 @@
 """Actualización automática de la base en el ordenador del usuario.
 
-Quien instala el paquete (p. ej. con `uvx`) no tiene el repositorio: su base
+Quien usa el paquete fuera del repositorio no tiene `data/`: su base
 vive en la carpeta de datos del usuario y se trae de la última Release
 `datos-AAAA-MM-DD` de GitHub. Reglas:
 

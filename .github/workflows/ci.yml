@@ -36,7 +36,7 @@ jobs:
       - name: El paquete se instala y arranca sin las dependencias del ETL
         run: |
           uv build
-          uv run --isolated --no-project --with dist/*.whl mcp-logistica-hidrocarburos-cnmc info
+          uv run --isolated --no-project --with dist/*.whl cnmc-logistica info
           uv run --isolated --no-project --with dist/*.whl python -c "import cnmc_logistica.servidor, cnmc_logistica.api, cnmc_logistica.actualizacion; print('MCP y API importan sin el ETL')"
 
   docker:

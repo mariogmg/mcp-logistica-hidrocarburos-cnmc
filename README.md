@@ -11,51 +11,66 @@ lenguaje natural a través de un servidor [MCP](https://modelcontextprotocol.io)
 > Este repositorio los copia y los estructura tal cual, sin garantía de exactitud ni de
 > actualización. Para cualquier decisión, consulte la fuente original.
 
-<!-- mcp-name: io.github.mariogmg/mcp-logistica-hidrocarburos-cnmc -->
-
 ## Cómo usarlo
 
-### En tu ordenador
+Hay dos formas: bajarse los datos y trabajar con ellos por tu cuenta, o clonar el repositorio
+y consultarlos con Claude Desktop (MCP) o con la API local.
 
-Con [uv](https://docs.astral.sh/uv/) instalado, una sola orden arranca el servidor MCP:
+### 1. Descargar los datos
 
-```bash
-uvx mcp-logistica-hidrocarburos-cnmc
+Cada mes se publica una Release
+[`datos-AAAA-MM-DD`](https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc/releases)
+(la última es la más reciente). No hace falta instalar nada del proyecto para usarla:
+
+| Fichero | Contenido |
+|---|---|
+| `historial_parquet.zip` | **Historial completo**: un Parquet por tabla con todas las versiones de cada fila y una columna `vigente`. Es lo que el portal no ofrece: allí solo se ve el estado de hoy |
+| `parquet.zip` / `csv.zip` | Solo lo vigente, un fichero por tabla (CSV en UTF-8, separador `;`) |
+| `cnmc_logistica.db` + `.sha256` | La base SQLite entera (historial, vistas `<tabla>_vigentes`, registro de ejecuciones) |
+| `DICCIONARIO.md` | Cada tabla, cada columna, sus unidades y cómo leer el historial |
+
+```python
+import pandas as pd
+
+precios = pd.read_parquet("historial/precios.parquet")
+cambios = precios[precios.vigente == 0]  # versiones anteriores y precios retirados
 ```
 
-No hay que clonar nada ni descargar datos a mano: en el primer arranque el servidor baja la
-base de la última Release de datos, comprueba su sha256 y su integridad, y a partir de ahí
-mira una vez al día si hay una más reciente (`CNMC_SIN_ACTUALIZAR=1` lo desactiva). Nunca hace
-scraping: solo lee esa base.
+### 2. Consultarlos clonando el repositorio
 
-Para **Claude Desktop**, añade esto a su fichero de configuración y reinícialo:
+Requiere [uv](https://docs.astral.sh/uv/) (instala Python 3.12 por su cuenta). El repositorio
+trae la base ya cargada (`data/cnmc_logistica.db`); el servidor solo la lee, nunca hace scraping.
+
+```bash
+git clone https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc
+cd mcp-logistica-hidrocarburos-cnmc
+uv sync
+uv run cnmc-logistica info
+```
+
+**Claude Desktop (MCP).** Añade este bloque a su fichero de configuración, cambiando la ruta, y
+reinícialo (también está en
+[ejemplos/claude_desktop_config.json](ejemplos/claude_desktop_config.json); más detalles en
+[ejemplos/LEEME.md](ejemplos/LEEME.md)):
 
 ```json
 {
   "mcpServers": {
     "logistica-hidrocarburos-cnmc": {
-      "command": "uvx",
-      "args": ["mcp-logistica-hidrocarburos-cnmc"]
+      "command": "uv",
+      "args": ["run", "--directory", "/RUTA/A/mcp-logistica-hidrocarburos-cnmc", "cnmc-logistica", "servir"]
     }
   }
 }
 ```
 
-El mismo paquete arranca también la **API REST** en local, con su documentación interactiva en
+**API REST local.** Arranca el servidor por HTTP y abre la documentación interactiva en
 <http://localhost:8000/docs>:
 
 ```bash
-uvx mcp-logistica-hidrocarburos-cnmc servir --transporte http
+uv run cnmc-logistica servir --transporte http
 curl "http://localhost:8000/api/v1/precios?categoria=almacenamiento&limit=5"
 ```
-
-### Solo los datos
-
-Cada mes se publica una Release
-[`datos-AAAA-MM-DD`](https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc/releases)
-con la base SQLite completa (`cnmc_logistica.db` y su sha256), las tablas vigentes en CSV y en
-Parquet (un fichero por tabla, en `csv.zip` y `parquet.zip`) y `DICCIONARIO.md`, que explica
-cada tabla, cada columna y sus unidades. No hace falta instalar nada del proyecto para usarlos.
 
 Desplegarlo en un servidor propio (MCP + API detrás de Caddy con HTTPS) es opcional y está
 documentado en [despliegue/LEEME.md](despliegue/LEEME.md); no hay ninguna instancia pública.
@@ -113,27 +128,10 @@ flowchart LR
   tabla `incidencias` (recurso, operador y texto), se conserva su crudo y se sigue. La orden
   termina con código distinto de cero si hubo errores, para que el workflow se marque en rojo.
 
-## Instalación
-
-Requiere [uv](https://docs.astral.sh/uv/) (instala Python 3.12 por su cuenta).
-
-```bash
-git clone https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc
-cd mcp-logistica-hidrocarburos-cnmc
-uv sync --extra etl      # las dependencias del ETL solo hacen falta para generar la base
-uv run cnmc-logistica info
-```
-
-El repositorio incluye la base de datos ya cargada (`data/cnmc_logistica.db`), así que el servidor
-funciona sin descargar nada.
-
 ## Uso
 
-### Consultar los datos desde Claude Desktop
-
-Añade a la configuración de Claude Desktop el bloque de
-[ejemplos/claude_desktop_config.json](ejemplos/claude_desktop_config.json) (cambiando la ruta) y
-reinicia. Más detalles, incluido el transporte HTTP, en [ejemplos/LEEME.md](ejemplos/LEEME.md).
+Para consultar los datos, véase [Cómo usarlo](#cómo-usarlo). Para generar la base (descargar
+el portal y cargarlo) hacen falta además las dependencias del ETL: `uv sync --extra etl`.
 
 ### Órdenes de la CLI
 

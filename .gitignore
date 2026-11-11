@@ -27,3 +27,4 @@ verificacion/
 # Despliegue local
 .env
 datos/
+!.env.example

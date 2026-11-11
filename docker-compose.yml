@@ -1,0 +1,54 @@
+# Despliegue: la aplicación (MCP + API REST) detrás de Caddy, que pone el HTTPS.
+# Variables (fichero .env junto a este; ver .env.example):
+#   DOMINIO          dominio público, p. ej. datos.example.org. Con «:80» sirve solo HTTP (pruebas).
+#   HOSTS_MCP        cabeceras Host que acepta el MCP; por defecto, el propio DOMINIO.
+#   CNMC_MCP_TOKEN   opcional: si se define, /mcp exige «Authorization: Bearer <token>».
+#   DIR_DATOS        carpeta del servidor con cnmc_logistica.db (por defecto ./datos).
+
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    user: "10001:10001"
+    read_only: true                # el sistema de ficheros del contenedor no se puede escribir
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    environment:
+      CNMC_BD: /datos/cnmc_logistica.db
+      CNMC_MCP_HOSTS_PERMITIDOS: ${HOSTS_MCP:-${DOMINIO:-localhost}}
+      CNMC_MCP_TOKEN: ${CNMC_MCP_TOKEN:-}
+    volumes:
+      # Se monta la CARPETA, no el fichero: así un rename atómico del .db se ve al instante.
+      - ${DIR_DATOS:-./datos}:/datos:ro
+    expose: ["8000"]               # sin puerto publicado: solo se llega a través de Caddy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/salud', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+  caddy:
+    build: despliegue/caddy
+    restart: unless-stopped
+    depends_on:
+      app:
+        condition: service_healthy
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]    # lo único que necesita: abrir los puertos 80 y 443
+    security_opt: ["no-new-privileges:true"]
+    environment:
+      DOMINIO: ${DOMINIO:-:80}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./despliegue/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data           # certificados de Let's Encrypt
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

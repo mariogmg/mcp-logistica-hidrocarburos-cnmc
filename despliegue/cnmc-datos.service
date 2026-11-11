@@ -1,0 +1,16 @@
+[Unit]
+Description=Actualiza la base de datos de logística de hidrocarburos (CNMC) desde GitHub
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=cnmc
+Environment=DIR_DATOS=/opt/cnmc/datos
+ExecStart=/opt/cnmc/despliegue/actualizar_datos.sh
+# Lo mínimo imprescindible: solo puede escribir en la carpeta de datos.
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/opt/cnmc/datos

@@ -23,3 +23,7 @@ build/
 
 # Muestras para verificación manual (no se versionan)
 verificacion/
+
+# Despliegue local
+.env
+datos/

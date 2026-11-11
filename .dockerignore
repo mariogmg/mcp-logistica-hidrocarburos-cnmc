@@ -10,3 +10,7 @@ ejemplos
 .env
 .env.*
 .DS_Store
+datos
+despliegue
+docker-compose.yml
+verificacion

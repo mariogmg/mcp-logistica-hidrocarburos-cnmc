@@ -1,0 +1,10 @@
+[Unit]
+Description=Día 3 de cada mes: actualizar la base de datos (el workflow de GitHub la genera el día 2)
+
+[Timer]
+OnCalendar=*-*-03 06:30:00
+RandomizedDelaySec=30min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

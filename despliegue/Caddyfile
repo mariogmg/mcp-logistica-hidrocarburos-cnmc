@@ -1,0 +1,38 @@
+# Caddy: HTTPS automático (Let's Encrypt) y límite de peticiones por IP.
+# {$DOMINIO} viene del entorno. Con un nombre de dominio, Caddy pide y renueva el
+# certificado solo; con «:80» sirve HTTP sin certificado (pruebas locales).
+{
+	order rate_limit before reverse_proxy
+}
+
+{$DOMINIO} {
+	encode zstd gzip
+
+	# Por IP de origen: 120 peticiones/minuto a la API y 60 al MCP.
+	rate_limit {
+		zone api {
+			match {
+				path /api/*
+			}
+			key {remote_host}
+			events 120
+			window 1m
+		}
+		zone mcp {
+			match {
+				path /mcp /mcp/*
+			}
+			key {remote_host}
+			events 60
+			window 1m
+		}
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options nosniff
+		-Server
+	}
+
+	reverse_proxy app:8000
+}

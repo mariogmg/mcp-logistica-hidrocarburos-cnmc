@@ -41,3 +41,37 @@ jobs:
         run: docker build -t cnmc-logistica:ci .
       - name: La imagen arranca y lee la base
         run: docker run --rm cnmc-logistica:ci cnmc-logistica info
+
+  despliegue:
+    # Levanta el despliegue completo (app + Caddy) sin HTTPS y lo prueba de punta a punta.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Datos de prueba
+        run: mkdir -p datos && cp data/cnmc_logistica.db datos/
+      - name: docker compose up
+        run: DOMINIO=":80" HOSTS_MCP="localhost" docker compose up -d --build --wait
+      - name: /salud, /api/v1/estado, /api/v1/precios y /docs
+        run: |
+          curl -fsS http://localhost/salud; echo
+          curl -fsS http://localhost/api/v1/estado | head -c 500; echo
+          curl -fsS "http://localhost/api/v1/precios?categoria=almacenamiento&limit=5" | head -c 700; echo
+          curl -fsS -o /dev/null -w "docs: %{http_code}\n" http://localhost/docs
+      - uses: astral-sh/setup-uv@v5
+      - name: Herramientas del MCP a través de Caddy
+        run: uv run --no-project --with mcp==2.3.0 python despliegue/listar_herramientas.py http://localhost/mcp
+      - name: Contenedor sin root y de solo lectura
+        run: |
+          test "$(docker compose exec -T app id -u)" = "10001"
+          docker compose exec -T app sh -c '! touch /app/prueba 2>/dev/null && ! touch /datos/prueba 2>/dev/null'
+          docker compose ps
+      - name: Script de actualización en seco
+        run: DIR_DATOS="$PWD/datos" URL_BD="file://$PWD/data/cnmc_logistica.db" despliegue/actualizar_datos.sh --en-seco
+      - name: Límite de peticiones por IP
+        run: |
+          codigos=$(for i in $(seq 1 140); do curl -s -o /dev/null -w "%{http_code}\n" http://localhost/api/v1/operadores; done | sort | uniq -c)
+          echo "$codigos"
+          echo "$codigos" | grep -q " 429"
+      - name: Registros si algo falla
+        if: failure()
+        run: docker compose logs --tail 80

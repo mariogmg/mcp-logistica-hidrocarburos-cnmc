@@ -2,6 +2,7 @@ name: CI
 
 on:
   push:
+    branches: ["**"] # no en las etiquetas raw-AAAA-MM-DD de las Releases
   pull_request:
 
 permissions:

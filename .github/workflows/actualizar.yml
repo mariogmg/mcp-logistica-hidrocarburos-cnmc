@@ -1,0 +1,82 @@
+name: Actualización mensual
+
+# Una vez al mes: descarga el portal, carga la foto en la base, hace commit de la
+# base y del inventario, y sube el crudo (raw/) como .tar.gz a una Release.
+# Si hubo errores (bloques desconocidos, descargas fallidas, control cruzado…)
+# el trabajo termina en rojo, pero ANTES conserva todo lo descargado.
+
+on:
+  schedule:
+    - cron: "17 5 2 * *" # día 2 de cada mes, 05:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write # commit de la base y creación de la Release
+
+concurrency:
+  group: actualizar
+  cancel-in-progress: false
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv sync --locked --no-dev
+
+      - name: Fecha de la foto
+        id: foto
+        run: echo "fecha=$(date -u +%F)" >> "$GITHUB_OUTPUT"
+
+      - name: Descubrir (mapas + buscador → inventario)
+        id: descubrir
+        continue-on-error: true
+        run: uv run cnmc-logistica descubrir --fecha "${{ steps.foto.outputs.fecha }}"
+
+      - name: Actualizar (descarga + carga en la base)
+        id: actualizar
+        continue-on-error: true
+        run: uv run cnmc-logistica actualizar --fecha "${{ steps.foto.outputs.fecha }}"
+
+      - name: Resumen
+        if: always()
+        run: uv run cnmc-logistica info >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Subir el crudo a una Release
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FECHA: ${{ steps.foto.outputs.fecha }}
+        run: |
+          test -d "raw/$FECHA" || { echo "No hay crudo que subir"; exit 0; }
+          tar -czf "raw-$FECHA.tar.gz" -C raw "$FECHA"
+          sha256sum "raw-$FECHA.tar.gz" > "raw-$FECHA.tar.gz.sha256"
+          gh release create "raw-$FECHA" "raw-$FECHA.tar.gz" "raw-$FECHA.tar.gz.sha256" \
+            --title "Crudo del portal CNMC ($FECHA)" \
+            --notes "Foto de hidrocarburos.cnmc.es descargada el $FECHA. Contiene raw/$FECHA con su manifiesto (sha256 de cada fichero)."
+
+      - name: Commit de la base de datos y del inventario
+        if: always()
+        env:
+          FECHA: ${{ steps.foto.outputs.fecha }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/cnmc_logistica.db config/inventario.json
+          if git diff --cached --quiet; then
+            echo "Sin cambios que guardar"
+          else
+            git commit -m "Datos: foto del portal de $FECHA"
+            git push
+          fi
+
+      - name: Marcar en rojo si hubo errores
+        if: steps.descubrir.outcome == 'failure' || steps.actualizar.outcome == 'failure'
+        run: |
+          echo "descubrir: ${{ steps.descubrir.outcome }} · actualizar: ${{ steps.actualizar.outcome }}"
+          echo "Revisa la tabla incidencias de la última ejecución."
+          exit 1

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "logistica-hidrocarburos-cnmc": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "/RUTA/A/mcp-logistica-hidrocarburos-cnmc",
+        "cnmc-logistica",
+        "servir"
+      ]
+    }
+  }
+}

@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - name: Instalar dependencias (versiones fijadas en uv.lock)
+        run: uv sync --locked
+      - name: Ruff (errores)
+        run: uv run ruff check .
+      - name: Ruff (formato)
+        run: uv run ruff format --check .
+      - name: Tests
+        run: uv run pytest

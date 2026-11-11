@@ -1,0 +1,177 @@
+# Correspondencia etiqueta de servicio → categoría_servicio.
+#
+# Para qué sirve: cada operador nombra sus servicios a su manera. Para no
+# comparar peras con manzanas, las consultas comparan por categoría, no por
+# etiqueta. Esta tabla es la ÚNICA fuente de esa correspondencia: el código no
+# deduce categorías con expresiones regulares.
+#
+# Reglas:
+# - La clave es la etiqueta tal como aparece en el portal (se ignoran
+#   mayúsculas/minúsculas y espacios repetidos; las tildes SÍ cuentan).
+# - Una etiqueta que no esté aquí se carga como «sin_categoria» y genera un
+#   aviso en `ejecuciones`. Se arregla añadiéndola aquí y ejecutando `reconstruir`.
+# - `por_operador` permite que una misma etiqueta signifique otra cosa para un
+#   operador concreto (clave: código del buscador). Hoy no se usa.
+
+categorias:
+  almacenamiento: Solo almacenamiento (capacidad o volumen almacenado)
+  almacenamiento_y_manipulacion: Almacenamiento con la manipulación incluida en el mismo precio
+  manipulacion: Manipulación facturada aparte
+  logistica_basica: Paquete logístico (recepción + almacenamiento operativo + transporte y/o expedición)
+  servicios_aeroportuarios: Recepción, almacenamiento y control en la instalación aeroportuaria
+  bunker: Servicio de búnker (suministro a buques)
+  recepcion: Entrada de producto (buque, camión, tubería, tren, gabarra)
+  expedicion: Salida de producto (buque, camión, tubería, tren, gabarra)
+  almacenamiento_adicional: Almacenamiento por encima del operativo contratado
+  almacenamiento_no_operativo: Almacenamiento estratégico o de seguridad (no operativo)
+  transferencias: Cambio de titularidad del producto dentro de la instalación
+  reconsignacion: Cambio de instalación de entrega (reconsignación)
+  trasiego: Movimiento de producto entre tanques o terminales
+  transporte: Transporte de producto hasta otra instalación
+  abastecimiento_aeroportuario: Transporte y reposición de producto en la instalación aeroportuaria
+  puesta_a_bordo: Suministro a la aeronave (into-plane)
+  carga_repostadora_hidrante: Carga en unidad repostadora o uso de la red de hidrante
+  aditivacion: Aditivos (calidad, antifrío, antiestático)
+  coloracion_trazado: Colorantes y trazadores fiscales
+  mezcla_biocarburantes: Mezcla o blending con biocarburantes
+  analisis_calidad: Análisis y mantenimiento de la calidad
+  calentamiento: Calentamiento o calefacción del producto
+  limpieza_tanques: Limpieza de tanques
+  gestion_y_programacion: Gestión administrativa, aduanera o de aprovisionamiento
+  servicio_operativo: Servicio operativo aeroportuario (etiqueta propia de Exolum Aviation)
+  otros: Etiquetas que no describen un servicio comparable
+
+etiquetas:
+  # --- servicios principales ---
+  Almacenamiento: almacenamiento
+  Servicio almacenamiento: almacenamiento
+  Almacenamiento diferenciado: almacenamiento
+  Arrendamiento de Capacidad: almacenamiento
+  Almacenamiento y manipulación: almacenamiento_y_manipulacion
+  Manipulación: manipulacion
+  Servicios logísticos básicos: logistica_basica
+  Servicios logísticos: logistica_basica
+  Servicio logístico: logistica_basica
+  Servicio logístico integrado: logistica_basica
+  Servicios de logística primaria: logistica_basica
+  Servicios logísticos integrales: logistica_basica
+  Servicios aeroportuarios: servicios_aeroportuarios
+  Servicios aeroportuarios - PRECIOS FIJADOS POR AEROPORTS DE CATALUNYA: servicios_aeroportuarios
+  Servicio de Bunker: bunker
+
+  # --- recepción ---
+  Recepción por camión cisterna: recepcion
+  Recepción por camión cisterna o tubería: recepcion
+  Recepción desde camión cisterna: recepcion
+  Recepción desde CC: recepcion
+  Recepción por CC: recepcion
+  Recepción desde B/T: recepcion
+  Recepción por buque tanque: recepcion
+  Recepción por tubería: recepcion
+  Recepción desde tren: recepcion
+  Descarga de buques: recepcion
+  Descarga de gabarra: recepcion
+
+  # --- expedición ---
+  Expedición por camión cisterna: expedicion
+  Expedición por CC: expedicion
+  Expedición por buque tanque: expedicion
+  Expedición por oleoducto: expedicion
+  Expedición por tubería: expedicion
+  Reexpedición mediante B/T: expedicion
+  Reexpedición mediante CC: expedicion
+  Reexpedición por tren: expedicion
+  Reexpedición por tubería: expedicion
+  Carga de cisternas: expedicion
+  Carga de gabarra: expedicion
+  Carga de IFO sobre gabarra: expedicion
+  Carga de gasóleo sobre gabarra: expedicion
+
+  # --- almacenamiento fuera del operativo ---
+  Almacenamiento operativo adicional: almacenamiento_adicional
+  Almacenamiento operativo adicional - Posibilidad de contratación: almacenamiento_adicional
+  Almacenamiento Adicional: almacenamiento_adicional
+  Almacenamiento complementario: almacenamiento_adicional
+  Reserva temporal de capacidad: almacenamiento_adicional
+  Almacenamiento no operativo: almacenamiento_no_operativo
+  Almacenamiento no operativo (Modalidad 2): almacenamiento_no_operativo
+  Almacenamiento existencias mínimas de seguridad: almacenamiento_no_operativo
+
+  # --- movimientos de producto ---
+  Transferencias: transferencias
+  Reconsignaciones entre instalaciones: reconsignacion
+  Trasiego entre tanques: trasiego
+  Trasiego interno entre tanques: trasiego
+  Trasiego entre terminales: trasiego
+  Reubicación del producto desde Salinetas (Gran Canaria): transporte
+  Entrega en instalación de CMD (transporte por carretera): transporte
+
+  # --- aeroportuario ---
+  Reabastecimiento: abastecimiento_aeroportuario
+  Operación abastecimiento: abastecimiento_aeroportuario
+  Logística descentralizada: abastecimiento_aeroportuario
+  Puesta a bordo: puesta_a_bordo
+  Servicio de puesta a bordo: puesta_a_bordo
+  Suministro y puesta a bordo: puesta_a_bordo
+  Carga en unidad repostadora o uso red de hidrante: carga_repostadora_hidrante
+  Circulación de Jet A-1 a través de la línea de hidrante: carga_repostadora_hidrante
+  Servicio operativo: servicio_operativo
+
+  # --- aditivos, colorantes y trazadores ---
+  Aditivación: aditivacion
+  Aditivación antifrío: aditivacion
+  Aditivación de calidad: aditivacion
+  Aditivación de calidad de Gasolina 95: aditivacion
+  Aditivación de calidad de Gasóleo A: aditivacion
+  Aditivación de calidad de gasolinas: aditivacion
+  Aditivación de calidad de gasóleos: aditivacion
+  Aditivación de gasolinas y gasóleos de automoción: aditivacion
+  Aditivación gasolinas y gasóleos: aditivacion
+  Aditivo antiestático Gasóleo A: aditivacion
+  Aditivo antiestático Gasóleos A y B: aditivacion
+  Colorante y trazador fiscal: coloracion_trazado
+  Coloración de gasolinas: coloracion_trazado
+  Coloración y trazado: coloracion_trazado
+  Coloración y trazado gasóleo en línea: coloracion_trazado
+  Trazado: coloracion_trazado
+  # Mezclan aditivación con coloración en un solo precio: se dejan con los colorantes.
+  Coloración, trazado o aditivación: coloracion_trazado
+  Aditivación, trazado y marcado: coloracion_trazado
+
+  # --- biocarburantes ---
+  Blending: mezcla_biocarburantes
+  Blending de producto: mezcla_biocarburantes
+  Mezcla Bx en brazo de carga: mezcla_biocarburantes
+  Mezcla de HVO con gasóleo en línea: mezcla_biocarburantes
+  Mezcla de biocarburante con gasóleo: mezcla_biocarburantes
+  Mezcla de biocarburante con gasóleo en línea: mezcla_biocarburantes
+  Mezcla de biodiesel con gasóleo: mezcla_biocarburantes
+  Mezcla de bioetanol con gasolina: mezcla_biocarburantes
+  Mezcla de bioetanol con gasolina BOB: mezcla_biocarburantes
+  Mezcla de bioetanol con gasolina en línea: mezcla_biocarburantes
+  Mezcla en línea hasta el 7% vv: mezcla_biocarburantes
+  Triblending (mezcla de biodiesel + HVO con gasóleo en línea): mezcla_biocarburantes
+  Aditivación de calidad o blending de gasóleo con biodiesel: mezcla_biocarburantes
+  Consignación del éster metílico empleado en mezclas hasta el 7% vv: mezcla_biocarburantes
+
+  # --- calidad, temperatura y limpieza ---
+  Análisis bioetanol: analisis_calidad
+  Análisis éster metílico: analisis_calidad
+  Mantenimiento de la calidad: analisis_calidad
+  Calentamiento producto: calentamiento
+  Calentamiento si temperatura recepción < 45ºC: calentamiento
+  Calefacción fuelóleos (<50ºC): calentamiento
+  Limpieza de tanques: limpieza_tanques
+
+  # --- gestión ---
+  Gestión aprovisionamiento desde refinería Tenerife: gestion_y_programacion
+  Programación fletamento desde refinería Tenerife: gestion_y_programacion
+  Administración y gestión aduanera/fiscal: gestion_y_programacion
+
+  # --- no comparables ---
+  Servicios complementarios: otros
+  Aeropuerto de Huesca: otros
+  JET A-1: otros
+  Almacenamiento y suministro AV GAS 100 LL: otros
+
+por_operador: {}

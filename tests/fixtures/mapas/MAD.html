@@ -1,0 +1,379 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+			
+			
+			<html xmlns="http://www.w3.org/1999/xhtml">
+			<head>
+				<title>CNMC</title>
+				<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+				<meta http-equiv="expires" content="0"/>
+				<script type="text/javascript">
+                    (function(i,s,o,g,r,a,m){
+                        i['GoogleAnalyticsObject']=r;
+                        i[r]=i[r]||
+                            function(){
+                                (i[r].q=i[r].q||
+                                    []).push(arguments)},
+                            i[r].l=1*new Date();
+                        a=s.createElement(o),
+                            m=s.getElementsByTagName(o)[0];
+                        a.async=1;
+                        a.src=g;
+                        m.parentNode.insertBefore(a,m)
+                    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+                    ga('create', 'UA-44616095-29', 'auto');
+                    ga('send', 'pageview');
+
+
+					var msgError = "";
+				
+					function validar(f) {
+						msgError = "";
+						var ok = true;
+				
+						ok = validar_form(f);
+				
+						if (!ok) {
+							alert(msgError);
+						}
+						f.flag.value = 'user';
+						return (ok);
+					}
+				
+					function MM_swapImgRestore() { //v3.0
+						var i, x, a = document.MM_sr;
+						for (i = 0; a && i < a.length && (x = a[i]) && x.oSrc; i++)
+							x.src = x.oSrc;
+					}
+				
+					function MM_preloadImages() { //v3.0
+						var d = document;
+						if (d.images) {
+							if (!d.MM_p)
+								d.MM_p = new Array();
+							var i, j = d.MM_p.length, a = MM_preloadImages.arguments;
+							for (i = 0; i < a.length; i++)
+								if (a[i].indexOf("#") != 0) {
+									d.MM_p[j] = new Image;
+									d.MM_p[j++].src = a[i];
+								}
+						}
+					}
+				
+					function MM_findObj(n, d) { //v4.01
+						var p, i, x;
+						if (!d)
+							d = document;
+						if ((p = n.indexOf("?")) > 0 && parent.frames.length) {
+							d = parent.frames[n.substring(p + 1)].document;
+							n = n.substring(0, p);
+						}
+						if (!(x = d[n]) && d.all)
+							x = d.all[n];
+						for (i = 0; !x && i < d.forms.length; i++)
+							x = d.forms[i][n];
+						for (i = 0; !x && d.layers && i < d.layers.length; i++)
+							x = MM_findObj(n, d.layers[i].document);
+						if (!x && d.getElementById)
+							x = d.getElementById(n);
+						return x;
+					}
+				
+					function MM_swapImage() { //v3.0
+						var i, j = 0, x, a = MM_swapImage.arguments;
+						document.MM_sr = new Array;
+						for (i = 0; i < (a.length - 2); i += 3)
+							if ((x = MM_findObj(a[i])) != null) {
+								document.MM_sr[j++] = x;
+								if (!x.oSrc)
+									x.oSrc = x.src;
+								x.src = a[i + 2];
+							}
+					}
+				
+					function MM_popupMsg(msg) { //v1.0
+						alert(msg);
+					}
+				
+					function seleccionarIdioma1() {
+						document.idiomaEspanol.submit();
+					}
+					function seleccionarIdioma3() {
+						document.idiomaEnglish.submit();
+					}
+				</script>
+				<!-- <link href="css/style.css" rel="stylesheet" type="text/css"/>  -->
+				<link href="css/estilos.css" rel="stylesheet" type="text/css">
+				<style type="text/css">
+					<!--
+					.pie{COLOR: #FFFFFF; FONT-FAMILY: Verdana; FONT-SIZE: 8pt; TEXT-DECORATION: none; line-height:160%;}
+					.link_pie{COLOR: #FFFFFF; FONT-FAMILY: Verdana; FONT-SIZE: 8pt; TEXT-DECORATION: none; line-height:160%;}
+					.link_pie:hover{COLOR: #FFFFFF; FONT-FAMILY: Verdana; FONT-SIZE: 8pt; TEXT-DECORATION: underline; line-height:160%;}
+					-->
+				</style>	
+			</head>
+
+			<body bgcolor="#efefef">
+				<div id="fecha">
+					<script type="text/javascript">
+							<!--
+								dows = new Array('Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado');
+								months = new Array('Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
+								now = new Date();
+								dow = now.getDay();
+								d = now.getDate();
+								m = now.getMonth();
+								h = now.getTime();
+								y = now.getFullYear();
+								document.write(dows[dow] + " " + d + " de " + months[m]+ " de " + y);
+							//-->
+					</script>
+				</div>
+				<table width="887"  border="0" align="center" cellpadding="0" cellspacing="0">
+					<tr>
+				    	<td height="109"  valign="top">
+							<table width="100%" cellspacing="0" cellpadding="0">
+				      			<tr>
+				        			<td><table width="100%" height="106" align="center" cellpadding="0" cellspacing="0" background="images/fondo_cabecera.gif">
+  <tr>
+	<td width="51%">
+		<a href="http://www.cnmc.es/" target="_blank">
+			<img src="images/logo.gif" width="144" height="96" hspace="11" alt="CNMC" title="CNMC" border="0">
+		</a>
+	</td>
+	<td width="26%">
+		
+	</td>
+	<td width="23%">
+		
+	</td>
+  </tr>
+</table></td>
+				      			</tr>
+				      			<tr>
+				        			<td height="42" background="images/fondo_menu.gif"></td>
+				      			</tr>
+				    		</table>
+						</td>
+				  	</tr>
+					
+			 	<!-- CONTENIDOS -->
+			 		<tr align="left">		
+						<td height="550" background="images/fondo_lineas.gif" valign="top" style="padding-left: 10px; padding-right: 10px">
+						
+		<div id="contenidohome">
+			<div class="titulo_mapa">
+		    	<div class="texto_titulo"><label style="float:left;">Logística de Productos Petrolíferos</label><label style="margin-left:240px;float:left; margin-right:4px;">Buscar:</label><label class="volver"><a href="buscador.htm"><img src="img/buscar.png"/></a></label></div>
+		        <div class="volver"><a href="javascript:history.back(-1);"><img src="img/volver.png" alt="" title=""/></a></div>
+		    </div>
+			<div class="subtitulo_mapa">
+				<div class="texto_titulo">Características de las instalaciones de almacenamiento</div>
+				<div class="volver">
+					
+							
+						
+							
+					
+					<a href="/hidrocarburos/downloadfile.htm?directorioPadre=carpdfpub"><img src="img/bt_pdf.png"
+						alt="Pulsa para descargar el PDF"
+						title="Pulsa para descargar el PDF" /></a>
+				</div>
+			</div>
+			<div class="texto_mapa">
+				Condiciones de acceso a instalaciones fijas de transporte y almacenamiento de productos petrolíferos líquidos (<a href="https://boe.es/buscar/act.php?id=BOE-A-1998-23284#a41" target="_blank">art. 41 LH</a>)
+			</div>
+			<div class="caja_bidones2">
+				
+        			<div class="fila_bidones">
+						<div class="icono_bidones">
+							<img src="img/bidones/4_mini.png" />
+						</div>
+					<div class="texto_bidones">&nbsp;INST. AEROPORTUARIA - EXOLUM AVIATION</div>
+				</div>
+        		
+        			<div class="fila_bidones">
+						<div class="icono_bidones">
+							<img src="img/bidones/5_mini.png" />
+						</div>
+					<div class="texto_bidones">&nbsp;EXOLUM</div>
+				</div>
+        		
+        			<div class="fila_bidones">
+						<div class="icono_bidones">
+							<img src="img/bidones/8_mini.png" />
+						</div>
+					<div class="texto_bidones">&nbsp;HIDROCARBUROS GUADARRAMA</div>
+				</div>
+        		
+				<div class="fila_bidones">
+					<div class="icono_bidones">
+						<img src="img/bidones/oleoductos.png" />
+					</div>
+					<div class="texto_bidones">Oleoductos de productos</div>
+				</div>
+			</div>
+			<div class="mapa_svg" style="position: relative">
+
+				<div style="position: absolute; left: 0px; top: 0px; z-index: 1;">
+					<img src="img/comunidades/MAD.png" border="0"/>
+				</div>
+				
+        			<div id="161" style="position: absolute; left:249px; top:146px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        		 	
+	        		 		
+	        		 		<a href='instalacion.htm?idTanque=161'>
+	        		 			<img src="imgs/tanques/8.png" alt="HIDROCARBUROS GUADARRAMA &ndash; Guadarrama" title="HIDROCARBUROS GUADARRAMA &ndash; Guadarrama" />
+	        		 		</a>
+	        		 		
+	        		 		
+	        		 		
+        			</div>
+        		
+        			<div id="56" style="position: absolute; left:392px; top:265px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        		 	
+	        		 		
+	        		 		<a href='instalacion.htm?idTanque=56'>
+	        		 			<img src="imgs/tanques/5.png" alt="EXOLUM - Loeches&nbsp;" title="EXOLUM - Loeches&nbsp;" />
+	        		 		</a>
+	        		 		
+	        		 		
+	        		 		
+        			</div>
+        		
+        			<div id="57" style="position: absolute; left:333px; top:232px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        		 	
+	        		 		
+	        		 		<a href='instalacion.htm?idTanque=57'>
+	        		 			<img src="imgs/tanques/5.png" alt="EXOLUM - Torrej&oacute;n de Ardoz" title="EXOLUM - Torrej&oacute;n de Ardoz" />
+	        		 		</a>
+	        		 		
+	        		 		
+	        		 		
+        			</div>
+        		
+        			<div id="59" style="position: absolute; left:300px; top:180px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        				
+	        					<a href='instalacion.htm?idTanque=59'>
+	        		 				<img src="imgs/tanques/4_aer.png" alt="EXOLUM / EXOLUM AVIATION - Barajas" title="EXOLUM / EXOLUM AVIATION - Barajas" />
+	        		 			</a>
+	        			 	
+	        			 	
+	        			
+	        		 		
+        			</div>
+        		
+        			<div id="60" style="position: absolute; left:248px; top:268px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        				
+	        					<a href='instalacion.htm?idTanque=60'>
+	        		 				<img src="imgs/tanques/4_aer.png" alt="EXOLUM / EXOLUM AVIATION - Cuatro Vientos" title="EXOLUM / EXOLUM AVIATION - Cuatro Vientos" />
+	        		 			</a>
+	        			 	
+	        			 	
+	        			
+	        		 		
+        			</div>
+        		
+        			<div id="61" style="position: absolute; left:304px; top:311px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        		 	
+	        		 		
+	        		 		<a href='instalacion.htm?idTanque=61'>
+	        		 			<img src="imgs/tanques/5.png" alt="EXOLUM - Villaverde" title="EXOLUM - Villaverde" />
+	        		 		</a>
+	        		 		
+	        		 		
+	        		 		
+        			</div>
+        		
+        		
+        			<div id="etq25" style="position: absolute; left:435px; top:290px; z-index:6;" >
+            			<span style="font-family:Arial;font-size:14px">Loeches</span>
+        			</div>
+		 		
+        			<div id="etq26" style="position: absolute; left:375px; top:229px; z-index:6;" >
+            			<span style="font-family:Arial;font-size:14px">Torrej&oacute;n de Ardoz</span>
+        			</div>
+		 		
+        			<div id="etq27" style="position: absolute; left:290px; top:223px; z-index:6;" >
+            			<span style="font-family:Arial;font-size:14px">Barajas</span>
+        			</div>
+		 		
+        			<div id="etq28" style="position: absolute; left:142px; top:289px; z-index:6;" >
+            			<span style="font-family:Arial;font-size:14px">Cuatro Vientos</span>
+        			</div>
+		 		
+        			<div id="etq29" style="position: absolute; left:349px; top:386px; z-index:6;" >
+            			<span style="font-family:Arial;font-size:14px">Villaverde</span>
+        			</div>
+		 		
+        			<div id="etq66" style="position: absolute; left:365px; top:65px; z-index:6;" >
+            			<span style="font-family:Arial;font-size:14px">COMUNIDAD DE MADRID</span>
+        			</div>
+		 		
+        			<div id="etq82" style="position: absolute; left:217px; top:196px; z-index:6;" >
+            			<span style="font-family:Arial;font-size:14px">Guadarrama</span>
+        			</div>
+		 		
+			</div>
+		</div>
+		<!--  cierra contenido -->
+
+	
+			</td>
+		</tr>
+	<!-- CONTENIDOS -->  
+		<tr>
+			<td background="images/pie_fondo.gif">
+				<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+					<tr>
+			    		<td height="36" background="images/pie_pagina.gif"><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+  <tr>
+	<td height="3"></td>
+  </tr>
+  <tr>
+	<td class="pie" align="center">&copy; 
+	<script type="text/javascript">
+		document.write(y); 
+	</script> &ndash;&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.cnmc.es/" target="_blank" class="link_pie">www.cnmc.es</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.cnmc.es/Inicio/tabid/56/ctl/Privacy/language/es-ES/Default.aspx" target="_blank" class="link_pie">Política de Privacidad y Aviso Legal</a></td>
+  </tr>
+</table></td>
+				    </tr>		    
+		    	</table>
+			</td>
+	  	</tr>
+	 </table>
+
+
+<!-- Articulo 41  -->
+<div id="light" class="white_content"><b style="color:#007962; font-size:13px;">Artículo 41.1 de la Ley 34/1998, de 7 de octubre, del Sector de Hidrocarburos</b><br/><br/>
+
+    "Los titulares de instalaciones fijas de almacenamiento y transporte de productos petrolíferos, autorizadas conforme a lo dispuesto en el artículo 40 de la presente Ley, deberán permitir el acceso de terceros mediante un procedimiento negociado, en condiciones técnicas y económicas no discriminatorias, transparentes y objetivas, aplicando precios que deberán hacer públicos. No obstante, el Gobierno podrá establecer peajes de acceso para territorios insulares y para aquellas zonas del territorio nacional donde no existan infraestructuras alternativas de transporte y almacenamiento o éstas se consideren insuficientes.
+        <br/><br/>
+
+
+    Los titulares de instalaciones fijas de almacenamiento y transporte de productos petrolíferos que, de acuerdo con lo previsto en el párrafo anterior, deban permitir el acceso de terceros, habrán de comunicar a la Comisión Nacional de Energía los contratos que suscriban, la relación de precios por la utilización de las referidas instalaciones, así como las modificaciones que se produzcan en los mismos en un plazo máximo de tres meses. La Comisión Nacional de Energía hará pública esta información en los términos previstos en la disposición adicional undécima, apartado tercero, número 4, de esta Ley.
+    <br/><br/>
+
+    Reglamentariamente, se establecerá el procedimiento de comunicación a la Comisión Nacional de Energía de los conflictos que puedan suscitarse en la negociación de los contratos de acceso a instalaciones de transporte o almacenamiento. "
+    <br/><br/>
+
+    Introducido por el artículo 2 del Real Decreto-ley 6/2000, de 23 de junio, de Medidas Urgentes de Intensificación de la Competencia en Mercados de Bienes y Servicios, y modificado por el artículo único.4 de la Ley 12/2007, de 2 de julio, por la que se modifica la Ley 34/1998, de 7 de octubre, del Sector de Hidrocarburos.<br/><br/>
+    
+    <center><a href="http://www.cne.es/cne/contenido.jsp?id_nodo=510&&&keyword=&auditoria=F">Acceda a la legislación energética</a></center>
+
+ 	<span style="float:right"> 
+ 		<a href="javascript:void(0)" onclick="document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Cerrar</a>
+	</span>
+
+</div>
+<div id="fade" class="black_overlay"></div>
+<!-- Fin Articulo 41  -->
+
+
+</body>
+</html>

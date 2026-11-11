@@ -10,9 +10,12 @@ from __future__ import annotations
 import argparse
 import sys
 from collections.abc import Callable, Sequence
+from datetime import date
 from pathlib import Path
 
 from . import __version__
+from .almacen import AlmacenCrudo
+from .avisos import Aviso
 from .config import USER_AGENT, Rutas
 
 # Códigos de salida: 0 correcto, 1 terminó pero con errores registrados
@@ -28,6 +31,64 @@ def _pendiente(nombre: str) -> Callable[[argparse.Namespace], int]:
     return orden
 
 
+def _hoy() -> str:
+    return date.today().isoformat()
+
+
+def _resumir(avisos: list[Aviso]) -> int:
+    """Imprime los avisos y devuelve el código de salida que corresponde."""
+    for a in avisos:
+        operador = f" [{a.operador}]" if a.operador else ""
+        print(f"{a.nivel.upper():5s} {a.tipo} {a.recurso}{operador}: {a.texto}", file=sys.stderr)
+    errores = sum(a.es_error for a in avisos)
+    print(f"{errores} errores, {len(avisos) - errores} avisos", file=sys.stderr)
+    return SALIDA_CON_ERRORES if errores else SALIDA_OK
+
+
+def _descubrir(args: argparse.Namespace) -> int:
+    # Importación local: `servir` no debe cargar nunca el código de red.
+    from .descarga import Descargador, ErrorDescarga
+    from .inventario import construir_inventario, descargar_descubrimiento, guardar_inventario
+
+    rutas = Rutas(args.raiz)
+    almacen = AlmacenCrudo(rutas.raw, args.fecha)
+    try:
+        with Descargador(almacen) as desc:
+            avisos = descargar_descubrimiento(desc)
+            print(f"{desc.peticiones} peticiones", file=sys.stderr)
+    except ErrorDescarga as exc:  # robots.txt inaccesible: no se sigue
+        return _resumir([Aviso("error", "descarga", "robots/robots", str(exc))])
+    inventario, mas = construir_inventario(almacen)
+    guardar_inventario(inventario, rutas.inventario)
+    cc = inventario["control_cruzado"]
+    print(
+        f"{len(inventario['instalaciones'])} instalaciones, {len(inventario['detalles'])} detalles "
+        f"(buscador: {cc['detalles_en_buscador']}), {len(inventario['operadores'])} operadores "
+        f"→ {rutas.inventario}"
+    )
+    return _resumir(avisos + mas)
+
+
+def _actualizar(args: argparse.Namespace) -> int:
+    from .actualizar import descargar_inventario
+    from .descarga import Descargador, ErrorDescarga
+    from .inventario import cargar_inventario
+
+    rutas = Rutas(args.raiz)
+    if not rutas.inventario.exists():
+        print("Falta config/inventario.json: ejecuta antes «descubrir».", file=sys.stderr)
+        return SALIDA_USO
+    almacen = AlmacenCrudo(rutas.raw, args.fecha)
+    try:
+        with Descargador(almacen) as desc:
+            avisos = descargar_inventario(desc, cargar_inventario(rutas.inventario))
+            print(f"{desc.peticiones} peticiones", file=sys.stderr)
+    except ErrorDescarga as exc:
+        return _resumir([Aviso("error", "descarga", "robots/robots", str(exc))])
+    print(f"{len(almacen.entradas())} recursos en {almacen.dir}")
+    return _resumir(avisos)
+
+
 def _info(args: argparse.Namespace) -> int:
     rutas = Rutas(args.raiz)
     print(f"versión:     {__version__}")
@@ -41,8 +102,8 @@ def _info(args: argparse.Namespace) -> int:
 
 
 ORDENES: dict[str, tuple[str, Callable[[argparse.Namespace], int]]] = {
-    "descubrir": ("Mapas + buscador → config/inventario.json", _pendiente("descubrir")),
-    "actualizar": ("Descarga todo el inventario a raw/ y carga la base", _pendiente("actualizar")),
+    "descubrir": ("Mapas + buscador → config/inventario.json", _descubrir),
+    "actualizar": ("Descarga todo el inventario a raw/ y carga la base", _actualizar),
     "reconstruir": ("Crea una base nueva a partir de raw/", _pendiente("reconstruir")),
     "servir": ("Arranca el servidor MCP (solo lectura)", _pendiente("servir")),
     "info": ("Muestra versión, rutas y estado local", _info),
@@ -57,7 +118,12 @@ def crear_parser() -> argparse.ArgumentParser:
     )
     sub = parser.add_subparsers(dest="orden", required=True)
     for nombre, (ayuda, funcion) in ORDENES.items():
-        sub.add_parser(nombre, help=ayuda).set_defaults(funcion=funcion)
+        orden = sub.add_parser(nombre, help=ayuda)
+        orden.set_defaults(funcion=funcion)
+        if nombre in ("descubrir", "actualizar"):
+            orden.add_argument(
+                "--fecha", default=_hoy(), help="Foto de raw/ en la que se guarda (AAAA-MM-DD)"
+            )
     return parser
 
 

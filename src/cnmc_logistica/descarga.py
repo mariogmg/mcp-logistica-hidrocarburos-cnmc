@@ -1,6 +1,7 @@
 """Descargador educado.
 
 - Una sola conexión y como mínimo 1 s entre peticiones (suelo no configurable).
+- Peticiones sin estado: no se conservan cookies entre una y otra.
 - robots.txt se consulta en cada ejecución antes de pedir nada más.
 - Reintentos con espera exponencial solo ante fallos transitorios (red, 429,
   5xx). Un 404 no se reintenta: insistir no lo arregla y es ruido para el servidor.
@@ -85,6 +86,9 @@ class Descargador:
             espera = self.espera_base * 2 ** (intento - 1)
             try:
                 respuesta = self._cliente.get(url)
+                # Sin estado: el buscador guarda la página actual en la sesión y
+                # contaminaría la búsqueda siguiente. Cada petición va sin cookies.
+                self._cliente.cookies.clear()
             except httpx.TransportError as exc:
                 ultimo_error = f"{type(exc).__name__}: {exc}"
             else:

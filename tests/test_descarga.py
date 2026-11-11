@@ -264,3 +264,18 @@ def test_fechas_disponibles(tmp_path):
         )
     (raw / "basura").mkdir()
     assert AlmacenCrudo.fechas(raw) == ["2026-11-11", "2026-12-01"]
+
+
+def test_no_conserva_cookies_entre_peticiones(tmp_path):
+    # El buscador del portal guarda la página en la sesión: con cookies, la
+    # búsqueda de un almacenista heredaba la página de la anterior.
+    vistos = []
+    urls = {
+        f"{BASE}/a.htm": httpx.Response(200, text="a", headers={"set-cookie": "JSESSIONID=abc"}),
+        f"{BASE}/b.htm": httpx.Response(200, text="b"),
+    }
+    d, _, _ = crear(tmp_path, portal(paginas=urls, vistos=vistos))
+    d.comprobar_robots()
+    for i, u in enumerate(urls):
+        d.obtener(Recurso("ficha", str(i), u))
+    assert all("cookie" not in r.headers for r in vistos)

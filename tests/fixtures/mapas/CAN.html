@@ -1,0 +1,577 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+			
+			
+			<html xmlns="http://www.w3.org/1999/xhtml">
+			<head>
+				<title>CNMC</title>
+				<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+				<meta http-equiv="expires" content="0"/>
+				<script type="text/javascript">
+                    (function(i,s,o,g,r,a,m){
+                        i['GoogleAnalyticsObject']=r;
+                        i[r]=i[r]||
+                            function(){
+                                (i[r].q=i[r].q||
+                                    []).push(arguments)},
+                            i[r].l=1*new Date();
+                        a=s.createElement(o),
+                            m=s.getElementsByTagName(o)[0];
+                        a.async=1;
+                        a.src=g;
+                        m.parentNode.insertBefore(a,m)
+                    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+                    ga('create', 'UA-44616095-29', 'auto');
+                    ga('send', 'pageview');
+
+
+					var msgError = "";
+				
+					function validar(f) {
+						msgError = "";
+						var ok = true;
+				
+						ok = validar_form(f);
+				
+						if (!ok) {
+							alert(msgError);
+						}
+						f.flag.value = 'user';
+						return (ok);
+					}
+				
+					function MM_swapImgRestore() { //v3.0
+						var i, x, a = document.MM_sr;
+						for (i = 0; a && i < a.length && (x = a[i]) && x.oSrc; i++)
+							x.src = x.oSrc;
+					}
+				
+					function MM_preloadImages() { //v3.0
+						var d = document;
+						if (d.images) {
+							if (!d.MM_p)
+								d.MM_p = new Array();
+							var i, j = d.MM_p.length, a = MM_preloadImages.arguments;
+							for (i = 0; i < a.length; i++)
+								if (a[i].indexOf("#") != 0) {
+									d.MM_p[j] = new Image;
+									d.MM_p[j++].src = a[i];
+								}
+						}
+					}
+				
+					function MM_findObj(n, d) { //v4.01
+						var p, i, x;
+						if (!d)
+							d = document;
+						if ((p = n.indexOf("?")) > 0 && parent.frames.length) {
+							d = parent.frames[n.substring(p + 1)].document;
+							n = n.substring(0, p);
+						}
+						if (!(x = d[n]) && d.all)
+							x = d.all[n];
+						for (i = 0; !x && i < d.forms.length; i++)
+							x = d.forms[i][n];
+						for (i = 0; !x && d.layers && i < d.layers.length; i++)
+							x = MM_findObj(n, d.layers[i].document);
+						if (!x && d.getElementById)
+							x = d.getElementById(n);
+						return x;
+					}
+				
+					function MM_swapImage() { //v3.0
+						var i, j = 0, x, a = MM_swapImage.arguments;
+						document.MM_sr = new Array;
+						for (i = 0; i < (a.length - 2); i += 3)
+							if ((x = MM_findObj(a[i])) != null) {
+								document.MM_sr[j++] = x;
+								if (!x.oSrc)
+									x.oSrc = x.src;
+								x.src = a[i + 2];
+							}
+					}
+				
+					function MM_popupMsg(msg) { //v1.0
+						alert(msg);
+					}
+				
+					function seleccionarIdioma1() {
+						document.idiomaEspanol.submit();
+					}
+					function seleccionarIdioma3() {
+						document.idiomaEnglish.submit();
+					}
+				</script>
+				<!-- <link href="css/style.css" rel="stylesheet" type="text/css"/>  -->
+				<link href="css/estilos.css" rel="stylesheet" type="text/css">
+				<style type="text/css">
+					<!--
+					.pie{COLOR: #FFFFFF; FONT-FAMILY: Verdana; FONT-SIZE: 8pt; TEXT-DECORATION: none; line-height:160%;}
+					.link_pie{COLOR: #FFFFFF; FONT-FAMILY: Verdana; FONT-SIZE: 8pt; TEXT-DECORATION: none; line-height:160%;}
+					.link_pie:hover{COLOR: #FFFFFF; FONT-FAMILY: Verdana; FONT-SIZE: 8pt; TEXT-DECORATION: underline; line-height:160%;}
+					-->
+				</style>	
+			</head>
+
+			<body bgcolor="#efefef">
+				<div id="fecha">
+					<script type="text/javascript">
+							<!--
+								dows = new Array('Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado');
+								months = new Array('Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
+								now = new Date();
+								dow = now.getDay();
+								d = now.getDate();
+								m = now.getMonth();
+								h = now.getTime();
+								y = now.getFullYear();
+								document.write(dows[dow] + " " + d + " de " + months[m]+ " de " + y);
+							//-->
+					</script>
+				</div>
+				<table width="887"  border="0" align="center" cellpadding="0" cellspacing="0">
+					<tr>
+				    	<td height="109"  valign="top">
+							<table width="100%" cellspacing="0" cellpadding="0">
+				      			<tr>
+				        			<td><table width="100%" height="106" align="center" cellpadding="0" cellspacing="0" background="images/fondo_cabecera.gif">
+  <tr>
+	<td width="51%">
+		<a href="http://www.cnmc.es/" target="_blank">
+			<img src="images/logo.gif" width="144" height="96" hspace="11" alt="CNMC" title="CNMC" border="0">
+		</a>
+	</td>
+	<td width="26%">
+		
+	</td>
+	<td width="23%">
+		
+	</td>
+  </tr>
+</table></td>
+				      			</tr>
+				      			<tr>
+				        			<td height="42" background="images/fondo_menu.gif"></td>
+				      			</tr>
+				    		</table>
+						</td>
+				  	</tr>
+					
+			 	<!-- CONTENIDOS -->
+			 		<tr align="left">		
+						<td height="550" background="images/fondo_lineas.gif" valign="top" style="padding-left: 10px; padding-right: 10px">
+						
+		<div id="contenidohome">
+			<div class="titulo_mapa">
+		    	<div class="texto_titulo"><label style="float:left;">Logística de Productos Petrolíferos</label><label style="margin-left:240px;float:left; margin-right:4px;">Buscar:</label><label class="volver"><a href="buscador.htm"><img src="img/buscar.png"/></a></label></div>
+		        <div class="volver"><a href="javascript:history.back(-1);"><img src="img/volver.png" alt="" title=""/></a></div>
+		    </div>
+			<div class="subtitulo_mapa">
+				<div class="texto_titulo">Características de las instalaciones de almacenamiento</div>
+				<div class="volver">
+					
+							
+						
+							
+					
+					<a href="/hidrocarburos/downloadfile.htm?directorioPadre=carpdfpub"><img src="img/bt_pdf.png"
+						alt="Pulsa para descargar el PDF"
+						title="Pulsa para descargar el PDF" /></a>
+				</div>
+			</div>
+			<div class="texto_mapa">
+				Condiciones de acceso a instalaciones fijas de transporte y almacenamiento de productos petrolíferos líquidos (<a href="https://boe.es/buscar/act.php?id=BOE-A-1998-23284#a41" target="_blank">art. 41 LH</a>)
+			</div>
+			<div class="caja_bidones2">
+				
+        			<div class="fila_bidones">
+						<div class="icono_bidones">
+							<img src="img/bidones/3_mini.png" />
+						</div>
+					<div class="texto_bidones">&nbsp;DISA Grupo</div>
+				</div>
+        		
+        			<div class="fila_bidones">
+						<div class="icono_bidones">
+							<img src="img/bidones/4_mini.png" />
+						</div>
+					<div class="texto_bidones">&nbsp;INST. AEROPORTUARIA - MOEVE AVIATION</div>
+				</div>
+        		
+        			<div class="fila_bidones">
+						<div class="icono_bidones">
+							<img src="img/bidones/4_mini.png" />
+						</div>
+					<div class="texto_bidones">&nbsp;INST.AEROPORTUARIA - CMD</div>
+				</div>
+        		
+        			<div class="fila_bidones">
+						<div class="icono_bidones">
+							<img src="img/bidones/4_mini.png" />
+						</div>
+					<div class="texto_bidones">&nbsp;INST. AEROPORTUARIA - EXOLUM AVIATION</div>
+				</div>
+        		
+        			<div class="fila_bidones">
+						<div class="icono_bidones">
+							<img src="img/bidones/6_mini.png" />
+						</div>
+					<div class="texto_bidones">&nbsp;MINERVA COMBUSTIBLES LAS PALMAS</div>
+				</div>
+        		
+        			<div class="fila_bidones">
+						<div class="icono_bidones">
+							<img src="img/bidones/8_mini.png" />
+						</div>
+					<div class="texto_bidones">&nbsp;MOEVE TERMINALS CANARIAS</div>
+				</div>
+        		
+        			<div class="fila_bidones">
+						<div class="icono_bidones">
+							<img src="img/bidones/10_mini.png" />
+						</div>
+					<div class="texto_bidones">&nbsp;ORYX IBERIA</div>
+				</div>
+        		
+        			<div class="fila_bidones">
+						<div class="icono_bidones">
+							<img src="img/bidones/17_mini.png" />
+						</div>
+					<div class="texto_bidones">&nbsp;PETROLOGIS CANARIAS</div>
+				</div>
+        		
+        			<div class="fila_bidones">
+						<div class="icono_bidones">
+							<img src="img/bidones/18_mini.png" />
+						</div>
+					<div class="texto_bidones">&nbsp;TERMINALES CANARIOS</div>
+				</div>
+        		
+				<div class="fila_bidones">
+					<div class="icono_bidones">
+						<img src="img/bidones/oleoductos.png" />
+					</div>
+					<div class="texto_bidones">Oleoductos de productos</div>
+				</div>
+			</div>
+			<div class="mapa_svg" style="position: relative">
+
+				<div style="position: absolute; left: 0px; top: 0px; z-index: 1;">
+					<img src="img/comunidades/CAN.png" border="0"/>
+				</div>
+				
+        			<div id="135" style="position: absolute; left:299px; top:343px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        		 	
+	        		 		
+	        		 		
+	        		 			<img src="imgs/tanques/6.png" alt="MINERVA COMBUSTIBLES LAS PALMAS - Las Palmas de Gran Canaria. A la fecha de la &uacute;ltima actualizaci&oacute;n, la instalaci&oacute;n se destina al uso propio del almacenista." title="MINERVA COMBUSTIBLES LAS PALMAS - Las Palmas de Gran Canaria. A la fecha de la &uacute;ltima actualizaci&oacute;n, la instalaci&oacute;n se destina al uso propio del almacenista." />
+	        		 		
+	        		 		
+        			</div>
+        		
+        			<div id="141" style="position: absolute; left:285px; top:239px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        		 	
+	        		 		
+	        		 		
+	        		 			<img src="imgs/tanques/10.png" alt="ORYX IBERIA - Puerto de la Luz. Las Palmas de Gran Canaria. A la fecha de la &uacute;ltima actualizaci&oacute;n, la instalaci&oacute;n se destina al uso propio del almacenista" title="ORYX IBERIA - Puerto de la Luz. Las Palmas de Gran Canaria. A la fecha de la &uacute;ltima actualizaci&oacute;n, la instalaci&oacute;n se destina al uso propio del almacenista" />
+	        		 		
+	        		 		
+        			</div>
+        		
+        			<div id="103" style="position: absolute; left:27px; top:310px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        		 	
+	        		 		
+	        		 		<a href='instalacion.htm?idTanque=103'>
+	        		 			<img src="imgs/tanques/3.png" alt="DISA EL HIERRO - El Hierro" title="DISA EL HIERRO - El Hierro" />
+	        		 		</a>
+	        		 		
+	        		 		
+	        		 		
+        			</div>
+        		
+        			<div id="104" style="position: absolute; left:114px; top:262px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        		 	
+	        		 		
+	        		 		<a href='instalacion.htm?idTanque=104'>
+	        		 			<img src="imgs/tanques/3.png" alt="DISA LA GOMERA - La Gomera" title="DISA LA GOMERA - La Gomera" />
+	        		 		</a>
+	        		 		
+	        		 		
+	        		 		
+        			</div>
+        		
+        			<div id="105" style="position: absolute; left:40px; top:162px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        		 	
+	        		 		
+	        		 		<a href='instalacion.htm?idTanque=105'>
+	        		 			<img src="imgs/tanques/3.png" alt="DISA LA PALMA - La Palma" title="DISA LA PALMA - La Palma" />
+	        		 		</a>
+	        		 		
+	        		 		
+	        		 		
+        			</div>
+        		
+        			<div id="106" style="position: absolute; left:43px; top:195px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        				
+	        					<a href='instalacion.htm?idTanque=106'>
+	        		 				<img src="imgs/tanques/4_aer.png" alt="MOEVE AVIATION - Aeropuerto de La Palma" title="MOEVE AVIATION - Aeropuerto de La Palma" />
+	        		 			</a>
+	        			 	
+	        			 	
+	        			
+	        		 		
+        			</div>
+        		
+        			<div id="107" style="position: absolute; left:193px; top:277px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        				
+	        					<a href='instalacion.htm?idTanque=107'>
+	        		 				<img src="imgs/tanques/4_aer.png" alt="EXOLUM / EXOLUM AVIATION - Aeropuerto Tenerife Sur" title="EXOLUM / EXOLUM AVIATION - Aeropuerto Tenerife Sur" />
+	        		 			</a>
+	        			 	
+	        			 	
+	        			
+	        		 		
+        			</div>
+        		
+        			<div id="109" style="position: absolute; left:216px; top:268px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        		 	
+	        		 		
+	        		 		<a href='instalacion.htm?idTanque=109'>
+	        		 			<img src="imgs/tanques/8.png" alt="MOEVE TERMINALS CANARIAS - Santa Cruz de Tenerife" title="MOEVE TERMINALS CANARIAS - Santa Cruz de Tenerife" />
+	        		 		</a>
+	        		 		
+	        		 		
+	        		 		
+        			</div>
+        		
+        			<div id="110" style="position: absolute; left:221px; top:236px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        		 	
+	        		 		
+	        		 		<a href='instalacion.htm?idTanque=110'>
+	        		 			<img src="imgs/tanques/18.png" alt="TERMINALES CANARIOS - Santa Cruz de Tenerife" title="TERMINALES CANARIOS - Santa Cruz de Tenerife" />
+	        		 		</a>
+	        		 		
+	        		 		
+	        		 		
+        			</div>
+        		
+        			<div id="111" style="position: absolute; left:202px; top:229px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        				
+	        					<a href='instalacion.htm?idTanque=111'>
+	        		 				<img src="imgs/tanques/4_aer.png" alt="MOEVE AVIATION - Aeropuerto Tenerife Norte-Ciudad de La Laguna" title="MOEVE AVIATION - Aeropuerto Tenerife Norte-Ciudad de La Laguna" />
+	        		 			</a>
+	        			 	
+	        			 	
+	        			
+	        		 		
+        			</div>
+        		
+        			<div id="112" style="position: absolute; left:546px; top:143px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        		 	
+	        		 		
+	        		 		<a href='instalacion.htm?idTanque=112'>
+	        		 			<img src="imgs/tanques/3.png" alt="DISA LANZAROTE - Arrecife (Lanzarote)" title="DISA LANZAROTE - Arrecife (Lanzarote)" />
+	        		 		</a>
+	        		 		
+	        		 		
+	        		 		
+        			</div>
+        		
+        			<div id="113" style="position: absolute; left:523px; top:157px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        				
+	        					<a href='instalacion.htm?idTanque=113'>
+	        		 				<img src="imgs/tanques/4_aer.png" alt="CMD - Aeropuerto de Lanzarote" title="CMD - Aeropuerto de Lanzarote" />
+	        		 			</a>
+	        			 	
+	        			 	
+	        			
+	        		 		
+        			</div>
+        		
+        			<div id="114" style="position: absolute; left:511px; top:206px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        		 	
+	        		 		
+	        		 		<a href='instalacion.htm?idTanque=114'>
+	        		 			<img src="imgs/tanques/3.png" alt="DISA FUERTEVENTURA - Puerto Rosario (Fuerteventura)" title="DISA FUERTEVENTURA - Puerto Rosario (Fuerteventura)" />
+	        		 		</a>
+	        		 		
+	        		 		
+	        		 		
+        			</div>
+        		
+        			<div id="115" style="position: absolute; left:498px; top:230px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        				
+	        					<a href='instalacion.htm?idTanque=115'>
+	        		 				<img src="imgs/tanques/4_aer.png" alt="CMD  - Aeropuerto de Fuerteventura" title="CMD  - Aeropuerto de Fuerteventura" />
+	        		 			</a>
+	        			 	
+	        			 	
+	        			
+	        		 		
+        			</div>
+        		
+        			<div id="116" style="position: absolute; left:335px; top:268px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        				
+	        					<a href='instalacion.htm?idTanque=116'>
+	        		 				<img src="imgs/tanques/4_aer.png" alt="CMD - Aeropuerto de Gran Canaria" title="CMD - Aeropuerto de Gran Canaria" />
+	        		 			</a>
+	        			 	
+	        			 	
+	        			
+	        		 		
+        			</div>
+        		
+        			<div id="118" style="position: absolute; left:324px; top:309px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        		 	
+	        		 		
+	        		 		<a href='instalacion.htm?idTanque=118'>
+	        		 			<img src="imgs/tanques/3.png" alt="DISA GRAN CANARIA - Salinetas (Gran Canaria)" title="DISA GRAN CANARIA - Salinetas (Gran Canaria)" />
+	        		 		</a>
+	        		 		
+	        		 		
+	        		 		
+        			</div>
+        		
+        			<div id="119" style="position: absolute; left:319px; top:261px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        		 	
+	        		 		
+	        		 		<a href='instalacion.htm?idTanque=119'>
+	        		 			<img src="imgs/tanques/18.png" alt="TERMINALES CANARIOS - Las Palmas de Gran Canaria" title="TERMINALES CANARIOS - Las Palmas de Gran Canaria" />
+	        		 		</a>
+	        		 		
+	        		 		
+	        		 		
+        			</div>
+        		
+        			<div id="121" style="position: absolute; left:275px; top:327px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        		 	
+	        		 		
+	        		 		<a href='instalacion.htm?idTanque=121'>
+	        		 			<img src="imgs/tanques/17.png" alt="PETROLOGIS CANARIAS - Las Palmas de Gran Canaria" title="PETROLOGIS CANARIAS - Las Palmas de Gran Canaria" />
+	        		 		</a>
+	        		 		
+	        		 		
+	        		 		
+        			</div>
+        		
+        			<div id="123" style="position: absolute; left:281px; top:288px; z-index:3; width: 18px; height: 14px;" >
+	        			
+	        		 	
+	        		 		
+	        		 		<a href='instalacion.htm?idTanque=123'>
+	        		 			<img src="imgs/tanques/8.png" alt="MOEVE TERMINALS CANARIAS - Las Palmas de Gran Canaria" title="MOEVE TERMINALS CANARIAS - Las Palmas de Gran Canaria" />
+	        		 		</a>
+	        		 		
+	        		 		
+	        		 		
+        			</div>
+        		
+        		
+        			<div id="etq52" style="position: absolute; left:491px; top:138px; z-index:6;" >
+            			<span style="font-family:Arial;font-size:14px">Lanzarote</span>
+        			</div>
+		 		
+        			<div id="etq53" style="position: absolute; left:411px; top:211px; z-index:6;" >
+            			<span style="font-family:Arial;font-size:14px">Fuerteventura</span>
+        			</div>
+		 		
+        			<div id="etq54" style="position: absolute; left:340px; top:376px; z-index:6;" >
+            			<span style="font-family:Arial;font-size:14px">Gran Canaria</span>
+        			</div>
+		 		
+        			<div id="etq55" style="position: absolute; left:183px; top:199px; z-index:6;" >
+            			<span style="font-family:Arial;font-size:14px">Tenerife</span>
+        			</div>
+		 		
+        			<div id="etq56" style="position: absolute; left:100px; top:310px; z-index:6;" >
+            			<span style="font-family:Arial;font-size:14px">La Gomera</span>
+        			</div>
+		 		
+        			<div id="etq57" style="position: absolute; left:32px; top:357px; z-index:6;" >
+            			<span style="font-family:Arial;font-size:14px">El Hierro</span>
+        			</div>
+		 		
+        			<div id="etq58" style="position: absolute; left:73px; top:225px; z-index:6;" >
+            			<span style="font-family:Arial;font-size:14px">La Palma</span>
+        			</div>
+		 		
+        			<div id="etq78" style="position: absolute; left:274px; top:49px; z-index:6;" >
+            			<span style="font-family:Arial;font-size:14px">CANARIAS</span>
+        			</div>
+		 		
+			</div>
+		</div>
+		<!--  cierra contenido -->
+
+	
+			</td>
+		</tr>
+	<!-- CONTENIDOS -->  
+		<tr>
+			<td background="images/pie_fondo.gif">
+				<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+					<tr>
+			    		<td height="36" background="images/pie_pagina.gif"><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+  <tr>
+	<td height="3"></td>
+  </tr>
+  <tr>
+	<td class="pie" align="center">&copy; 
+	<script type="text/javascript">
+		document.write(y); 
+	</script> &ndash;&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.cnmc.es/" target="_blank" class="link_pie">www.cnmc.es</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.cnmc.es/Inicio/tabid/56/ctl/Privacy/language/es-ES/Default.aspx" target="_blank" class="link_pie">Política de Privacidad y Aviso Legal</a></td>
+  </tr>
+</table></td>
+				    </tr>		    
+		    	</table>
+			</td>
+	  	</tr>
+	 </table>
+
+
+<!-- Articulo 41  -->
+<div id="light" class="white_content"><b style="color:#007962; font-size:13px;">Artículo 41.1 de la Ley 34/1998, de 7 de octubre, del Sector de Hidrocarburos</b><br/><br/>
+
+    "Los titulares de instalaciones fijas de almacenamiento y transporte de productos petrolíferos, autorizadas conforme a lo dispuesto en el artículo 40 de la presente Ley, deberán permitir el acceso de terceros mediante un procedimiento negociado, en condiciones técnicas y económicas no discriminatorias, transparentes y objetivas, aplicando precios que deberán hacer públicos. No obstante, el Gobierno podrá establecer peajes de acceso para territorios insulares y para aquellas zonas del territorio nacional donde no existan infraestructuras alternativas de transporte y almacenamiento o éstas se consideren insuficientes.
+        <br/><br/>
+
+
+    Los titulares de instalaciones fijas de almacenamiento y transporte de productos petrolíferos que, de acuerdo con lo previsto en el párrafo anterior, deban permitir el acceso de terceros, habrán de comunicar a la Comisión Nacional de Energía los contratos que suscriban, la relación de precios por la utilización de las referidas instalaciones, así como las modificaciones que se produzcan en los mismos en un plazo máximo de tres meses. La Comisión Nacional de Energía hará pública esta información en los términos previstos en la disposición adicional undécima, apartado tercero, número 4, de esta Ley.
+    <br/><br/>
+
+    Reglamentariamente, se establecerá el procedimiento de comunicación a la Comisión Nacional de Energía de los conflictos que puedan suscitarse en la negociación de los contratos de acceso a instalaciones de transporte o almacenamiento. "
+    <br/><br/>
+
+    Introducido por el artículo 2 del Real Decreto-ley 6/2000, de 23 de junio, de Medidas Urgentes de Intensificación de la Competencia en Mercados de Bienes y Servicios, y modificado por el artículo único.4 de la Ley 12/2007, de 2 de julio, por la que se modifica la Ley 34/1998, de 7 de octubre, del Sector de Hidrocarburos.<br/><br/>
+    
+    <center><a href="http://www.cne.es/cne/contenido.jsp?id_nodo=510&&&keyword=&auditoria=F">Acceda a la legislación energética</a></center>
+
+ 	<span style="float:right"> 
+ 		<a href="javascript:void(0)" onclick="document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Cerrar</a>
+	</span>
+
+</div>
+<div id="fade" class="black_overlay"></div>
+<!-- Fin Articulo 41  -->
+
+
+</body>
+</html>

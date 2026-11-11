@@ -1,0 +1,2981 @@
+{
+  "fecha": "2026-11-11",
+  "comunidades": {
+    "AND": "ANDALUCÍA",
+    "ARA": "ARAGÓN",
+    "AST": "ASTURIAS",
+    "BAL": "ISLAS BALEARES",
+    "CAN": "CANARIAS",
+    "CANT": "CANTABRIA",
+    "CAT": "CATALUÑA",
+    "CEM": "CEUTA / MELILLA",
+    "EXT": "EXTREMADURA",
+    "GAL": "GALICIA",
+    "LEO": "CASTILLA Y LEÓN",
+    "MAD": "MADRID",
+    "MAN": "CASTILLA-LA MANCHA",
+    "MUR": "MURCIA",
+    "NAV": "NAVARRA",
+    "PV": "PAÍS VASCO",
+    "RIO": "LA RIOJA",
+    "VAL": "COMUNIDAD VALENCIANA"
+  },
+  "operadores": [
+    {
+      "codigo": "AEGEAN",
+      "nombre": "AEGEAN BUNKERING COMBUSTIBLES LAS PALMAS, S.A. (DESDE FEB-21 MINERVA COMBUSTIBLES LAS PALMAS, S.A.)",
+      "detalles": 0
+    },
+    {
+      "codigo": "ALKION",
+      "nombre": "CHANE TERMINAL SANTANDER, S.A. (ANTES DE MAR-25 ALKION TERMINAL SANTANDER, S.A.)",
+      "detalles": 0
+    },
+    {
+      "codigo": "ATLAS",
+      "nombre": "ATLAS S.A., COMBUSTIBLES Y LUBRIFICANTES",
+      "detalles": 2
+    },
+    {
+      "codigo": "CEPSAAVI",
+      "nombre": "MOEVE AVIATION, S.A.U. (ANTES DE SEP-25 CEPSA AVIACIÓN, S.A.)",
+      "detalles": 2
+    },
+    {
+      "codigo": "CLH",
+      "nombre": "EXOLUM CORPORATION, S.A.",
+      "detalles": 88
+    },
+    {
+      "codigo": "CLHAV",
+      "nombre": "EXOLUM AVIATION, S.A.",
+      "detalles": 89
+    },
+    {
+      "codigo": "CMD",
+      "nombre": "CMD AEROPUERTOS CANARIOS, S.L.",
+      "detalles": 3
+    },
+    {
+      "codigo": "DBA BILBAO PORT",
+      "nombre": "DBA BILBAO PORT S.L.",
+      "detalles": 2
+    },
+    {
+      "codigo": "DECAL",
+      "nombre": "DECAL ESPAÑA, S.A.U.",
+      "detalles": 9
+    },
+    {
+      "codigo": "DEPOSA",
+      "nombre": "DEPOSITOS PORTUARIOS, S.A.",
+      "detalles": 0
+    },
+    {
+      "codigo": "DISA",
+      "nombre": "DISA GRUPO",
+      "detalles": 10
+    },
+    {
+      "codigo": "DISRATL",
+      "nombre": "DISA RETAIL ATLÁNTICO, S.L.U.",
+      "detalles": 0
+    },
+    {
+      "codigo": "DUCAR",
+      "nombre": "PETROLIFERA DUCAR, S.L.",
+      "detalles": 1
+    },
+    {
+      "codigo": "ESERGUI",
+      "nombre": "ESTACIONES DE SERVICIO DE GUIPUZCOA, S.A.",
+      "detalles": 2
+    },
+    {
+      "codigo": "EUROE",
+      "nombre": "EUROENERGO ESPAÑA, S.L.",
+      "detalles": 1
+    },
+    {
+      "codigo": "EVOS",
+      "nombre": "EVOS ALGECIRAS SAU",
+      "detalles": 1
+    },
+    {
+      "codigo": "FOATL",
+      "nombre": "FORESTAL DEL ATLÁNTICO, S.A.",
+      "detalles": 2
+    },
+    {
+      "codigo": "FORES",
+      "nombre": "FORESA INDUSTRIAS QUIMICAS DEL NOROESTE, S.A.",
+      "detalles": 1
+    },
+    {
+      "codigo": "GALPEE",
+      "nombre": "GALP ENERGÍA ESPAÑA, S.A.U.",
+      "detalles": 0
+    },
+    {
+      "codigo": "GEE",
+      "nombre": "GRUPO ENERGÉTICO ENERPLÚS EUROPA, S.L.",
+      "detalles": 0
+    },
+    {
+      "codigo": "HCG",
+      "nombre": "HIDROCARBUROS GUADARRAMA, S.L.",
+      "detalles": 1
+    },
+    {
+      "codigo": "MEROIL",
+      "nombre": "MEROIL GRUPO",
+      "detalles": 2
+    },
+    {
+      "codigo": "MILADER",
+      "nombre": "MILADERTO S.L.",
+      "detalles": 0
+    },
+    {
+      "codigo": "ODT",
+      "nombre": "HAXX MALAGA TERMINAL, S.L. (ANTES DE MAR-26 OIL DISTRIBUTION TERMINALS, S.L.)",
+      "detalles": 1
+    },
+    {
+      "codigo": "OLIVIA",
+      "nombre": "OLIVIA PETROLEUM, S.A.",
+      "detalles": 0
+    },
+    {
+      "codigo": "OP TRADE",
+      "nombre": "OP TRADE, S.L.",
+      "detalles": 0
+    },
+    {
+      "codigo": "ORYX",
+      "nombre": "ORYX IBERIA, S.A.U.",
+      "detalles": 0
+    },
+    {
+      "codigo": "PASTURIANOS",
+      "nombre": "PETRÓLEOS ASTURIANOS, S.L.",
+      "detalles": 0
+    },
+    {
+      "codigo": "PETROALA",
+      "nombre": "PETROALACANT, S.L.",
+      "detalles": 0
+    },
+    {
+      "codigo": "PETROCAN",
+      "nombre": "MOEVE TERMINALS CANARIAS, S.A.U. (ANTES DE SEP-25 PETRÓLEOS DE CANARIAS, S.A.)",
+      "detalles": 2
+    },
+    {
+      "codigo": "PETROLOG",
+      "nombre": "PETROLOGIS CANARIAS, S.L.",
+      "detalles": 1
+    },
+    {
+      "codigo": "PETRONOVA",
+      "nombre": "PETRONOVA S.L.U.",
+      "detalles": 1
+    },
+    {
+      "codigo": "QUIMS",
+      "nombre": "TERMINALES QUÍMICOS, S.A.",
+      "detalles": 3
+    },
+    {
+      "codigo": "RELISA",
+      "nombre": "RECEPTORA DE LÍQUIDOS, S.A.",
+      "detalles": 1
+    },
+    {
+      "codigo": "SECICAR",
+      "nombre": "HAXX MOTRIL TERMINAL, S.A. (ANTES DE FEB-26 DBA MOTRIL PORT, S.A. Y ANTES DE OCT-21 SECICAR, S.A.)",
+      "detalles": 2
+    },
+    {
+      "codigo": "SERVITR",
+      "nombre": "SEVITRADE, S.L.",
+      "detalles": 0
+    },
+    {
+      "codigo": "SKYTANKING",
+      "nombre": "SKYTANKING SPAIN S.L.",
+      "detalles": 1
+    },
+    {
+      "codigo": "SLCA",
+      "nombre": "SERVICIOS LOGISTICOS DE COMBUSTIBLES DE AVIACIÓN, S.L.",
+      "detalles": 11
+    },
+    {
+      "codigo": "TANCAR",
+      "nombre": "HAXX CARTAGENA TERMINAL, S.A. (ANTES DE MAR-26 TANQUES DE CARTAGENA, S.A.)",
+      "detalles": 1
+    },
+    {
+      "codigo": "TEPSA",
+      "nombre": "TEPSA IBERIA, S.L.U. (ANTES DE JUL-24, TERMINALES PORTUARIAS, S.L.U.)",
+      "detalles": 10
+    },
+    {
+      "codigo": "TERCA",
+      "nombre": "TERMINALES CANARIOS, S.L.",
+      "detalles": 4
+    },
+    {
+      "codigo": "TLC",
+      "nombre": "TERMINAL LOGÍSTICA DE CARTAGENA, S.L.U.",
+      "detalles": 1
+    },
+    {
+      "codigo": "TRADEBE",
+      "nombre": "TRADEBE PORT SERVICES, S.L.",
+      "detalles": 2
+    },
+    {
+      "codigo": "VISTA",
+      "nombre": "VISTA ENERGIA, S.L.",
+      "detalles": 1
+    }
+  ],
+  "instalaciones": [
+    {
+      "id_tanque": 1,
+      "tipo": "almacenamiento",
+      "comunidad": "GAL",
+      "titulo": "FORESTAL DEL ATLANTICO",
+      "detalles": [
+        382,
+        381
+      ]
+    },
+    {
+      "id_tanque": 2,
+      "tipo": "almacenamiento",
+      "comunidad": "GAL",
+      "titulo": "EXOLUM - Coruña (Bens)",
+      "detalles": [
+        4,
+        2,
+        294
+      ]
+    },
+    {
+      "id_tanque": 3,
+      "tipo": "aeroportuaria",
+      "comunidad": "GAL",
+      "titulo": "EXOLUM / EXOLUM AVIATION - La Coruña",
+      "detalles": [
+        7,
+        290,
+        6
+      ]
+    },
+    {
+      "id_tanque": 5,
+      "tipo": "aeroportuaria",
+      "comunidad": "GAL",
+      "titulo": "SLCA - Santiago de Compostela",
+      "detalles": [
+        291,
+        292
+      ]
+    },
+    {
+      "id_tanque": 9,
+      "tipo": "almacenamiento",
+      "comunidad": "GAL",
+      "titulo": "EXOLUM - Puxeiros",
+      "detalles": [
+        17
+      ]
+    },
+    {
+      "id_tanque": 10,
+      "tipo": "aeroportuaria",
+      "comunidad": "GAL",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Vigo",
+      "detalles": [
+        19,
+        20,
+        18
+      ]
+    },
+    {
+      "id_tanque": 11,
+      "tipo": "aeroportuaria",
+      "comunidad": "AST",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Avilés",
+      "detalles": [
+        22,
+        23,
+        21
+      ]
+    },
+    {
+      "id_tanque": 13,
+      "tipo": "almacenamiento",
+      "comunidad": "AST",
+      "titulo": "EXOLUM - Gijón",
+      "detalles": [
+        27,
+        26,
+        25
+      ]
+    },
+    {
+      "id_tanque": 15,
+      "tipo": "aeroportuaria",
+      "comunidad": "CANT",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Santander",
+      "detalles": [
+        30,
+        31,
+        29
+      ]
+    },
+    {
+      "id_tanque": 16,
+      "tipo": "almacenamiento",
+      "comunidad": "CANT",
+      "titulo": "CHANE TERMINAL SANTANDER - Santander. A la fecha de la última actualización, no tiene contratos vigentes de almacenamiento de productos petrolíferos",
+      "detalles": []
+    },
+    {
+      "id_tanque": 17,
+      "tipo": "almacenamiento",
+      "comunidad": "PV",
+      "titulo": "TEPSA - Ciérvana",
+      "detalles": [
+        34,
+        347,
+        279,
+        33
+      ]
+    },
+    {
+      "id_tanque": 18,
+      "tipo": "almacenamiento",
+      "comunidad": "PV",
+      "titulo": "ESERGUI - Ciérvana",
+      "detalles": [
+        274,
+        35
+      ]
+    },
+    {
+      "id_tanque": 19,
+      "tipo": "almacenamiento",
+      "comunidad": "PV",
+      "titulo": "EXOLUM - El Calero / EXOLUM - Ziérbana",
+      "detalles": [
+        38,
+        37,
+        36,
+        39,
+        358,
+        395,
+        353,
+        356
+      ]
+    },
+    {
+      "id_tanque": 20,
+      "tipo": "aeroportuaria",
+      "comunidad": "PV",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Bilbao",
+      "detalles": [
+        41,
+        42,
+        40
+      ]
+    },
+    {
+      "id_tanque": 21,
+      "tipo": "aeroportuaria",
+      "comunidad": "PV",
+      "titulo": "EXOLUM / EXOLUM AVIATION - San Sebastián",
+      "detalles": [
+        306,
+        305,
+        304
+      ]
+    },
+    {
+      "id_tanque": 22,
+      "tipo": "aeroportuaria",
+      "comunidad": "PV",
+      "titulo": "SLCA - Vitoria",
+      "detalles": [
+        46,
+        45
+      ]
+    },
+    {
+      "id_tanque": 23,
+      "tipo": "almacenamiento",
+      "comunidad": "PV",
+      "titulo": "EXOLUM - Rivabellosa",
+      "detalles": [
+        47
+      ]
+    },
+    {
+      "id_tanque": 24,
+      "tipo": "aeroportuaria",
+      "comunidad": "NAV",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Pamplona",
+      "detalles": [
+        49,
+        50,
+        48
+      ]
+    },
+    {
+      "id_tanque": 25,
+      "tipo": "almacenamiento",
+      "comunidad": "NAV",
+      "titulo": "EXOLUM - Pamplona",
+      "detalles": [
+        51
+      ]
+    },
+    {
+      "id_tanque": 26,
+      "tipo": "aeroportuaria",
+      "comunidad": "RIO",
+      "titulo": "EXOLUM / EXOLUM AVIATION - La Rioja",
+      "detalles": [
+        54,
+        53,
+        52
+      ]
+    },
+    {
+      "id_tanque": 27,
+      "tipo": "almacenamiento",
+      "comunidad": "ARA",
+      "titulo": "EXOLUM - Zaragoza (Monzalbarba)",
+      "detalles": [
+        55,
+        57,
+        365
+      ]
+    },
+    {
+      "id_tanque": 28,
+      "tipo": "aeroportuaria",
+      "comunidad": "ARA",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Zaragoza",
+      "detalles": [
+        59,
+        280,
+        58
+      ]
+    },
+    {
+      "id_tanque": 29,
+      "tipo": "almacenamiento",
+      "comunidad": "CAT",
+      "titulo": "EXOLUM - Lérida",
+      "detalles": [
+        61
+      ]
+    },
+    {
+      "id_tanque": 31,
+      "tipo": "almacenamiento",
+      "comunidad": "CAT",
+      "titulo": "EXOLUM - Gerona",
+      "detalles": [
+        63
+      ]
+    },
+    {
+      "id_tanque": 32,
+      "tipo": "aeroportuaria",
+      "comunidad": "CAT",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Gerona",
+      "detalles": [
+        65,
+        66,
+        64
+      ]
+    },
+    {
+      "id_tanque": 34,
+      "tipo": "almacenamiento",
+      "comunidad": "CAT",
+      "titulo": "TEPSA - Barcelona",
+      "detalles": [
+        70,
+        277,
+        68
+      ]
+    },
+    {
+      "id_tanque": 35,
+      "tipo": "almacenamiento",
+      "comunidad": "CAT",
+      "titulo": "EXOLUM - Barcelona",
+      "detalles": [
+        76,
+        75,
+        283,
+        72,
+        73,
+        366,
+        357,
+        351,
+        392,
+        360,
+        387
+      ]
+    },
+    {
+      "id_tanque": 36,
+      "tipo": "aeroportuaria",
+      "comunidad": "CAT",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Sabadell",
+      "detalles": [
+        299,
+        300,
+        298
+      ]
+    },
+    {
+      "id_tanque": 37,
+      "tipo": "almacenamiento",
+      "comunidad": "CAT",
+      "titulo": "DECAL - Barcelona",
+      "detalles": [
+        82,
+        383,
+        80,
+        79
+      ]
+    },
+    {
+      "id_tanque": 38,
+      "tipo": "almacenamiento",
+      "comunidad": "CAT",
+      "titulo": "RELISA - Barcelona",
+      "detalles": [
+        83
+      ]
+    },
+    {
+      "id_tanque": 39,
+      "tipo": "aeroportuaria",
+      "comunidad": "CAT",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Barcelona",
+      "detalles": [
+        86,
+        243
+      ]
+    },
+    {
+      "id_tanque": 40,
+      "tipo": "aeroportuaria",
+      "comunidad": "CAT",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Reus",
+      "detalles": [
+        303,
+        302,
+        301
+      ]
+    },
+    {
+      "id_tanque": 41,
+      "tipo": "almacenamiento",
+      "comunidad": "CAT",
+      "titulo": "TERQUIMSA - Tarragona",
+      "detalles": [
+        320,
+        319,
+        89
+      ]
+    },
+    {
+      "id_tanque": 42,
+      "tipo": "almacenamiento",
+      "comunidad": "CAT",
+      "titulo": "EXOLUM - Tarragona",
+      "detalles": [
+        284,
+        91,
+        90,
+        354
+      ]
+    },
+    {
+      "id_tanque": 43,
+      "tipo": "almacenamiento",
+      "comunidad": "CAT",
+      "titulo": "EUROENERGO - Tarragona",
+      "detalles": [
+        93
+      ]
+    },
+    {
+      "id_tanque": 45,
+      "tipo": "almacenamiento",
+      "comunidad": "VAL",
+      "titulo": "EXOLUM - Castellón",
+      "detalles": [
+        96
+      ]
+    },
+    {
+      "id_tanque": 47,
+      "tipo": "almacenamiento",
+      "comunidad": "VAL",
+      "titulo": "EXOLUM - Albuixech",
+      "detalles": [
+        100,
+        99,
+        377
+      ]
+    },
+    {
+      "id_tanque": 48,
+      "tipo": "almacenamiento",
+      "comunidad": "VAL",
+      "titulo": "TEPSA - Valencia",
+      "detalles": [
+        246,
+        278,
+        104
+      ]
+    },
+    {
+      "id_tanque": 51,
+      "tipo": "aeroportuaria",
+      "comunidad": "VAL",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Alicante",
+      "detalles": [
+        110,
+        111,
+        109
+      ]
+    },
+    {
+      "id_tanque": 52,
+      "tipo": "almacenamiento",
+      "comunidad": "VAL",
+      "titulo": "EXOLUM - Alicante",
+      "detalles": [
+        113,
+        112,
+        391
+      ]
+    },
+    {
+      "id_tanque": 53,
+      "tipo": "aeroportuaria",
+      "comunidad": "MAN",
+      "titulo": "SLCA - Albacete",
+      "detalles": [
+        114
+      ]
+    },
+    {
+      "id_tanque": 54,
+      "tipo": "almacenamiento",
+      "comunidad": "MAN",
+      "titulo": "EXOLUM - Alcázar de San Juan",
+      "detalles": [
+        115
+      ]
+    },
+    {
+      "id_tanque": 56,
+      "tipo": "almacenamiento",
+      "comunidad": "MAD",
+      "titulo": "EXOLUM - Loeches",
+      "detalles": [
+        118
+      ]
+    },
+    {
+      "id_tanque": 57,
+      "tipo": "almacenamiento",
+      "comunidad": "MAD",
+      "titulo": "EXOLUM - Torrejón de Ardoz",
+      "detalles": [
+        120,
+        119,
+        265,
+        389,
+        394,
+        363
+      ]
+    },
+    {
+      "id_tanque": 59,
+      "tipo": "aeroportuaria",
+      "comunidad": "MAD",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Barajas",
+      "detalles": [
+        124,
+        123
+      ]
+    },
+    {
+      "id_tanque": 60,
+      "tipo": "aeroportuaria",
+      "comunidad": "MAD",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Cuatro Vientos",
+      "detalles": [
+        126,
+        127,
+        125
+      ]
+    },
+    {
+      "id_tanque": 61,
+      "tipo": "almacenamiento",
+      "comunidad": "MAD",
+      "titulo": "EXOLUM - Villaverde",
+      "detalles": [
+        129,
+        128,
+        393,
+        372
+      ]
+    },
+    {
+      "id_tanque": 64,
+      "tipo": "aeroportuaria",
+      "comunidad": "LEO",
+      "titulo": "EXOLUM / EXOLUM AVIATION - León",
+      "detalles": [
+        311,
+        310
+      ]
+    },
+    {
+      "id_tanque": 65,
+      "tipo": "almacenamiento",
+      "comunidad": "LEO",
+      "titulo": "EXOLUM - León",
+      "detalles": [
+        136
+      ]
+    },
+    {
+      "id_tanque": 66,
+      "tipo": "aeroportuaria",
+      "comunidad": "LEO",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Burgos",
+      "detalles": [
+        287,
+        344,
+        288
+      ]
+    },
+    {
+      "id_tanque": 67,
+      "tipo": "almacenamiento",
+      "comunidad": "LEO",
+      "titulo": "EXOLUM - Burgos",
+      "detalles": [
+        138
+      ]
+    },
+    {
+      "id_tanque": 69,
+      "tipo": "aeroportuaria",
+      "comunidad": "LEO",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Valladolid",
+      "detalles": [
+        309,
+        308,
+        307
+      ]
+    },
+    {
+      "id_tanque": 70,
+      "tipo": "almacenamiento",
+      "comunidad": "LEO",
+      "titulo": "EXOLUM - Valladolid",
+      "detalles": [
+        142
+      ]
+    },
+    {
+      "id_tanque": 71,
+      "tipo": "aeroportuaria",
+      "comunidad": "LEO",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Salamanca",
+      "detalles": [
+        146,
+        145,
+        144
+      ]
+    },
+    {
+      "id_tanque": 72,
+      "tipo": "almacenamiento",
+      "comunidad": "LEO",
+      "titulo": "EXOLUM - Salamanca",
+      "detalles": [
+        147
+      ]
+    },
+    {
+      "id_tanque": 73,
+      "tipo": "aeroportuaria",
+      "comunidad": "MUR",
+      "titulo": "SLCA - Murcia",
+      "detalles": [
+        285,
+        286
+      ]
+    },
+    {
+      "id_tanque": 74,
+      "tipo": "almacenamiento",
+      "comunidad": "MUR",
+      "titulo": "TERMINAL LOGÍSTICA DE CARTAGENA - Cartagena",
+      "detalles": [
+        268
+      ]
+    },
+    {
+      "id_tanque": 75,
+      "tipo": "almacenamiento",
+      "comunidad": "MUR",
+      "titulo": "HAXX CARTAGENA TERMINAL - Cartagena.",
+      "detalles": [
+        318
+      ]
+    },
+    {
+      "id_tanque": 76,
+      "tipo": "almacenamiento",
+      "comunidad": "MUR",
+      "titulo": "EXOLUM - Cartagena",
+      "detalles": [
+        156,
+        153,
+        155,
+        355,
+        361,
+        390
+      ]
+    },
+    {
+      "id_tanque": 78,
+      "tipo": "aeroportuaria",
+      "comunidad": "AND",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Almería",
+      "detalles": [
+        160,
+        317,
+        159
+      ]
+    },
+    {
+      "id_tanque": 79,
+      "tipo": "almacenamiento",
+      "comunidad": "AND",
+      "titulo": "HAXX MOTRIL TERMINAL - Motril",
+      "detalles": [
+        339,
+        162
+      ]
+    },
+    {
+      "id_tanque": 80,
+      "tipo": "almacenamiento",
+      "comunidad": "AND",
+      "titulo": "EXOLUM - Motril",
+      "detalles": [
+        165,
+        164
+      ]
+    },
+    {
+      "id_tanque": 81,
+      "tipo": "almacenamiento",
+      "comunidad": "AND",
+      "titulo": "EXOLUM - Málaga",
+      "detalles": [
+        166,
+        167
+      ]
+    },
+    {
+      "id_tanque": 82,
+      "tipo": "aeroportuaria",
+      "comunidad": "AND",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Málaga",
+      "detalles": [
+        169,
+        170,
+        168
+      ]
+    },
+    {
+      "id_tanque": 83,
+      "tipo": "aeroportuaria",
+      "comunidad": "AND",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Granada",
+      "detalles": [
+        314,
+        313,
+        312
+      ]
+    },
+    {
+      "id_tanque": 84,
+      "tipo": "almacenamiento",
+      "comunidad": "AND",
+      "titulo": "EXOLUM - Algeciras / EXOLUM - San Roque",
+      "detalles": [
+        173,
+        172,
+        367
+      ]
+    },
+    {
+      "id_tanque": 85,
+      "tipo": "almacenamiento",
+      "comunidad": "AND",
+      "titulo": "EXOLUM - Rota",
+      "detalles": [
+        174
+      ]
+    },
+    {
+      "id_tanque": 86,
+      "tipo": "aeroportuaria",
+      "comunidad": "AND",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Jerez de la Frontera",
+      "detalles": [
+        176,
+        177,
+        175
+      ]
+    },
+    {
+      "id_tanque": 87,
+      "tipo": "almacenamiento",
+      "comunidad": "AND",
+      "titulo": "EXOLUM - Huelva",
+      "detalles": [
+        179,
+        178,
+        359,
+        352,
+        362
+      ]
+    },
+    {
+      "id_tanque": 88,
+      "tipo": "almacenamiento",
+      "comunidad": "AND",
+      "titulo": "DECAL - Huelva",
+      "detalles": [
+        183,
+        335,
+        182,
+        374,
+        181
+      ]
+    },
+    {
+      "id_tanque": 89,
+      "tipo": "almacenamiento",
+      "comunidad": "AND",
+      "titulo": "EXOLUM - Sevilla",
+      "detalles": [
+        185,
+        184
+      ]
+    },
+    {
+      "id_tanque": 90,
+      "tipo": "aeroportuaria",
+      "comunidad": "AND",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Sevilla",
+      "detalles": [
+        188,
+        189,
+        187
+      ]
+    },
+    {
+      "id_tanque": 91,
+      "tipo": "almacenamiento",
+      "comunidad": "AND",
+      "titulo": "EXOLUM - Córdoba",
+      "detalles": [
+        190
+      ]
+    },
+    {
+      "id_tanque": 92,
+      "tipo": "aeroportuaria",
+      "comunidad": "AND",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Córdoba",
+      "detalles": [
+        192,
+        193,
+        191
+      ]
+    },
+    {
+      "id_tanque": 93,
+      "tipo": "almacenamiento",
+      "comunidad": "EXT",
+      "titulo": "EXOLUM - Mérida",
+      "detalles": [
+        194
+      ]
+    },
+    {
+      "id_tanque": 94,
+      "tipo": "aeroportuaria",
+      "comunidad": "EXT",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Badajoz",
+      "detalles": [
+        196,
+        197,
+        195
+      ]
+    },
+    {
+      "id_tanque": 95,
+      "tipo": "aeroportuaria",
+      "comunidad": "BAL",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Mahón",
+      "detalles": [
+        199,
+        200,
+        198
+      ]
+    },
+    {
+      "id_tanque": 96,
+      "tipo": "almacenamiento",
+      "comunidad": "BAL",
+      "titulo": "EXOLUM - Mahón",
+      "detalles": [
+        201
+      ]
+    },
+    {
+      "id_tanque": 97,
+      "tipo": "aeroportuaria",
+      "comunidad": "BAL",
+      "titulo": "EXOLUM / EXOLUM AVIATION- Son Bonet",
+      "detalles": [
+        203,
+        204,
+        202
+      ]
+    },
+    {
+      "id_tanque": 99,
+      "tipo": "aeroportuaria",
+      "comunidad": "BAL",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Son Sant Joan",
+      "detalles": [
+        208,
+        206
+      ]
+    },
+    {
+      "id_tanque": 100,
+      "tipo": "almacenamiento",
+      "comunidad": "BAL",
+      "titulo": "EXOLUM - Palma (Son Banya)",
+      "detalles": [
+        209,
+        396
+      ]
+    },
+    {
+      "id_tanque": 102,
+      "tipo": "almacenamiento",
+      "comunidad": "BAL",
+      "titulo": "EXOLUM - Ibiza",
+      "detalles": [
+        213,
+        342
+      ]
+    },
+    {
+      "id_tanque": 103,
+      "tipo": "almacenamiento",
+      "comunidad": "CAN",
+      "titulo": "DISA EL HIERRO - El Hierro",
+      "detalles": [
+        214
+      ]
+    },
+    {
+      "id_tanque": 104,
+      "tipo": "almacenamiento",
+      "comunidad": "CAN",
+      "titulo": "DISA LA GOMERA - La Gomera",
+      "detalles": [
+        215
+      ]
+    },
+    {
+      "id_tanque": 105,
+      "tipo": "almacenamiento",
+      "comunidad": "CAN",
+      "titulo": "DISA LA PALMA - La Palma",
+      "detalles": [
+        216
+      ]
+    },
+    {
+      "id_tanque": 106,
+      "tipo": "aeroportuaria",
+      "comunidad": "CAN",
+      "titulo": "MOEVE AVIATION - Aeropuerto de La Palma",
+      "detalles": [
+        217
+      ]
+    },
+    {
+      "id_tanque": 107,
+      "tipo": "aeroportuaria",
+      "comunidad": "CAN",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Aeropuerto Tenerife Sur",
+      "detalles": [
+        316
+      ]
+    },
+    {
+      "id_tanque": 109,
+      "tipo": "almacenamiento",
+      "comunidad": "CAN",
+      "titulo": "MOEVE TERMINALS CANARIAS - Santa Cruz de Tenerife",
+      "detalles": [
+        220
+      ]
+    },
+    {
+      "id_tanque": 110,
+      "tipo": "almacenamiento",
+      "comunidad": "CAN",
+      "titulo": "TERMINALES CANARIOS - Santa Cruz de Tenerife",
+      "detalles": [
+        221,
+        295
+      ]
+    },
+    {
+      "id_tanque": 111,
+      "tipo": "aeroportuaria",
+      "comunidad": "CAN",
+      "titulo": "MOEVE AVIATION - Aeropuerto Tenerife Norte-Ciudad de La Laguna",
+      "detalles": [
+        222
+      ]
+    },
+    {
+      "id_tanque": 112,
+      "tipo": "almacenamiento",
+      "comunidad": "CAN",
+      "titulo": "DISA LANZAROTE - Arrecife (Lanzarote)",
+      "detalles": [
+        332,
+        223,
+        224
+      ]
+    },
+    {
+      "id_tanque": 113,
+      "tipo": "aeroportuaria",
+      "comunidad": "CAN",
+      "titulo": "CMD - Aeropuerto de Lanzarote",
+      "detalles": [
+        225
+      ]
+    },
+    {
+      "id_tanque": 114,
+      "tipo": "almacenamiento",
+      "comunidad": "CAN",
+      "titulo": "DISA FUERTEVENTURA - Puerto Rosario (Fuerteventura)",
+      "detalles": [
+        226
+      ]
+    },
+    {
+      "id_tanque": 115,
+      "tipo": "aeroportuaria",
+      "comunidad": "CAN",
+      "titulo": "CMD - Aeropuerto de Fuerteventura",
+      "detalles": [
+        227
+      ]
+    },
+    {
+      "id_tanque": 116,
+      "tipo": "aeroportuaria",
+      "comunidad": "CAN",
+      "titulo": "CMD - Aeropuerto de Gran Canaria",
+      "detalles": [
+        228
+      ]
+    },
+    {
+      "id_tanque": 118,
+      "tipo": "almacenamiento",
+      "comunidad": "CAN",
+      "titulo": "DISA GRAN CANARIA - Salinetas (Gran Canaria)",
+      "detalles": [
+        230,
+        379,
+        231
+      ]
+    },
+    {
+      "id_tanque": 119,
+      "tipo": "almacenamiento",
+      "comunidad": "CAN",
+      "titulo": "TERMINALES CANARIOS - Las Palmas de Gran Canaria",
+      "detalles": [
+        232,
+        296
+      ]
+    },
+    {
+      "id_tanque": 121,
+      "tipo": "almacenamiento",
+      "comunidad": "CAN",
+      "titulo": "PETROLOGIS CANARIAS - Las Palmas de Gran Canaria",
+      "detalles": [
+        234
+      ]
+    },
+    {
+      "id_tanque": 123,
+      "tipo": "almacenamiento",
+      "comunidad": "CAN",
+      "titulo": "MOEVE TERMINALS CANARIAS - Las Palmas de Gran Canaria",
+      "detalles": [
+        236
+      ]
+    },
+    {
+      "id_tanque": 125,
+      "tipo": "aeroportuaria",
+      "comunidad": "CEM",
+      "titulo": "EXOLUM / EXOLUM AVIATION - Melilla",
+      "detalles": [
+        315,
+        321
+      ]
+    },
+    {
+      "id_tanque": 127,
+      "tipo": "almacenamiento",
+      "comunidad": "CEM",
+      "titulo": "ATLAS - Ceuta",
+      "detalles": [
+        245
+      ]
+    },
+    {
+      "id_tanque": 128,
+      "tipo": "almacenamiento",
+      "comunidad": "CEM",
+      "titulo": "PETROLIFERA DUCAR - Ceuta",
+      "detalles": [
+        241
+      ]
+    },
+    {
+      "id_tanque": 129,
+      "tipo": "almacenamiento",
+      "comunidad": "AND",
+      "titulo": "EVOS ALGECIRAS - Algeciras",
+      "detalles": [
+        323
+      ]
+    },
+    {
+      "id_tanque": 133,
+      "tipo": "almacenamiento",
+      "comunidad": "CAT",
+      "titulo": "MEROIL - Barcelona",
+      "detalles": [
+        253,
+        248
+      ]
+    },
+    {
+      "id_tanque": 136,
+      "tipo": "almacenamiento",
+      "comunidad": "CEM",
+      "titulo": "ATLAS - Melilla",
+      "detalles": [
+        251
+      ]
+    },
+    {
+      "id_tanque": 138,
+      "tipo": "almacenamiento",
+      "comunidad": "CAT",
+      "titulo": "TRADEBE PORT SERVICES - Barcelona",
+      "detalles": [
+        282,
+        258
+      ]
+    },
+    {
+      "id_tanque": 145,
+      "tipo": "almacenamiento",
+      "comunidad": "AND",
+      "titulo": "HAXX MÁLAGA TERMINAL - Málaga",
+      "detalles": [
+        322
+      ]
+    },
+    {
+      "id_tanque": 150,
+      "tipo": "almacenamiento",
+      "comunidad": "GAL",
+      "titulo": "FORESA - Villagarcía de Arousa",
+      "detalles": [
+        331
+      ]
+    },
+    {
+      "id_tanque": 151,
+      "tipo": "almacenamiento",
+      "comunidad": "PV",
+      "titulo": "DBA BILBAO PORT - Bilbao",
+      "detalles": [
+        338,
+        276
+      ]
+    },
+    {
+      "id_tanque": 152,
+      "tipo": "almacenamiento",
+      "comunidad": "CAT",
+      "titulo": "VISTA ENERGÍA - Alpicat",
+      "detalles": [
+        329
+      ]
+    },
+    {
+      "id_tanque": 157,
+      "tipo": "aeroportuaria",
+      "comunidad": "BAL",
+      "titulo": "SLCA - Ibiza",
+      "detalles": [
+        341,
+        340
+      ]
+    },
+    {
+      "id_tanque": 158,
+      "tipo": "almacenamiento",
+      "comunidad": "EXT",
+      "titulo": "PETRONOVA - Calamonte",
+      "detalles": [
+        385
+      ]
+    },
+    {
+      "id_tanque": 159,
+      "tipo": "aeroportuaria",
+      "comunidad": "CAT",
+      "titulo": "SKYTANKING SPAIN - Lérida",
+      "detalles": [
+        373
+      ]
+    },
+    {
+      "id_tanque": 160,
+      "tipo": "aeroportuaria",
+      "comunidad": "VAL",
+      "titulo": "SLCA - Valencia",
+      "detalles": [
+        376,
+        375
+      ]
+    },
+    {
+      "id_tanque": 161,
+      "tipo": "almacenamiento",
+      "comunidad": "MAD",
+      "titulo": "HIDROCARBUROS GUADARRAMA – Guadarrama",
+      "detalles": [
+        384
+      ]
+    }
+  ],
+  "detalles": [
+    {
+      "id_tanque_instalacion": 2,
+      "id_tanque": 2,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 4,
+      "id_tanque": 2,
+      "operador": "CLH",
+      "producto": "Bioetanol"
+    },
+    {
+      "id_tanque_instalacion": 6,
+      "id_tanque": 3,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 7,
+      "id_tanque": 3,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 17,
+      "id_tanque": 9,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 18,
+      "id_tanque": 10,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 19,
+      "id_tanque": 10,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 20,
+      "id_tanque": 10,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 21,
+      "id_tanque": 11,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 22,
+      "id_tanque": 11,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 23,
+      "id_tanque": 11,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 25,
+      "id_tanque": 13,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 26,
+      "id_tanque": 13,
+      "operador": "CLH",
+      "producto": "Búnker"
+    },
+    {
+      "id_tanque_instalacion": 27,
+      "id_tanque": 13,
+      "operador": "CLH",
+      "producto": "Biodiésel"
+    },
+    {
+      "id_tanque_instalacion": 29,
+      "id_tanque": 15,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 30,
+      "id_tanque": 15,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 31,
+      "id_tanque": 15,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 33,
+      "id_tanque": 17,
+      "operador": "TEPSA",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 34,
+      "id_tanque": 17,
+      "operador": "TEPSA",
+      "producto": "Biodiésel"
+    },
+    {
+      "id_tanque_instalacion": 35,
+      "id_tanque": 18,
+      "operador": "ESERGUI",
+      "producto": "EN PROCESO DE ACTUALIZACIÓN 2026 - Ciérvana (Gasolinas y Gasóleos)"
+    },
+    {
+      "id_tanque_instalacion": 36,
+      "id_tanque": 19,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 37,
+      "id_tanque": 19,
+      "operador": "CLH",
+      "producto": "Bioetanol"
+    },
+    {
+      "id_tanque_instalacion": 38,
+      "id_tanque": 19,
+      "operador": "CLH",
+      "producto": "Biodiésel"
+    },
+    {
+      "id_tanque_instalacion": 39,
+      "id_tanque": 19,
+      "operador": "CLH",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 40,
+      "id_tanque": 20,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 41,
+      "id_tanque": 20,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 42,
+      "id_tanque": 20,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 45,
+      "id_tanque": 22,
+      "operador": "SLCA",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 46,
+      "id_tanque": 22,
+      "operador": "SLCA",
+      "producto": "Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 47,
+      "id_tanque": 23,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 48,
+      "id_tanque": 24,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 49,
+      "id_tanque": 24,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 50,
+      "id_tanque": 24,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 51,
+      "id_tanque": 25,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 52,
+      "id_tanque": 26,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 53,
+      "id_tanque": 26,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 54,
+      "id_tanque": 26,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 55,
+      "id_tanque": 27,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 57,
+      "id_tanque": 27,
+      "operador": "CLH",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 58,
+      "id_tanque": 28,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 59,
+      "id_tanque": 28,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 61,
+      "id_tanque": 29,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 63,
+      "id_tanque": 31,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 64,
+      "id_tanque": 32,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 65,
+      "id_tanque": 32,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 66,
+      "id_tanque": 32,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 68,
+      "id_tanque": 34,
+      "operador": "TEPSA",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 70,
+      "id_tanque": 34,
+      "operador": "TEPSA",
+      "producto": "Biodiésel"
+    },
+    {
+      "id_tanque_instalacion": 72,
+      "id_tanque": 35,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 73,
+      "id_tanque": 35,
+      "operador": "CLH",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 75,
+      "id_tanque": 35,
+      "operador": "CLH",
+      "producto": "Bioetanol"
+    },
+    {
+      "id_tanque_instalacion": 76,
+      "id_tanque": 35,
+      "operador": "CLH",
+      "producto": "Biodiésel"
+    },
+    {
+      "id_tanque_instalacion": 79,
+      "id_tanque": 37,
+      "operador": "DECAL",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 80,
+      "id_tanque": 37,
+      "operador": "DECAL",
+      "producto": "Búnker"
+    },
+    {
+      "id_tanque_instalacion": 82,
+      "id_tanque": 37,
+      "operador": "DECAL",
+      "producto": "Biodiésel"
+    },
+    {
+      "id_tanque_instalacion": 83,
+      "id_tanque": 38,
+      "operador": "RELISA",
+      "producto": "Biodiésel"
+    },
+    {
+      "id_tanque_instalacion": 86,
+      "id_tanque": 39,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 89,
+      "id_tanque": 41,
+      "operador": "QUIMS",
+      "producto": "Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 90,
+      "id_tanque": 42,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 91,
+      "id_tanque": 42,
+      "operador": "CLH",
+      "producto": "Fuelóleos"
+    },
+    {
+      "id_tanque_instalacion": 93,
+      "id_tanque": 43,
+      "operador": "EUROE",
+      "producto": "Gasóleos, Biodiésel y HVO"
+    },
+    {
+      "id_tanque_instalacion": 96,
+      "id_tanque": 45,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 99,
+      "id_tanque": 47,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 100,
+      "id_tanque": 47,
+      "operador": "CLH",
+      "producto": "Bioetanol"
+    },
+    {
+      "id_tanque_instalacion": 104,
+      "id_tanque": 48,
+      "operador": "TEPSA",
+      "producto": "Fuelóleos"
+    },
+    {
+      "id_tanque_instalacion": 109,
+      "id_tanque": 51,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 110,
+      "id_tanque": 51,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 111,
+      "id_tanque": 51,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 112,
+      "id_tanque": 52,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 113,
+      "id_tanque": 52,
+      "operador": "CLH",
+      "producto": "Bioetanol"
+    },
+    {
+      "id_tanque_instalacion": 114,
+      "id_tanque": 53,
+      "operador": "SLCA",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 115,
+      "id_tanque": 54,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 118,
+      "id_tanque": 56,
+      "operador": "CLH",
+      "producto": "Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 119,
+      "id_tanque": 57,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 120,
+      "id_tanque": 57,
+      "operador": "CLH",
+      "producto": "Bioetanol"
+    },
+    {
+      "id_tanque_instalacion": 123,
+      "id_tanque": 59,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 124,
+      "id_tanque": 59,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 125,
+      "id_tanque": 60,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 126,
+      "id_tanque": 60,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 127,
+      "id_tanque": 60,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 128,
+      "id_tanque": 61,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 129,
+      "id_tanque": 61,
+      "operador": "CLH",
+      "producto": "Bioetanol"
+    },
+    {
+      "id_tanque_instalacion": 136,
+      "id_tanque": 65,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 138,
+      "id_tanque": 67,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 142,
+      "id_tanque": 70,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 144,
+      "id_tanque": 71,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 145,
+      "id_tanque": 71,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 146,
+      "id_tanque": 71,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 147,
+      "id_tanque": 72,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 153,
+      "id_tanque": 76,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 155,
+      "id_tanque": 76,
+      "operador": "CLH",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 156,
+      "id_tanque": 76,
+      "operador": "CLH",
+      "producto": "Bioetanol"
+    },
+    {
+      "id_tanque_instalacion": 159,
+      "id_tanque": 78,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 160,
+      "id_tanque": 78,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 162,
+      "id_tanque": 79,
+      "operador": "SECICAR",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 164,
+      "id_tanque": 80,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 165,
+      "id_tanque": 80,
+      "operador": "CLH",
+      "producto": "Biodiésel"
+    },
+    {
+      "id_tanque_instalacion": 166,
+      "id_tanque": 81,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 167,
+      "id_tanque": 81,
+      "operador": "CLH",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 168,
+      "id_tanque": 82,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 169,
+      "id_tanque": 82,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 170,
+      "id_tanque": 82,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 172,
+      "id_tanque": 84,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 173,
+      "id_tanque": 84,
+      "operador": "CLH",
+      "producto": "Búnker y Gasóleos marinos"
+    },
+    {
+      "id_tanque_instalacion": 174,
+      "id_tanque": 85,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 175,
+      "id_tanque": 86,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 176,
+      "id_tanque": 86,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 177,
+      "id_tanque": 86,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 178,
+      "id_tanque": 87,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 179,
+      "id_tanque": 87,
+      "operador": "CLH",
+      "producto": "Biodiésel"
+    },
+    {
+      "id_tanque_instalacion": 181,
+      "id_tanque": 88,
+      "operador": "DECAL",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 182,
+      "id_tanque": 88,
+      "operador": "DECAL",
+      "producto": "Búnker"
+    },
+    {
+      "id_tanque_instalacion": 183,
+      "id_tanque": 88,
+      "operador": "DECAL",
+      "producto": "Biodiésel"
+    },
+    {
+      "id_tanque_instalacion": 184,
+      "id_tanque": 89,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 185,
+      "id_tanque": 89,
+      "operador": "CLH",
+      "producto": "Bioetanol"
+    },
+    {
+      "id_tanque_instalacion": 187,
+      "id_tanque": 90,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 188,
+      "id_tanque": 90,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 189,
+      "id_tanque": 90,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 190,
+      "id_tanque": 91,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 191,
+      "id_tanque": 92,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 192,
+      "id_tanque": 92,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 193,
+      "id_tanque": 92,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 194,
+      "id_tanque": 93,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 195,
+      "id_tanque": 94,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 196,
+      "id_tanque": 94,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 197,
+      "id_tanque": 94,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 198,
+      "id_tanque": 95,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 199,
+      "id_tanque": 95,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 200,
+      "id_tanque": 95,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 201,
+      "id_tanque": 96,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 202,
+      "id_tanque": 97,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 203,
+      "id_tanque": 97,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 204,
+      "id_tanque": 97,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 206,
+      "id_tanque": 99,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 208,
+      "id_tanque": 99,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 209,
+      "id_tanque": 100,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 213,
+      "id_tanque": 102,
+      "operador": "CLH",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 214,
+      "id_tanque": 103,
+      "operador": "DISA",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 215,
+      "id_tanque": 104,
+      "operador": "DISA",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 216,
+      "id_tanque": 105,
+      "operador": "DISA",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 217,
+      "id_tanque": 106,
+      "operador": "CEPSAAVI",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 220,
+      "id_tanque": 109,
+      "operador": "PETROCAN",
+      "producto": "Gasóleos, HVO, Diesel Oil, Fuelóleos, Biofuel y Búnker"
+    },
+    {
+      "id_tanque_instalacion": 221,
+      "id_tanque": 110,
+      "operador": "TERCA",
+      "producto": "Gasolinas, Gasóleos, Fuelóleos y Búnker"
+    },
+    {
+      "id_tanque_instalacion": 222,
+      "id_tanque": 111,
+      "operador": "CEPSAAVI",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 223,
+      "id_tanque": 112,
+      "operador": "DISA",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 224,
+      "id_tanque": 112,
+      "operador": "DISA",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 225,
+      "id_tanque": 113,
+      "operador": "CMD",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 226,
+      "id_tanque": 114,
+      "operador": "DISA",
+      "producto": "Gasolinas, Gasóleos y Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 227,
+      "id_tanque": 115,
+      "operador": "CMD",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 228,
+      "id_tanque": 116,
+      "operador": "CMD",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 230,
+      "id_tanque": 118,
+      "operador": "DISA",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 231,
+      "id_tanque": 118,
+      "operador": "DISA",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 232,
+      "id_tanque": 119,
+      "operador": "TERCA",
+      "producto": "Gasolinas, Gasóleos, Fuelóleos y Búnker"
+    },
+    {
+      "id_tanque_instalacion": 234,
+      "id_tanque": 121,
+      "operador": "PETROLOG",
+      "producto": "Gasóleos y Fuelóleos"
+    },
+    {
+      "id_tanque_instalacion": 236,
+      "id_tanque": 123,
+      "operador": "PETROCAN",
+      "producto": "Gasóleos, HVO, Diesel Oil, Fuelóleos, Biofuel y Búnker"
+    },
+    {
+      "id_tanque_instalacion": 241,
+      "id_tanque": 128,
+      "operador": "DUCAR",
+      "producto": "Gasóleos y Fuelóleos"
+    },
+    {
+      "id_tanque_instalacion": 243,
+      "id_tanque": 39,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 245,
+      "id_tanque": 127,
+      "operador": "ATLAS",
+      "producto": "Productos Energéticos"
+    },
+    {
+      "id_tanque_instalacion": 246,
+      "id_tanque": 48,
+      "operador": "TEPSA",
+      "producto": "Biodiésel"
+    },
+    {
+      "id_tanque_instalacion": 248,
+      "id_tanque": 133,
+      "operador": "MEROIL",
+      "producto": "Gasolinas, Gasóleos, Querosenos y Biodiésel"
+    },
+    {
+      "id_tanque_instalacion": 251,
+      "id_tanque": 136,
+      "operador": "ATLAS",
+      "producto": "Productos Energéticos"
+    },
+    {
+      "id_tanque_instalacion": 253,
+      "id_tanque": 133,
+      "operador": "MEROIL",
+      "producto": "Fuelóleos"
+    },
+    {
+      "id_tanque_instalacion": 258,
+      "id_tanque": 138,
+      "operador": "TRADEBE",
+      "producto": "Gasolinas, Gasóleos, Biodiésel y HVO"
+    },
+    {
+      "id_tanque_instalacion": 265,
+      "id_tanque": 57,
+      "operador": "CLH",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 268,
+      "id_tanque": 74,
+      "operador": "TLC",
+      "producto": "Gasolinas, Gasóleos y Biodiésel"
+    },
+    {
+      "id_tanque_instalacion": 274,
+      "id_tanque": 18,
+      "operador": "ESERGUI",
+      "producto": "EN PROCESO DE ACTUALIZACIÓN 2026 - Ciérvana (Biodiésel)"
+    },
+    {
+      "id_tanque_instalacion": 276,
+      "id_tanque": 151,
+      "operador": "DBA BILBAO PORT",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 277,
+      "id_tanque": 34,
+      "operador": "TEPSA",
+      "producto": "Bioetanol"
+    },
+    {
+      "id_tanque_instalacion": 278,
+      "id_tanque": 48,
+      "operador": "TEPSA",
+      "producto": "Búnker y Gasóleos marinos"
+    },
+    {
+      "id_tanque_instalacion": 279,
+      "id_tanque": 17,
+      "operador": "TEPSA",
+      "producto": "Fuelóleos"
+    },
+    {
+      "id_tanque_instalacion": 280,
+      "id_tanque": 28,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 282,
+      "id_tanque": 138,
+      "operador": "TRADEBE",
+      "producto": "Fuelóleos"
+    },
+    {
+      "id_tanque_instalacion": 283,
+      "id_tanque": 35,
+      "operador": "CLH",
+      "producto": "Búnker"
+    },
+    {
+      "id_tanque_instalacion": 284,
+      "id_tanque": 42,
+      "operador": "CLH",
+      "producto": "Búnker"
+    },
+    {
+      "id_tanque_instalacion": 285,
+      "id_tanque": 73,
+      "operador": "SLCA",
+      "producto": "Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 286,
+      "id_tanque": 73,
+      "operador": "SLCA",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 287,
+      "id_tanque": 66,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 288,
+      "id_tanque": 66,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 290,
+      "id_tanque": 3,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 291,
+      "id_tanque": 5,
+      "operador": "SLCA",
+      "producto": "Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 292,
+      "id_tanque": 5,
+      "operador": "SLCA",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 294,
+      "id_tanque": 2,
+      "operador": "CLH",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 295,
+      "id_tanque": 110,
+      "operador": "TERCA",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 296,
+      "id_tanque": 119,
+      "operador": "TERCA",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 298,
+      "id_tanque": 36,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 299,
+      "id_tanque": 36,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 300,
+      "id_tanque": 36,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 301,
+      "id_tanque": 40,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 302,
+      "id_tanque": 40,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 303,
+      "id_tanque": 40,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 304,
+      "id_tanque": 21,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 305,
+      "id_tanque": 21,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 306,
+      "id_tanque": 21,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 307,
+      "id_tanque": 69,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 308,
+      "id_tanque": 69,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 309,
+      "id_tanque": 69,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 310,
+      "id_tanque": 64,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 311,
+      "id_tanque": 64,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 312,
+      "id_tanque": 83,
+      "operador": "CLHAV",
+      "producto": "Servicios hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 313,
+      "id_tanque": 83,
+      "operador": "CLHAV",
+      "producto": "Servicios en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 314,
+      "id_tanque": 83,
+      "operador": "CLHAV",
+      "producto": "Servicios en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 315,
+      "id_tanque": 125,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 316,
+      "id_tanque": 107,
+      "operador": "CLHAV",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 317,
+      "id_tanque": 78,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 318,
+      "id_tanque": 75,
+      "operador": "TANCAR",
+      "producto": "Gasóleos y Biodiésel"
+    },
+    {
+      "id_tanque_instalacion": 319,
+      "id_tanque": 41,
+      "operador": "QUIMS",
+      "producto": "Bioetanol"
+    },
+    {
+      "id_tanque_instalacion": 320,
+      "id_tanque": 41,
+      "operador": "QUIMS",
+      "producto": "Biodiésel"
+    },
+    {
+      "id_tanque_instalacion": 321,
+      "id_tanque": 125,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos hasta la instalación aeroportuaria"
+    },
+    {
+      "id_tanque_instalacion": 322,
+      "id_tanque": 145,
+      "operador": "ODT",
+      "producto": "Gasóleos y Biodiésel"
+    },
+    {
+      "id_tanque_instalacion": 323,
+      "id_tanque": 129,
+      "operador": "EVOS",
+      "producto": "Fuelóleos y Gasóleos marinos"
+    },
+    {
+      "id_tanque_instalacion": 329,
+      "id_tanque": 152,
+      "operador": "VISTA",
+      "producto": "Gasóleos y Biodiésel"
+    },
+    {
+      "id_tanque_instalacion": 331,
+      "id_tanque": 150,
+      "operador": "FORES",
+      "producto": "Gasóleos y Biodiésel"
+    },
+    {
+      "id_tanque_instalacion": 332,
+      "id_tanque": 112,
+      "operador": "DISA",
+      "producto": "Gasóleo Marino"
+    },
+    {
+      "id_tanque_instalacion": 335,
+      "id_tanque": 88,
+      "operador": "DECAL",
+      "producto": "Bioetanol"
+    },
+    {
+      "id_tanque_instalacion": 338,
+      "id_tanque": 151,
+      "operador": "DBA BILBAO PORT",
+      "producto": "Biodiesel"
+    },
+    {
+      "id_tanque_instalacion": 339,
+      "id_tanque": 79,
+      "operador": "SECICAR",
+      "producto": "Biodiesel"
+    },
+    {
+      "id_tanque_instalacion": 340,
+      "id_tanque": 157,
+      "operador": "SLCA",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 341,
+      "id_tanque": 157,
+      "operador": "SLCA",
+      "producto": "Gasolinas Aviación"
+    },
+    {
+      "id_tanque_instalacion": 342,
+      "id_tanque": 102,
+      "operador": "CLH",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 344,
+      "id_tanque": 66,
+      "operador": "CLHAV",
+      "producto": "Servicios logísticos en la instalación aeroportuaria - Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 347,
+      "id_tanque": 17,
+      "operador": "TEPSA",
+      "producto": "Bioetanol"
+    },
+    {
+      "id_tanque_instalacion": 351,
+      "id_tanque": 35,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 352,
+      "id_tanque": 87,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - Gasolinas, Gasóleos y Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 353,
+      "id_tanque": 19,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 354,
+      "id_tanque": 42,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 355,
+      "id_tanque": 76,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - Gasolinas"
+    },
+    {
+      "id_tanque_instalacion": 356,
+      "id_tanque": 19,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - HVO"
+    },
+    {
+      "id_tanque_instalacion": 357,
+      "id_tanque": 35,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - Éster Metílico"
+    },
+    {
+      "id_tanque_instalacion": 358,
+      "id_tanque": 19,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - Éster Metílico"
+    },
+    {
+      "id_tanque_instalacion": 359,
+      "id_tanque": 87,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - Éster Metílico"
+    },
+    {
+      "id_tanque_instalacion": 360,
+      "id_tanque": 35,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - HVO"
+    },
+    {
+      "id_tanque_instalacion": 361,
+      "id_tanque": 76,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - HVO"
+    },
+    {
+      "id_tanque_instalacion": 362,
+      "id_tanque": 87,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - HVO"
+    },
+    {
+      "id_tanque_instalacion": 363,
+      "id_tanque": 57,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - HVO"
+    },
+    {
+      "id_tanque_instalacion": 365,
+      "id_tanque": 27,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - HVO"
+    },
+    {
+      "id_tanque_instalacion": 366,
+      "id_tanque": 35,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - Búnker"
+    },
+    {
+      "id_tanque_instalacion": 367,
+      "id_tanque": 84,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - Búnker"
+    },
+    {
+      "id_tanque_instalacion": 372,
+      "id_tanque": 61,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - HVO"
+    },
+    {
+      "id_tanque_instalacion": 373,
+      "id_tanque": 159,
+      "operador": "SKYTANKING",
+      "producto": "Querosenos y Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 374,
+      "id_tanque": 88,
+      "operador": "DECAL",
+      "producto": "Fuelóleos"
+    },
+    {
+      "id_tanque_instalacion": 375,
+      "id_tanque": 160,
+      "operador": "SLCA",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 376,
+      "id_tanque": 160,
+      "operador": "SLCA",
+      "producto": "Gasolinas de aviación"
+    },
+    {
+      "id_tanque_instalacion": 377,
+      "id_tanque": 47,
+      "operador": "CLH",
+      "producto": "Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 379,
+      "id_tanque": 118,
+      "operador": "DISA",
+      "producto": "HVO"
+    },
+    {
+      "id_tanque_instalacion": 381,
+      "id_tanque": 1,
+      "operador": "FOATL",
+      "producto": "HVO"
+    },
+    {
+      "id_tanque_instalacion": 382,
+      "id_tanque": 1,
+      "operador": "FOATL",
+      "producto": "Fuelóleos"
+    },
+    {
+      "id_tanque_instalacion": 383,
+      "id_tanque": 37,
+      "operador": "DECAL",
+      "producto": "Bioetanol"
+    },
+    {
+      "id_tanque_instalacion": 384,
+      "id_tanque": 161,
+      "operador": "HCG",
+      "producto": "Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 385,
+      "id_tanque": 158,
+      "operador": "PETRONOVA",
+      "producto": "Gasolinas y Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 387,
+      "id_tanque": 35,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 389,
+      "id_tanque": 57,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - Gasóleos"
+    },
+    {
+      "id_tanque_instalacion": 390,
+      "id_tanque": 76,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - Querosenos"
+    },
+    {
+      "id_tanque_instalacion": 391,
+      "id_tanque": 52,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - Gasolina renovable"
+    },
+    {
+      "id_tanque_instalacion": 392,
+      "id_tanque": 35,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - Gasolina renovable"
+    },
+    {
+      "id_tanque_instalacion": 393,
+      "id_tanque": 61,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - Gasolina renovable"
+    },
+    {
+      "id_tanque_instalacion": 394,
+      "id_tanque": 57,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - Gasolina renovable"
+    },
+    {
+      "id_tanque_instalacion": 395,
+      "id_tanque": 19,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - Gasolina renovable"
+    },
+    {
+      "id_tanque_instalacion": 396,
+      "id_tanque": 100,
+      "operador": "CLH",
+      "producto": "Servicios diferenciados de almacenamiento - HVO"
+    }
+  ],
+  "control_cruzado": {
+    "detalles_en_fichas": 258,
+    "detalles_en_buscador": 258,
+    "solo_fichas": [],
+    "solo_buscador": [],
+    "comunidad_distinta": []
+  }
+}

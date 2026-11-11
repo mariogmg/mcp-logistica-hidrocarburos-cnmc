@@ -1,0 +1,896 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>CNMC</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+	<meta http-equiv="expires" content="0"/>
+	<LINK rel="shortcut icon" type=image/x-icon href="images/faviconweb.ico">
+	<script type="text/javascript">
+        (function(i,s,o,g,r,a,m){
+            i['GoogleAnalyticsObject']=r;
+            i[r]=i[r]||
+				function(){
+                	(i[r].q=i[r].q||
+						[]).push(arguments)},
+						i[r].l=1*new Date();
+            			a=s.createElement(o),
+            			m=s.getElementsByTagName(o)[0];
+            			a.async=1;
+            			a.src=g;
+            			m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-44616095-29', 'auto');
+        ga('send', 'pageview');
+
+
+        var msgError = "";
+	
+		function validar(f) {
+			msgError = "";
+			var ok = true;
+	
+			ok = validar_form(f);
+	
+			if (!ok) {
+				alert(msgError);
+			}
+			f.flag.value = 'user';
+			return (ok);
+		}
+	
+		function MM_swapImgRestore() { //v3.0
+			var i, x, a = document.MM_sr;
+			for (i = 0; a && i < a.length && (x = a[i]) && x.oSrc; i++)
+				x.src = x.oSrc;
+		}
+	
+		function MM_preloadImages() { //v3.0
+			var d = document;
+			if (d.images) {
+				if (!d.MM_p)
+					d.MM_p = new Array();
+				var i, j = d.MM_p.length, a = MM_preloadImages.arguments;
+				for (i = 0; i < a.length; i++)
+					if (a[i].indexOf("#") != 0) {
+						d.MM_p[j] = new Image;
+						d.MM_p[j++].src = a[i];
+					}
+			}
+		}
+	
+		function MM_findObj(n, d) { //v4.01
+			var p, i, x;
+			if (!d)
+				d = document;
+			if ((p = n.indexOf("?")) > 0 && parent.frames.length) {
+				d = parent.frames[n.substring(p + 1)].document;
+				n = n.substring(0, p);
+			}
+			if (!(x = d[n]) && d.all)
+				x = d.all[n];
+			for (i = 0; !x && i < d.forms.length; i++)
+				x = d.forms[i][n];
+			for (i = 0; !x && d.layers && i < d.layers.length; i++)
+				x = MM_findObj(n, d.layers[i].document);
+			if (!x && d.getElementById)
+				x = d.getElementById(n);
+			return x;
+		}
+	
+		function MM_swapImage() { //v3.0
+			var i, j = 0, x, a = MM_swapImage.arguments;
+			document.MM_sr = new Array;
+			for (i = 0; i < (a.length - 2); i += 3)
+				if ((x = MM_findObj(a[i])) != null) {
+					document.MM_sr[j++] = x;
+					if (!x.oSrc)
+						x.oSrc = x.src;
+					x.src = a[i + 2];
+				}
+		}
+		
+		function MM_showHideLayers() { //v9.0
+			  var i,v,obj,args=MM_showHideLayers.arguments;
+			  var text;
+			  for (i=0; i<(args.length-2); i+=3) 
+			  with (document) if (getElementById && ((obj=getElementById(args[i]))!=null)) { v=args[i+2];
+			    if (obj.style) {
+			   		text = document.getElementById("description");
+			   		comunidad=(v=='hide')?obj.title:'';
+			   		text.innerHTML = comunidad;
+					obj=obj.style;
+					v=(v=='show')?'visible':(v=='hide')?'hidden':v;
+				}			    
+			    obj.visibility=v;
+			    
+			 }
+		}
+	
+		function MM_popupMsg(msg) { //v1.0
+			alert(msg);
+		}
+	
+		function seleccionarIdioma1() {
+			document.idiomaEspanol.submit();
+		}
+		function seleccionarIdioma3() {
+			document.idiomaEnglish.submit();
+		}
+		
+	</script>
+	<!-- <link href="css/style.css" rel="stylesheet" type="text/css"/>  -->
+	<link href="css/estilos.css" rel="stylesheet" type="text/css">
+	<style type="text/css">
+		<!--
+		.pie{COLOR: #FFFFFF; FONT-FAMILY: Verdana; FONT-SIZE: 8pt; TEXT-DECORATION: none; line-height:160%;}
+		.link_pie{COLOR: #FFFFFF; FONT-FAMILY: Verdana; FONT-SIZE: 8pt; TEXT-DECORATION: none; line-height:160%;}
+		.link_pie:hover{COLOR: #FFFFFF; FONT-FAMILY: Verdana; FONT-SIZE: 8pt; TEXT-DECORATION: underline; line-height:160%;}
+		-->
+	</style>	
+</head>
+
+<body bgcolor="#efefef">
+	<div id="fecha">
+		<script type="text/javascript">
+				<!--
+					dows = new Array('Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado');
+					months = new Array('Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
+					now = new Date();
+					dow = now.getDay();
+					d = now.getDate();
+					m = now.getMonth();
+					h = now.getTime();
+					y = now.getFullYear();
+					document.write(dows[dow] + " " + d + " de " + months[m]+ " de " + y);
+				//-->
+		</script>
+	</div>
+	<table width="887"  border="0" align="center" cellpadding="0" cellspacing="0">
+		<tr>
+	    	<td height="109"  valign="top">
+				<table width="100%" cellspacing="0" cellpadding="0">
+	      			<tr>
+	        			<td><table width="100%" height="106" align="center" cellpadding="0" cellspacing="0" background="images/fondo_cabecera.gif">
+  <tr>
+	<td width="51%">
+		<a href="http://www.cnmc.es/" target="_blank">
+			<img src="images/logo.gif" width="144" height="96" hspace="11" alt="CNMC" title="CNMC" border="0">
+		</a>
+	</td>
+	<td width="26%">
+		
+	</td>
+	<td width="23%">
+		
+	</td>
+  </tr>
+</table></td>
+	      			</tr>
+	      			<tr>
+	        			<td height="42" background="images/fondo_menu.gif"></td>
+	      			</tr>
+	    		</table>
+			</td>
+	  	</tr>
+		
+ 	<!-- CONTENIDOS -->
+ 		<tr align="left">		
+			<td height="550" background="images/fondo_lineas.gif" valign="top" style="padding-left: 10px; padding-right: 10px">
+			
+		<div id="contenidohome">
+			<div class="titulo_mapa">
+		    	<div class="texto_titulo"><label style="float:left;">Logística de Productos Petrolíferos</label><label style="margin-left:240px;float:left; margin-right:4px;">Buscar:</label><label class="volver"><a href="buscador.htm"><img src="img/buscar.png"/></a></label></div>
+		        <div class="volver"><a href="javascript:history.back(-1);"><img src="img/volver.png" alt="" title=""/></a></div>
+		    </div>
+			<div class="subtitulo_mapa">
+				<div class="texto_titulo">Características de las instalaciones de almacenamiento</div>
+				<div class="volver">
+					
+							
+						
+							
+					
+					<a href="/hidrocarburos/downloadfile.htm?directorioPadre=carpdfpub"><img src="img/bt_pdf.png"
+						alt="Pulsa para descargar el PDF"
+						title="Pulsa para descargar el PDF" /></a>
+				</div>
+			</div>
+			<div class="texto_mapa">
+				Condiciones de acceso a instalaciones fijas de transporte y almacenamiento de productos petrolíferos líquidos (<a href="https://boe.es/buscar/act.php?id=BOE-A-1998-23284#a41" target="_blank">art. 41 LH</a>)
+			</div>
+			<div class="caja_bidones2">
+				
+        			<div class="fila_bidones">
+						<div class="icono_bidones">
+							<img src="img/bidones/5_mini.png" />
+						</div>
+					<div class="texto_bidones">INSTALACIONES DE ALMACENAMIENTO</div>
+				</div>
+        		
+        			<div class="fila_bidones">
+						<div class="icono_bidones">
+							<img src="img/bidones/4_mini.png" />
+						</div>
+					<div class="texto_bidones">INSTALACIONES AEROPORTUARIAS</div>
+				</div>
+        		
+				<div class="fila_bidones">
+					<div class="icono_bidones">
+						<img src="img/bidones/oleoductos.png" />
+					</div>
+					<div class="texto_bidones">Oleoductos de productos</div>
+				</div>
+				
+			</div>
+			
+		<div class="mapa_svg">
+		<div style=" float: left;height: 643px;width: 700px; position:absolute; z-index:10;"><p id="description"></p></div>
+    	<div style=" float: left;height: 643px;width: 700px; position:absolute; z-index:0;"><img src="img/resalte_capas/capa_mapa.png"/></div>
+      
+       <div title="Asturias" id="asturias" style="float: left;height: 643px;width: 700px; position:absolute; z-index:1;"><img src="img/resalte_capas/capa_asturias.png" /></div>
+       <div title="Asturias" id="asturias2" style="float: left;height: 643px;width: 700px; position:absolute; z-index:2;"><img src="img/resalte_capas/capa_asturias1.png" /></div>
+       
+       <div title="Galicia" id="galicia" style="float: left;height: 643px;width: 700px; position:absolute; z-index:3;"><img src="img/resalte_capas/capa_galicia.png"/></div>
+       <div title="Galicia" id="galicia2" style="float: left;height: 643px;width: 700px; position:absolute; z-index:4;"><img src="img/resalte_capas/capa_galicia1.png"/></div>
+       
+       <div title="Cantabria" id="cantabria" style="float: left;height: 643px;width: 700px; position:absolute; z-index:5;"><img src="img/resalte_capas/capa_cantabria.png"/></div>
+       <div title="Cantabria" id="cantabria2" style="float: left;height: 643px;width: 700px; position:absolute; z-index:6;"><img src="img/resalte_capas/capa_cantabria1.png"/></div>
+       
+       <div title="País Vasco" id="paisvasco" style="float: left;height: 643px;width: 700px; position:absolute; z-index:7;"><img src="img/resalte_capas/capa_paisvasco.png"/></div>
+       <div title="País Vasco" id="paisvasco2" style="float: left;height: 643px;width: 700px; position:absolute; z-index:8;"><img src="img/resalte_capas/capa_paisvasco1.png"/></div>
+       
+       <div title="Navarra" id="navarra" style="float: left;height: 643px;width: 700px; position:absolute; z-index:9;"><img src="img/resalte_capas/capa_navarra.png"/></div>
+       <div title="Navarra" id="navarra2" style="float: left;height: 643px;width: 700px; position:absolute; z-index:10;"><img src="img/resalte_capas/capa_navarra1.png"/></div>
+       
+       <div title="La Rioja" id="larioja" style="float: left;height: 643px;width: 700px; position:absolute; z-index:11;"><img src="img/resalte_capas/capa_larioja.png"/></div>
+       <div title="La Rioja" id="larioja2" style="float: left;height: 643px;width: 700px; position:absolute; z-index:12;"><img src="img/resalte_capas/capa_larioja1.png"/></div>
+       
+       <div title="Aragón" id="aragon" style="float: left;height: 643px;width: 700px; position:absolute; z-index:13;"><img src="img/resalte_capas/capa_aragon.png"/></div>
+       <div title="Aragón" id="aragon2" style="float: left;height: 643px;width: 700px; position:absolute; z-index:14;"><img src="img/resalte_capas/capa_aragon1.png"/></div>
+       
+       <div title="Cataluña" id="cataluna" style="float: left;height: 643px;width: 700px; position:absolute; z-index:15;"><img src="img/resalte_capas/capa_cataluna.png"/></div>
+       <div title="Cataluña" id="cataluna2" style="float: left;height: 643px;width: 700px; position:absolute; z-index:16;"><img src="img/resalte_capas/capa_cataluna1.png"/></div>
+       
+       <div title="Castilla la Mancha" id="castillalamancha" style="float: left;height: 643px;width: 700px; position:absolute; z-index:17;"><img src="img/resalte_capas/capa_castillalamancha.png"/></div>
+       <div title="Castilla la Mancha" id="castillalamancha2" style="float: left;height: 643px;width: 700px; position:absolute; z-index:18;"><img src="img/resalte_capas/capa_castillalamancha1.png"/></div>
+       
+       <div title="Castilla y Leon" id="castillaleon" style="float: left;height: 643px;width: 700px; position:absolute; z-index:19;"><img src="img/resalte_capas/capa_castillaleon.png"/></div>
+       <div title="Castilla y Leon" id="castillaleon2" style="float: left;height: 643px;width: 700px; position:absolute; z-index:20;"><img src="img/resalte_capas/capa_castillaleon1.png"/></div>
+       
+       <div title="Madrid" id="madrid" style="float: left;height: 643px;width: 700px; position:absolute; z-index:21;"><img src="img/resalte_capas/capa_madrid.png"/></div>
+       <div title="Madrid" id="madrid2" style="float: left;height: 643px;width: 700px; position:absolute; z-index:22;"><img src="img/resalte_capas/capa_madrid1.png"/></div>
+       
+	   <div title="Comunidad Valenciana" id="valencia" style="float: left;height: 643px;width: 700px; position:absolute; z-index:23;"><img src="img/resalte_capas/capa_valencia.png"/></div>
+       <div title="Comunidad Valenciana" id="valencia2" style="float: left;height: 643px;width: 700px; position:absolute; z-index:24;"><img src="img/resalte_capas/capa_valencia1.png"/></div>
+       
+       <div title="Murcia" id="murcia" style="float: left;height: 643px;width: 700px; position:absolute; z-index:25;"><img src="img/resalte_capas/capa_murcia.png"/></div>
+       <div title="Murcia" id="murcia2" style="float: left;height: 643px;width: 700px; position:absolute; z-index:26;"><img src="img/resalte_capas/capa_murcia1.png"/></div>
+       
+       <div title="Extremadura" id="extremadura" style="float: left;height: 643px;width: 700px; position:absolute; z-index:27;"><img src="img/resalte_capas/capa_extremadura.png"/></div>
+       <div title="Extremadura" title="Murcia" id="extremadura2" style="float: left;height: 643px;width: 700px; position:absolute; z-index:28;"><img src="img/resalte_capas/capa_extremadura1.png"/></div>
+       
+       <div title="Andalucía" id="andalucia" style="float: left;height: 643px;width: 700px; position:absolute; z-index:29;"><img src="img/resalte_capas/capa_andalucia.png"/></div>
+       <div title="Andalucía" id="andalucia2" style="float: left;height: 643px;width: 700px; position:absolute; z-index:30;"><img src="img/resalte_capas/capa_andalucia1.png"/></div>
+       
+       <div title="Islas Baleares" id="baleares" style="float: left;height: 643px;width: 700px; position:absolute; z-index:31;"><img src="img/resalte_capas/capa_baleares.png"/></div>
+       <div title="Islas Baleares" id="baleares2" style="float: left;height: 643px;width: 700px; position:absolute; z-index:32;"><img src="img/resalte_capas/capa_baleares1.png"/></div>
+       
+       <div title="Canarias" id="canarias" style="float: left;height: 643px;width: 700px; position:absolute; z-index:33;"><img src="img/resalte_capas/capa_canarias.png"/></div>
+       <div title="Canarias" id="canarias2" style="float: left;height: 643px;width: 700px; position:absolute; z-index:34;"><img src="img/resalte_capas/capa_canarias1.png"/></div>
+       
+       <div title="Ceuta y Melilla" id="ceutamelilla" style="float: left;height: 643px;width: 700px; position:absolute; z-index:35;"><img src="img/resalte_capas/capa_ceutamelilla.png"/></div>
+       <div title="Ceuta y Melilla" id="ceutamelilla2" style="float: left;height: 643px;width: 700px; position:absolute; z-index:36;"><img src="img/resalte_capas/capa_ceutamelilla1.png"/></div>
+       
+		       <div style=" float: left;height: 643px;width: 700px; position:absolute; z-index:37;"><img src="img/resalte_capas/vacio.png" border="0" usemap="#Map2"/>
+			       
+	        			<div id="126" style="position: absolute; left:309px; top:578px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 126" title="Tanque 126" />
+	        			</div>
+	        		
+	        			<div id="127" style="position: absolute; left:193px; top:567px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 127" title="Tanque 127" />
+	        			</div>
+	        		
+	        			<div id="128" style="position: absolute; left:184px; top:554px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 128" title="Tanque 128" />
+	        			</div>
+	        		
+	        			<div id="129" style="position: absolute; left:164px; top:523px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 129" title="Tanque 129" />
+	        			</div>
+	        		
+	        			<div id="131" style="position: absolute; left:194px; top:29px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 131" title="Tanque 131" />
+	        			</div>
+	        		
+	        			<div id="151" style="position: absolute; left:311px; top:14px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 151" title="Tanque 151" />
+	        			</div>
+	        		
+	        			<div id="133" style="position: absolute; left:611px; top:146px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 133" title="Tanque 133" />
+	        			</div>
+	        		
+	        			<div id="138" style="position: absolute; left:594px; top:172px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 138" title="Tanque 138" />
+	        			</div>
+	        		
+	        			<div id="139" style="position: absolute; left:461px; top:358px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 139" title="Tanque 139" />
+	        			</div>
+	        		
+	        			<div id="142" style="position: absolute; left:580px; top:174px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 142" title="Tanque 142" />
+	        			</div>
+	        		
+	        			<div id="145" style="position: absolute; left:244px; top:485px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 145" title="Tanque 145" />
+	        			</div>
+	        		
+	        			<div id="135" style="position: absolute; left:544px; top:616px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 135" title="Tanque 135" />
+	        			</div>
+	        		
+	        			<div id="136" style="position: absolute; left:309px; top:603px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 136" title="Tanque 136" />
+	        			</div>
+	        		
+	        			<div id="137" style="position: absolute; left:152px; top:434px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 137" title="Tanque 137" />
+	        			</div>
+	        		
+	        			<div id="141" style="position: absolute; left:549px; top:580px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 141" title="Tanque 141" />
+	        			</div>
+	        		
+	        			<div id="143" style="position: absolute; left:175px; top:451px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 143" title="Tanque 143" />
+	        			</div>
+	        		
+	        			<div id="144" style="position: absolute; left:280px; top:350px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 144" title="Tanque 144" />
+	        			</div>
+	        		
+	        			<div id="149" style="position: absolute; left:523px; top:197px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 149" title="Tanque 149" />
+	        			</div>
+	        		
+	        			<div id="150" style="position: absolute; left:28px; top:85px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 150" title="Tanque 150" />
+	        			</div>
+	        		
+	        			<div id="153" style="position: absolute; left:139px; top:511px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 153" title="Tanque 153" />
+	        			</div>
+	        		
+	        			<div id="152" style="position: absolute; left:506px; top:146px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 152" title="Tanque 152" />
+	        			</div>
+	        		
+	        			<div id="154" style="position: absolute; left:151px; top:529px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 154" title="Tanque 154" />
+	        			</div>
+	        		
+	        			<div id="155" style="position: absolute; left:197px; top:410px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 155" title="Tanque 155" />
+	        			</div>
+	        		
+	        			<div id="156" style="position: absolute; left:304px; top:24px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 156" title="Tanque 156" />
+	        			</div>
+	        		
+	        			<div id="157" style="position: absolute; left:557px; top:329px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 157" title="Tanque 157" />
+	        			</div>
+	        		
+	        			<div id="159" style="position: absolute; left:497px; top:151px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 159" title="Tanque 159" />
+	        			</div>
+	        		
+	        			<div id="160" style="position: absolute; left:420px; top:318px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 160" title="Tanque 160" />
+	        			</div>
+	        		
+	        			<div id="161" style="position: absolute; left:274px; top:201px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 161" title="Tanque 161" />
+	        			</div>
+	        		
+	        			<div id="158" style="position: absolute; left:125px; top:321px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 158" title="Tanque 158" />
+	        			</div>
+	        		
+	        			<div id="5" style="position: absolute; left:69px; top:58px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 5" title="Tanque 5" />
+	        			</div>
+	        		
+	        			<div id="9" style="position: absolute; left:15px; top:103px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 9" title="Tanque 9" />
+	        			</div>
+	        		
+	        			<div id="10" style="position: absolute; left:41px; top:99px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 10" title="Tanque 10" />
+	        			</div>
+	        		
+	        			<div id="11" style="position: absolute; left:159px; top:24px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 11" title="Tanque 11" />
+	        			</div>
+	        		
+	        			<div id="13" style="position: absolute; left:179px; top:19px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 13" title="Tanque 13" />
+	        			</div>
+	        		
+	        			<div id="15" style="position: absolute; left:255px; top:28px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 15" title="Tanque 15" />
+	        			</div>
+	        		
+	        			<div id="16" style="position: absolute; left:267px; top:27px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 16" title="Tanque 16" />
+	        			</div>
+	        		
+	        			<div id="17" style="position: absolute; left:313px; top:20px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 17" title="Tanque 17" />
+	        			</div>
+	        		
+	        			<div id="18" style="position: absolute; left:301px; top:28px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 18" title="Tanque 18" />
+	        			</div>
+	        		
+	        			<div id="19" style="position: absolute; left:307px; top:40px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 19" title="Tanque 19" />
+	        			</div>
+	        		
+	        			<div id="20" style="position: absolute; left:318px; top:28px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 20" title="Tanque 20" />
+	        			</div>
+	        		
+	        			<div id="21" style="position: absolute; left:344px; top:33px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 21" title="Tanque 21" />
+	        			</div>
+	        		
+	        			<div id="22" style="position: absolute; left:323px; top:54px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 22" title="Tanque 22" />
+	        			</div>
+	        		
+	        			<div id="23" style="position: absolute; left:307px; top:58px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 23" title="Tanque 23" />
+	        			</div>
+	        		
+	        			<div id="24" style="position: absolute; left:380px; top:57px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 24" title="Tanque 24" />
+	        			</div>
+	        		
+	        			<div id="25" style="position: absolute; left:368px; top:69px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 25" title="Tanque 25" />
+	        			</div>
+	        		
+	        			<div id="26" style="position: absolute; left:334px; top:99px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 26" title="Tanque 26" />
+	        			</div>
+	        		
+	        			<div id="27" style="position: absolute; left:416px; top:155px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 27" title="Tanque 27" />
+	        			</div>
+	        		
+	        			<div id="28" style="position: absolute; left:405px; top:155px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 28" title="Tanque 28" />
+	        			</div>
+	        		
+	        			<div id="29" style="position: absolute; left:504px; top:129px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 29" title="Tanque 29" />
+	        			</div>
+	        		
+	        			<div id="31" style="position: absolute; left:605px; top:92px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 31" title="Tanque 31" />
+	        			</div>
+	        		
+	        			<div id="32" style="position: absolute; left:618px; top:95px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 32" title="Tanque 32" />
+	        			</div>
+	        		
+	        			<div id="34" style="position: absolute; left:601px; top:121px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 34" title="Tanque 34" />
+	        			</div>
+	        		
+	        			<div id="35" style="position: absolute; left:590px; top:130px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 35" title="Tanque 35" />
+	        			</div>
+	        		
+	        			<div id="36" style="position: absolute; left:579px; top:121px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 36" title="Tanque 36" />
+	        			</div>
+	        		
+	        			<div id="37" style="position: absolute; left:596px; top:138px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 37" title="Tanque 37" />
+	        			</div>
+	        		
+	        			<div id="38" style="position: absolute; left:579px; top:140px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 38" title="Tanque 38" />
+	        			</div>
+	        		
+	        			<div id="39" style="position: absolute; left:583px; top:151px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 39" title="Tanque 39" />
+	        			</div>
+	        		
+	        			<div id="40" style="position: absolute; left:551px; top:154px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 40" title="Tanque 40" />
+	        			</div>
+	        		
+	        			<div id="1" style="position: absolute; left:47px; top:13px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 1" title="Tanque 1" />
+	        			</div>
+	        		
+	        			<div id="2" style="position: absolute; left:36px; top:27px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 2" title="Tanque 2" />
+	        			</div>
+	        		
+	        			<div id="3" style="position: absolute; left:27px; top:28px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 3" title="Tanque 3" />
+	        			</div>
+	        		
+	        			<div id="41" style="position: absolute; left:535px; top:169px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 41" title="Tanque 41" />
+	        			</div>
+	        		
+	        			<div id="42" style="position: absolute; left:521px; top:167px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 42" title="Tanque 42" />
+	        			</div>
+	        		
+	        			<div id="43" style="position: absolute; left:523px; top:178px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 43" title="Tanque 43" />
+	        			</div>
+	        		
+	        			<div id="45" style="position: absolute; left:472px; top:234px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 45" title="Tanque 45" />
+	        			</div>
+	        		
+	        			<div id="47" style="position: absolute; left:443px; top:261px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 47" title="Tanque 47" />
+	        			</div>
+	        		
+	        			<div id="48" style="position: absolute; left:444px; top:295px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 48" title="Tanque 48" />
+	        			</div>
+	        		
+	        			<div id="50" style="position: absolute; left:451px; top:311px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 50" title="Tanque 50" />
+	        			</div>
+	        		
+	        			<div id="51" style="position: absolute; left:464px; top:346px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 51" title="Tanque 51" />
+	        			</div>
+	        		
+	        			<div id="52" style="position: absolute; left:451px; top:341px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 52" title="Tanque 52" />
+	        			</div>
+	        		
+	        			<div id="53" style="position: absolute; left:363px; top:305px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 53" title="Tanque 53" />
+	        			</div>
+	        		
+	        			<div id="54" style="position: absolute; left:302px; top:290px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 54" title="Tanque 54" />
+	        			</div>
+	        		
+	        			<div id="56" style="position: absolute; left:290px; top:240px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 56" title="Tanque 56" />
+	        			</div>
+	        		
+	        			<div id="57" style="position: absolute; left:282px; top:238px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 57" title="Tanque 57" />
+	        			</div>
+	        		
+	        			<div id="59" style="position: absolute; left:267px; top:215px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 59" title="Tanque 59" />
+	        			</div>
+	        		
+	        			<div id="60" style="position: absolute; left:256px; top:215px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 60" title="Tanque 60" />
+	        			</div>
+	        		
+	        			<div id="61" style="position: absolute; left:258px; top:224px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 61" title="Tanque 61" />
+	        			</div>
+	        		
+	        			<div id="64" style="position: absolute; left:175px; top:84px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 64" title="Tanque 64" />
+	        			</div>
+	        		
+	        			<div id="65" style="position: absolute; left:184px; top:76px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 65" title="Tanque 65" />
+	        			</div>
+	        		
+	        			<div id="66" style="position: absolute; left:266px; top:84px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 66" title="Tanque 66" />
+	        			</div>
+	        		
+	        			<div id="67" style="position: absolute; left:278px; top:91px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 67" title="Tanque 67" />
+	        			</div>
+	        		
+	        			<div id="69" style="position: absolute; left:190px; top:134px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 69" title="Tanque 69" />
+	        			</div>
+	        		
+	        			<div id="70" style="position: absolute; left:202px; top:139px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 70" title="Tanque 70" />
+	        			</div>
+	        		
+	        			<div id="71" style="position: absolute; left:158px; top:181px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 71" title="Tanque 71" />
+	        			</div>
+	        		
+	        			<div id="72" style="position: absolute; left:169px; top:185px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 72" title="Tanque 72" />
+	        			</div>
+	        		
+	        			<div id="73" style="position: absolute; left:420px; top:397px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 73" title="Tanque 73" />
+	        			</div>
+	        		
+	        			<div id="74" style="position: absolute; left:429px; top:412px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 74" title="Tanque 74" />
+	        			</div>
+	        		
+	        			<div id="75" style="position: absolute; left:417px; top:417px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 75" title="Tanque 75" />
+	        			</div>
+	        		
+	        			<div id="76" style="position: absolute; left:401px; top:409px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 76" title="Tanque 76" />
+	        			</div>
+	        		
+	        			<div id="78" style="position: absolute; left:341px; top:456px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 78" title="Tanque 78" />
+	        			</div>
+	        		
+	        			<div id="79" style="position: absolute; left:313px; top:464px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 79" title="Tanque 79" />
+	        			</div>
+	        		
+	        			<div id="80" style="position: absolute; left:296px; top:468px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 80" title="Tanque 80" />
+	        			</div>
+	        		
+	        			<div id="81" style="position: absolute; left:235px; top:468px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 81" title="Tanque 81" />
+	        			</div>
+	        		
+	        			<div id="82" style="position: absolute; left:220px; top:472px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 82" title="Tanque 82" />
+	        			</div>
+	        		
+	        			<div id="83" style="position: absolute; left:234px; top:427px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 83" title="Tanque 83" />
+	        			</div>
+	        		
+	        			<div id="84" style="position: absolute; left:178px; top:526px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 84" title="Tanque 84" />
+	        			</div>
+	        		
+	        			<div id="85" style="position: absolute; left:128px; top:478px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 85" title="Tanque 85" />
+	        			</div>
+	        		
+	        			<div id="86" style="position: absolute; left:150px; top:472px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 86" title="Tanque 86" />
+	        			</div>
+	        		
+	        			<div id="87" style="position: absolute; left:106px; top:433px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 87" title="Tanque 87" />
+	        			</div>
+	        		
+	        			<div id="88" style="position: absolute; left:91px; top:437px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 88" title="Tanque 88" />
+	        			</div>
+	        		
+	        			<div id="89" style="position: absolute; left:150px; top:415px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 89" title="Tanque 89" />
+	        			</div>
+	        		
+	        			<div id="90" style="position: absolute; left:161px; top:422px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 90" title="Tanque 90" />
+	        			</div>
+	        		
+	        			<div id="91" style="position: absolute; left:213px; top:393px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 91" title="Tanque 91" />
+	        			</div>
+	        		
+	        			<div id="92" style="position: absolute; left:202px; top:397px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 92" title="Tanque 92" />
+	        			</div>
+	        		
+	        			<div id="93" style="position: absolute; left:135px; top:332px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 93" title="Tanque 93" />
+	        			</div>
+	        		
+	        			<div id="94" style="position: absolute; left:107px; top:320px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 94" title="Tanque 94" />
+	        			</div>
+	        		
+	        			<div id="95" style="position: absolute; left:683px; top:242px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 95" title="Tanque 95" />
+	        			</div>
+	        		
+	        			<div id="96" style="position: absolute; left:667px; top:242px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 96" title="Tanque 96" />
+	        			</div>
+	        		
+	        			<div id="97" style="position: absolute; left:618px; top:257px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 97" title="Tanque 97" />
+	        			</div>
+	        		
+	        			<div id="99" style="position: absolute; left:618px; top:289px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 99" title="Tanque 99" />
+	        			</div>
+	        		
+	        			<div id="100" style="position: absolute; left:630px; top:286px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 100" title="Tanque 100" />
+	        			</div>
+	        		
+	        			<div id="102" style="position: absolute; left:545px; top:310px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 102" title="Tanque 102" />
+	        			</div>
+	        		
+	        			<div id="103" style="position: absolute; left:406px; top:615px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 103" title="Tanque 103" />
+	        			</div>
+	        		
+	        			<div id="104" style="position: absolute; left:455px; top:589px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 104" title="Tanque 104" />
+	        			</div>
+	        		
+	        			<div id="105" style="position: absolute; left:417px; top:538px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 105" title="Tanque 105" />
+	        			</div>
+	        		
+	        			<div id="106" style="position: absolute; left:420px; top:560px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 106" title="Tanque 106" />
+	        			</div>
+	        		
+	        			<div id="107" style="position: absolute; left:498px; top:605px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 107" title="Tanque 107" />
+	        			</div>
+	        		
+	        			<div id="109" style="position: absolute; left:509px; top:586px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 109" title="Tanque 109" />
+	        			</div>
+	        		
+	        			<div id="110" style="position: absolute; left:520px; top:570px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 110" title="Tanque 110" />
+	        			</div>
+	        		
+	        			<div id="111" style="position: absolute; left:505px; top:565px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 111" title="Tanque 111" />
+	        			</div>
+	        		
+	        			<div id="112" style="position: absolute; left:680px; top:517px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 112" title="Tanque 112" />
+	        			</div>
+	        		
+	        			<div id="113" style="position: absolute; left:673px; top:534px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 113" title="Tanque 113" />
+	        			</div>
+	        		
+	        			<div id="114" style="position: absolute; left:661px; top:564px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 114" title="Tanque 114" />
+	        			</div>
+	        		
+	        			<div id="115" style="position: absolute; left:652px; top:578px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 115" title="Tanque 115" />
+	        			</div>
+	        		
+	        			<div id="116" style="position: absolute; left:572px; top:590px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 116" title="Tanque 116" />
+	        			</div>
+	        		
+	        			<div id="118" style="position: absolute; left:567px; top:616px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 118" title="Tanque 118" />
+	        			</div>
+	        		
+	        			<div id="119" style="position: absolute; left:561px; top:580px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 119" title="Tanque 119" />
+	        			</div>
+	        		
+	        			<div id="121" style="position: absolute; left:557px; top:600px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 121" title="Tanque 121" />
+	        			</div>
+	        		
+	        			<div id="123" style="position: absolute; left:546px; top:585px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/5_mini.png" alt="Tanque 123" title="Tanque 123" />
+	        			</div>
+	        		
+	        			<div id="125" style="position: absolute; left:324px; top:584px; z-index:-1; width: 18px; height: 14px;" >
+	        		 		<img src="imgs/tanques/4_mini.png" alt="Tanque 125" title="Tanque 125" />
+	        			</div>
+	        		
+		            <map name="Map2">
+		              <area shape="poly" onmouseover="MM_showHideLayers('asturias2','','hide')" onmouseout="MM_showHideLayers('asturias2','','show')" coords="117,15,176,9,243,33,238,43,201,58,173,64,153,59,126,69,109,29" href="instalaciones_comunidad.htm?idcomunidad=AST" target="_parent"/>
+		              <area shape="poly" onmouseover="MM_showHideLayers('galicia2','','hide')" onmouseout="MM_showHideLayers('galicia2','','show')" coords="111,128,18,127,3,46,46,26,83,4,102,19,119,70,127,106" href="instalaciones_comunidad.htm?idcomunidad=GAL"/>
+		              <area shape="poly" onmouseover="MM_showHideLayers('cantabria2','','hide')" onmouseout="MM_showHideLayers('cantabria2','','show')" coords="287,26,308,38,294,47,297,54,285,50,268,62,275,75,262,77,252,61,231,62,225,54,238,48,246,36,262,36" href="instalaciones_comunidad.htm?idcomunidad=CANT"/>
+		              <area shape="poly" onmouseover="MM_showHideLayers('paisvasco2','','hide')" onmouseout="MM_showHideLayers('paisvasco2','','show')" coords="328,31,350,42,371,34,375,41,354,63,344,88,345,98,334,97,326,87,303,71,308,56,302,51,313,38" href="instalaciones_comunidad.htm?idcomunidad=PV"/>
+		              <area shape="poly" onmouseover="MM_showHideLayers('navarra2','','hide')" onmouseout="MM_showHideLayers('navarra2','','show')" coords="427,67,397,58,400,48,379,41,357,68,348,97,364,111,384,115,371,125,391,137,403,126,396,114,406,90" href="instalaciones_comunidad.htm?idcomunidad=NAV"/>
+		              <area shape="poly" onmouseover="MM_showHideLayers('larioja2','','hide')" onmouseout="MM_showHideLayers('larioja2','','show')" coords="308,123,310,92,322,91,331,99,348,101,376,118,368,123,372,133,366,136,359,122,345,120,336,131" href="instalaciones_comunidad.htm?idcomunidad=RIO"/>
+		              <area shape="poly" onmouseover="MM_showHideLayers('aragon2','','hide')" onmouseout="MM_showHideLayers('aragon2','','show')" coords="454,73,465,80,478,75,499,79,506,89,502,98,506,107,500,135,489,152,494,161,490,177,483,189,487,205,476,216,462,211,453,220,458,227,458,235,430,275,415,266,415,259,405,252,402,256,380,241,391,224,386,202,358,185,360,171,369,173,367,159,378,145,375,136,392,144,405,131,400,117,407,95,430,71" href="instalaciones_comunidad.htm?idcomunidad=ARA"/>
+		              <area shape="poly" onmouseover="MM_showHideLayers('cataluna2','','hide')" onmouseout="MM_showHideLayers('cataluna2','','show')" coords="621,87,637,99,626,108,637,125,580,176,521,190,508,208,519,216,508,226,496,226,485,217,489,208,486,192,495,173,497,162,494,156,502,134,509,113,508,99,509,88,501,79,501,70,535,76,541,95,553,91,569,96,575,91,586,93,593,99,608,90" href="instalaciones_comunidad.htm?idcomunidad=CAT"/>
+		              <area shape="poly" onmouseover="MM_showHideLayers('castillaleon2','','hide')" onmouseout="MM_showHideLayers('castillaleon2','','show')" coords="154,161,146,150,136,150,135,131,116,129,131,110,123,74,154,63,175,68,223,53,231,66,249,65,259,79,277,78,272,65,287,52,302,54,302,70,312,88,309,96,308,125,338,134,347,125,358,128,365,139,374,135,376,149,369,174,356,193,326,179,298,182,271,198,249,223,244,236,232,250,224,247,213,257,195,257,193,248,186,251,172,240,166,244,150,231,129,244,115,244,119,202,114,192,145,166" href="instalaciones_comunidad.htm?idcomunidad=LEO"/>
+		              <area shape="poly" onmouseover="MM_showHideLayers('madrid2','','hide')" onmouseout="MM_showHideLayers('madrid2','','show')" coords="273,274,297,262,311,262,312,247,308,230,294,219,298,201,285,189,260,211,248,235,235,252,256,249,285,258" href="instalaciones_comunidad.htm?idcomunidad=MAD"/>
+		              <area shape="poly" onmouseover="MM_showHideLayers('castillalamancha2','','hide')" onmouseout="MM_showHideLayers('castillalamancha2','','show')" coords="226,304,200,293,203,280,195,283,190,272,195,258,208,258,225,250,234,253,255,250,283,260,271,275,297,266,314,265,315,248,309,227,297,220,301,204,291,191,302,185,322,183,335,186,343,195,364,192,384,204,390,226,381,240,397,256,412,268,406,288,397,287,395,307,412,315,408,328,413,339,422,336,426,342,426,354,420,357,416,349,400,357,397,364,398,374,391,381,383,376,364,383,354,401,340,397,348,387,340,369,330,367,315,372,281,374,246,377,209,354,219,341,211,328,220,328" href="instalaciones_comunidad.htm?idcomunidad=MAN"/>
+		              <area shape="poly"  onmouseover="MM_showHideLayers('valencia2','','hide')" onmouseout="MM_showHideLayers('valencia2','','show')" coords="456,308,497,229,482,217,465,216,456,219,462,231,433,276,416,269,416,260,405,254,399,256,412,275,409,287,399,290,395,307,413,316,410,327,414,338,424,338,426,354,422,357,418,377,425,381,423,392,429,406,435,411,442,402,442,389,451,386,457,370,473,362,488,351,474,343" href="instalaciones_comunidad.htm?idcomunidad=VAL"/>
+		              <area shape="poly" onmouseover="MM_showHideLayers('extremadura2','','hide')" onmouseout="MM_showHideLayers('extremadura2','','show')" coords="74,284,104,285,115,262,105,253,114,245,126,247,149,235,160,244,174,243,182,251,190,250,196,258,190,270,196,284,201,295,214,307,222,307,218,328,209,331,217,341,210,351,197,360,178,374,182,389,173,393,171,386,165,387,157,395,157,399,146,403,134,394,130,399,113,389,108,383,101,388,87,370,91,349,104,337,105,325,95,321,89,307,90,295" href="instalaciones_comunidad.htm?idcomunidad=EXT"/>              
+		              <area shape="poly"  onmouseover="MM_showHideLayers('murcia2','','hide')" onmouseout="MM_showHideLayers('murcia2','','show')" coords="392,445,380,441,371,428,372,411,356,404,365,385,380,379,389,382,398,375,401,359,413,351,421,359,417,376,425,384,423,395,435,412,439,428,424,434,414,428,401,432" href="instalaciones_comunidad.htm?idcomunidad=MUR"/>
+		              <area shape="poly" onmouseover="MM_showHideLayers('andalucia2','','hide')" onmouseout="MM_showHideLayers('andalucia2','','show')" coords="171,535,185,525,198,509,210,504,225,506,238,491,265,486,290,491,318,487,329,493,341,483,352,481,360,487,373,477,389,446,376,438,367,429,369,414,341,400,339,395,346,389,336,371,318,374,243,380,210,354,179,376,184,389,175,395,172,390,166,390,160,400,151,405,137,398,131,401,109,387,102,390,99,394,89,398,69,425,74,450,88,448,107,456,128,473,129,486,138,495,136,500,150,526" href="instalaciones_comunidad.htm?idcomunidad=AND"/>
+		              <area shape="poly" onmouseover="MM_showHideLayers('baleares2','','hide')" onmouseout="MM_showHideLayers('baleares2','','show')" coords="535,337,553,320,566,321,597,286,622,260,642,256,688,245,696,256,696,263,673,256,639,263,643,272,654,269,655,283,632,316,632,300,619,300,618,287,611,286,600,291,560,327,554,339,562,352,549,356,553,342" href="instalaciones_comunidad.htm?idcomunidad=BAL"/>
+		              <area shape="poly" onmouseover="MM_showHideLayers('canarias2','','hide')" onmouseout="MM_showHideLayers('canarias2','','show')" coords="401,625,422,617,428,581,416,559,425,549,435,555,435,575,456,597,473,600,482,585,504,582,515,572,530,572,517,591,551,608,557,598,575,600,574,612,627,605,642,596,659,562,668,544,682,534,686,517,695,534,690,545,673,554,670,570,670,591,654,600,640,608,581,617,570,631,551,625,548,615,515,598,512,608,496,614,487,593,474,604,469,613,457,607,454,597,434,581,426,616,430,627,420,636" href="instalaciones_comunidad.htm?idcomunidad=CAN"/>		              
+		              <area shape="poly" onmouseover="MM_showHideLayers('ceutamelilla2','','hide')" onmouseout="MM_showHideLayers('ceutamelilla2','','show')" coords="173,556,185,539,195,561,229,594,299,591,320,577,330,603,311,617,197,613,178,589" href="instalaciones_comunidad.htm?idcomunidad=CEM"/>
+            </map>
+		            
+			  </div>
+		    </div>
+		</div>
+		<!--  cierra contenido -->
+		
+		<!--  fecha de actualización -->
+		<div class="texto_mapa">
+			Elaboración a partir de la documentación aportada por las compañías. Última actualización 16/09/2026.
+		</div>
+		<!-- cierra fecha de actualización -->
+
+	</div>
+	<!--cierra todo-->
+	
+		
+			</td>
+		</tr>
+	<!-- CONTENIDOS -->  
+		<tr>
+			<td background="images/pie_fondo.gif">
+				<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+					<tr>
+			    		<td height="36" background="images/pie_pagina.gif"><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+  <tr>
+	<td height="3"></td>
+  </tr>
+  <tr>
+	<td class="pie" align="center">&copy; 
+	<script type="text/javascript">
+		document.write(y); 
+	</script> &ndash;&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.cnmc.es/" target="_blank" class="link_pie">www.cnmc.es</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.cnmc.es/Inicio/tabid/56/ctl/Privacy/language/es-ES/Default.aspx" target="_blank" class="link_pie">Política de Privacidad y Aviso Legal</a></td>
+  </tr>
+</table></td>
+				    </tr>		    
+		    	</table>
+			</td>
+	  	</tr>
+	 </table>
+
+
+<!-- Articulo 41  -->
+<div id="light" class="white_content"><b style="color:#007962; font-size:13px;">Artículo 41.1 de la Ley 34/1998, de 7 de octubre, del Sector de Hidrocarburos</b><br/><br/>
+
+    "Los titulares de instalaciones fijas de almacenamiento y transporte de productos petrolíferos, autorizadas conforme a lo dispuesto en el artículo 40 de la presente Ley, deberán permitir el acceso de terceros mediante un procedimiento negociado, en condiciones técnicas y económicas no discriminatorias, transparentes y objetivas, aplicando precios que deberán hacer públicos. No obstante, el Gobierno podrá establecer peajes de acceso para territorios insulares y para aquellas zonas del territorio nacional donde no existan infraestructuras alternativas de transporte y almacenamiento o éstas se consideren insuficientes.
+        <br/><br/>
+
+
+    Los titulares de instalaciones fijas de almacenamiento y transporte de productos petrolíferos que, de acuerdo con lo previsto en el párrafo anterior, deban permitir el acceso de terceros, habrán de comunicar a la Comisión Nacional de Energía los contratos que suscriban, la relación de precios por la utilización de las referidas instalaciones, así como las modificaciones que se produzcan en los mismos en un plazo máximo de tres meses. La Comisión Nacional de Energía hará pública esta información en los términos previstos en la disposición adicional undécima, apartado tercero, número 4, de esta Ley.
+    <br/><br/>
+
+    Reglamentariamente, se establecerá el procedimiento de comunicación a la Comisión Nacional de Energía de los conflictos que puedan suscitarse en la negociación de los contratos de acceso a instalaciones de transporte o almacenamiento. "
+    <br/><br/>
+
+    Introducido por el artículo 2 del Real Decreto-ley 6/2000, de 23 de junio, de Medidas Urgentes de Intensificación de la Competencia en Mercados de Bienes y Servicios, y modificado por el artículo único.4 de la Ley 12/2007, de 2 de julio, por la que se modifica la Ley 34/1998, de 7 de octubre, del Sector de Hidrocarburos.<br/><br/>
+    
+    <center><a href="http://www.cne.es/cne/contenido.jsp?id_nodo=510&&&keyword=&auditoria=F">Acceda a la legislación energética</a></center>
+
+ 	<span style="float:right"> 
+ 		<a href="javascript:void(0)" onclick="document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Cerrar</a>
+	</span>
+
+</div>
+<div id="fade" class="black_overlay"></div>
+<!-- Fin Articulo 41  -->
+
+</body>
+</html>

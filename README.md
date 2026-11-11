@@ -206,7 +206,7 @@ Para reconstruir la base desde cero se descargan los crudos de las Releases:
 
 ```bash
 gh release list --json tagName --jq '.[].tagName | select(startswith("raw-"))' |
-  while read -r etiqueta; do gh release download "$etiqueta" --pattern '*.tar.gz' --dir /tmp/raw; done
+  while read -r etiqueta; do gh release download "$etiqueta" --pattern "$etiqueta.tar.gz" --dir /tmp/raw; done
 mkdir -p raw && for f in /tmp/raw/*.tar.gz; do tar -xzf "$f" -C raw; done
 uv run cnmc-logistica reconstruir --reemplazar
 ```

@@ -68,18 +68,33 @@ class Indicadores:
             if sobran := activos - set(INDICADORES):
                 raise ValueError(f"indicador desconocido en «{texto}»: {sorted(sobran)}")
             self._textos[_clave(texto)] = activos
+        self._por_tipo: dict[str, dict[str, frozenset[str]]] = {}
+        for tipo, tabla in (datos.get("por_tipo_instalacion") or {}).items():
+            for texto, lista in (tabla or {}).items():
+                activos = frozenset(lista or ())
+                if sobran := activos - set(INDICADORES):
+                    raise ValueError(f"indicador desconocido en «{texto}»: {sorted(sobran)}")
+                self._por_tipo.setdefault(tipo, {})[_clave(texto)] = activos
 
     @classmethod
     def de_fichero(cls, ruta: Path) -> Indicadores:
         return cls(yaml.safe_load(ruta.read_text(encoding="utf-8")) or {})
 
-    def de_servicio(self, textos: list[str]) -> tuple[dict[str, int], list[str]]:
-        """({indicador: 0|1}, textos que no están en el fichero)."""
+    def de_servicio(
+        self, textos: list[str], tipo_instalacion: str | None = None
+    ) -> tuple[dict[str, int], list[str]]:
+        """({indicador: 0|1}, textos que no están en el fichero).
+
+        `textos` debe ser la lista «Incluye:» del servicio y nada más.
+        """
         activos: set[str] = set()
         desconocidos: list[str] = []
+        por_tipo = self._por_tipo.get(tipo_instalacion or "", {})
         for texto in textos:
             clave = _clave(texto)
-            if clave in self._textos:
+            if clave in por_tipo:
+                activos |= por_tipo[clave]
+            elif clave in self._textos:
                 activos |= self._textos[clave]
             else:
                 desconocidos.append(texto)

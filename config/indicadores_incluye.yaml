@@ -11,6 +11,11 @@
 # - Lista vacía = texto revisado que no activa ningún indicador.
 # - Un texto que no esté aquí no activa nada y genera el aviso
 #   «incluye_sin_clasificar» en `ejecuciones`.
+# - `por_tipo_instalacion` tiene prioridad sobre `textos`: sirve para los textos
+#   cuyo significado depende de dónde se presta el servicio.
+# - Los indicadores salen SOLO de la lista «Incluye:» del servicio. Las líneas de
+#   «OTROS SERVICIOS» (p. ej. «Carga en unidad repostadora o uso red de hidrante:
+#   Servicio adicional no incluido en precio») nunca activan un indicador.
 #
 # Criterios:
 # - incluye_transporte: llevar el PRODUCTO a otra instalación (no el aditivo).
@@ -74,10 +79,6 @@ textos:
   Puesta a bordo: [incluye_puesta_a_bordo]
   Servicio de puesta a bordo: [incluye_puesta_a_bordo]
 
-  # --- DUDOSOS: revisados y dejados sin indicador a propósito ---
-  # No queda claro si «suministro» es entrega en la instalación o a la aeronave.
-  Suministro: []
-  Entrega o suministro: []
   # Cambio de titularidad dentro de la instalación: no sale producto.
   Transferencias: []
 
@@ -130,3 +131,13 @@ textos:
   Tasa de aprovechamiento especial, en su caso: []
   Tasa de ocupación: []
   Tasa de ocupación, en su caso: []
+
+# «Suministro» significa cosas distintas según la instalación: en un aeropuerto
+# es el suministro a la aeronave; en una terminal, la salida del producto.
+por_tipo_instalacion:
+  aeroportuaria:
+    Suministro: [incluye_puesta_a_bordo]
+    Entrega o suministro: [incluye_puesta_a_bordo]
+  almacenamiento:
+    Suministro: [incluye_expedicion]
+    Entrega o suministro: [incluye_expedicion]

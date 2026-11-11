@@ -149,7 +149,7 @@ def _filas_de_detalle(
         indicadores: dict[str, int | None] = dict.fromkeys(INDICADORES)
         if p.seccion == "principal":
             indicadores, desconocidos = cfg.indicadores.de_servicio(
-                incluidos_por_servicio.get(p.etiqueta, [])
+                incluidos_por_servicio.get(p.etiqueta, []), tipo
             )
             for texto in desconocidos:
                 avisos.append(Aviso("aviso", "incluye_sin_clasificar", recurso, texto, operador))

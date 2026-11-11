@@ -55,9 +55,17 @@ jobs:
           test -d "raw/$FECHA" || { echo "No hay crudo que subir"; exit 0; }
           tar -czf "raw-$FECHA.tar.gz" -C raw "$FECHA"
           sha256sum "raw-$FECHA.tar.gz" > "raw-$FECHA.tar.gz.sha256"
-          gh release create "raw-$FECHA" "raw-$FECHA.tar.gz" "raw-$FECHA.tar.gz.sha256" \
-            --title "Crudo del portal CNMC ($FECHA)" \
-            --notes "Foto de hidrocarburos.cnmc.es descargada el $FECHA. Contiene raw/$FECHA con su manifiesto (sha256 de cada fichero)."
+          if gh release view "raw-$FECHA" > /dev/null 2>&1; then
+            # Ya hay una Release de ese día: no se pisa nada, se añade otro fichero.
+            EXTRA="raw-$FECHA.ejecucion-$GITHUB_RUN_NUMBER.tar.gz"
+            mv "raw-$FECHA.tar.gz" "$EXTRA"
+            sha256sum "$EXTRA" > "$EXTRA.sha256"
+            gh release upload "raw-$FECHA" "$EXTRA" "$EXTRA.sha256"
+          else
+            gh release create "raw-$FECHA" "raw-$FECHA.tar.gz" "raw-$FECHA.tar.gz.sha256" \
+              --title "Crudo del portal CNMC ($FECHA)" \
+              --notes "Foto de hidrocarburos.cnmc.es descargada el $FECHA. Contiene raw/$FECHA con su manifiesto (sha256 de cada fichero)."
+          fi
 
       - name: Commit de la base de datos y del inventario
         if: always()

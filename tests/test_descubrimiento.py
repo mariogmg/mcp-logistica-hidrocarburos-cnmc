@@ -226,3 +226,40 @@ def test_buscador_incompleto_es_error(tmp_path):
     )
     _, avisos = construir_inventario(almacen)
     assert [(a.tipo, a.operador) for a in avisos if a.es_error] == [("buscador_incompleto", "OP")]
+
+
+def test_suministro_depende_del_tipo_de_instalacion():
+    ind = Indicadores.de_fichero(RAIZ / "config" / "indicadores_incluye.yaml")
+    for texto in ("Suministro", "Entrega o suministro"):
+        en_aeropuerto, _ = ind.de_servicio([texto], "aeroportuaria")
+        en_terminal, desconocidos = ind.de_servicio([texto], "almacenamiento")
+        assert (en_aeropuerto["incluye_puesta_a_bordo"], en_aeropuerto["incluye_expedicion"]) == (
+            1,
+            0,
+        )
+        assert (en_terminal["incluye_puesta_a_bordo"], en_terminal["incluye_expedicion"]) == (0, 1)
+        assert desconocidos == []
+
+
+def test_los_indicadores_salen_solo_de_la_lista_incluye():
+    """Vigo (Exolum Aviation): «Carga en unidad repostadora o uso red de hidrante» y
+    «Servicio de puesta a bordo» están en OTROS SERVICIOS como «Servicio adicional no
+    incluido en precio». No están en «Incluye:» y no deben activar ningún indicador."""
+    from cnmc_logistica.parsers.detalle import parsear_detalle
+
+    d = parsear_detalle(leer("detalles/20.html"), 20)
+    no_incluidos = {p.etiqueta for p in d.precios if p.texto and "no incluido" in p.texto}
+    assert no_incluidos == {
+        "Carga en unidad repostadora o uso red de hidrante",
+        "Servicio de puesta a bordo",
+    }
+    incluye = [s.texto for s in d.incluidos if s.servicio == "Servicio almacenamiento"]
+    assert not any("repostadora" in t or "bordo" in t for t in incluye)
+    ind = Indicadores.de_fichero(RAIZ / "config" / "indicadores_incluye.yaml")
+    flags, _ = ind.de_servicio(incluye, "aeroportuaria")
+    assert flags == {
+        "incluye_transporte": 0,
+        "incluye_almacenamiento": 1,
+        "incluye_expedicion": 0,
+        "incluye_puesta_a_bordo": 0,
+    }

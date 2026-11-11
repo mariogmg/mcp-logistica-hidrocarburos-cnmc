@@ -23,3 +23,13 @@ jobs:
         run: uv run ruff format --check .
       - name: Tests
         run: uv run pytest
+
+  docker:
+    # Construye la imagen del servidor (sin publicarla) y comprueba que arranca.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Construir la imagen
+        run: docker build -t cnmc-logistica:ci .
+      - name: La imagen arranca y lee la base
+        run: docker run --rm cnmc-logistica:ci cnmc-logistica info

@@ -29,8 +29,9 @@ jobs:
       # OCR de respaldo: solo se usa si algún PDF llega sin capa de texto.
       - name: Tesseract
         run: |
-          for intento in 1 2 3 4 5; do
-            sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-spa && exit 0
+          for intento in 1 2 3; do
+            # Con límite de tiempo: si la red del runner falla, apt puede quedarse colgado.
+            sudo timeout 240 sh -c 'apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20 update && apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20 install -y tesseract-ocr tesseract-ocr-spa' && exit 0
             echo "Intento $intento fallido; se reintenta en 30 s"; sleep 30
           done
           echo "::warning::No se pudo instalar Tesseract: en esta ejecución no hay OCR de respaldo"

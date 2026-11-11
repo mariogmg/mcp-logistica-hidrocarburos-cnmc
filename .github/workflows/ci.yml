@@ -17,7 +17,12 @@ jobs:
         with:
           enable-cache: true
       - name: Tesseract (OCR de respaldo para PDF sin capa de texto)
-        run: sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-spa
+        run: |
+          for intento in 1 2 3 4 5; do
+            sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-spa && exit 0
+            echo "Intento $intento fallido; se reintenta en 30 s"; sleep 30
+          done
+          echo "::warning::No se pudo instalar Tesseract: en esta ejecución no hay OCR de respaldo"
       - name: Instalar dependencias (versiones fijadas en uv.lock)
         run: uv sync --locked --extra ocr
       - name: Ruff (errores)

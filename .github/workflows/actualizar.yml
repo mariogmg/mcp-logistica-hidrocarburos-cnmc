@@ -27,7 +27,13 @@ jobs:
         with:
           enable-cache: true
       # OCR de respaldo: solo se usa si algún PDF llega sin capa de texto.
-      - run: sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-spa
+      - name: Tesseract
+        run: |
+          for intento in 1 2 3 4 5; do
+            sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-spa && exit 0
+            echo "Intento $intento fallido; se reintenta en 30 s"; sleep 30
+          done
+          echo "::warning::No se pudo instalar Tesseract: en esta ejecución no hay OCR de respaldo"
       - run: uv sync --locked --no-dev --extra ocr
 
       - name: Fecha de la foto

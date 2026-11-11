@@ -12,7 +12,7 @@ from . import __version__
 from .almacen import AlmacenCrudo
 from .avisos import Aviso
 from .bd import TABLAS, aplicar_scd2, conectar, crear_esquema
-from .categorias import Categorizador, Indicadores
+from .categorias import Configuracion
 from .config import Rutas
 from .extraccion import extraer_foto
 
@@ -41,18 +41,14 @@ class Resumen:
         return sum(a.es_error for a in self.avisos)
 
 
-def leer_config(rutas: Rutas) -> tuple[Categorizador, Indicadores]:
-    return (
-        Categorizador.de_fichero(rutas.config / "categorias_servicio.yaml"),
-        Indicadores.de_fichero(rutas.config / "indicadores_incluye.yaml"),
-    )
+def leer_config(rutas: Rutas) -> Configuracion:
+    return Configuracion.de_directorio(rutas.config)
 
 
 def cargar_foto(
     conn: sqlite3.Connection,
     almacen: AlmacenCrudo,
-    cat: Categorizador,
-    ind: Indicadores,
+    cfg: Configuracion,
     avisos_previos: list[Aviso] | None = None,
 ) -> Resumen:
     """Carga una foto en una sola transacción y deja constancia en `ejecuciones`.
@@ -72,7 +68,7 @@ def cargar_foto(
         "SELECT MAX(fecha) FROM ejecuciones WHERE fecha < ?", (fecha,)
     ).fetchone()[0]
 
-    filas, avisos, _ = extraer_foto(almacen, cat, ind)
+    filas, avisos, _ = extraer_foto(almacen, cfg)
     avisos = list(avisos_previos or []) + avisos
     resumen = Resumen(fecha=fecha, ejecucion_id=0)
     try:
@@ -127,11 +123,11 @@ def reconstruir(rutas: Rutas, destino: Path) -> list[Resumen]:
     """Crea en `destino` una base nueva cargando todas las fotos de raw/ en orden."""
     if destino.exists():
         raise FileExistsError(destino)
-    cat, ind = leer_config(rutas)
+    cfg = leer_config(rutas)
     conn = conectar(destino)
     try:
         return [
-            cargar_foto(conn, AlmacenCrudo(rutas.raw, fecha), cat, ind)
+            cargar_foto(conn, AlmacenCrudo(rutas.raw, fecha), cfg)
             for fecha in AlmacenCrudo.fechas(rutas.raw)
         ]
     finally:

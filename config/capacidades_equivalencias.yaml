@@ -1,0 +1,194 @@
+# Equivalencias del PDF «Características de las instalaciones de almacenamiento»
+# con las instalaciones del portal (idTanque).
+#
+# Por qué existe: el PDF identifica cada instalación por compañía y nombre
+# («Álava (Rivabellosa)»), no por id, y los nombres no coinciden con los del
+# mapa. Esta tabla está curada a mano; el código no intenta adivinar parecidos.
+#
+# Reglas:
+# - Estructura: ámbito → compañía (tal como aparece en el PDF) → instalación → idTanque.
+# - `null` = revisada: esa instalación no tiene ficha en el portal. No avisa.
+# - Una instalación del PDF que no esté aquí se carga con id_tanque NULL y
+#   genera el aviso «capacidad_sin_equivalencia» en `ejecuciones`.
+# - Varias filas del PDF pueden apuntar al mismo idTanque (el portal agrupa
+#   El Calero/Ziérbana y Algeciras/San Roque en una sola ficha).
+
+almacenamiento:
+  EXOLUM CORPORATION:
+    Álava (Rivabellosa): 23
+    Alicante: 52
+    Badajoz (Mérida): 93
+    Baleares (Ibiza): 102
+    Baleares (Mahón): 96
+    Baleares (Palma-Son Banya): 100
+    Barcelona: 35
+    Burgos: 67
+    Cádiz (Algeciras): 84
+    Cádiz (Rota): 85
+    Cádiz (San Roque): 84
+    Cartagena: 76
+    Castellón: 45
+    Ciudad Real (Alcázar): 54
+    Ciudad Real (Almodovar): null
+    Córdoba: 91
+    Coruña (Bens): 2
+    Gerona: 31
+    Gijón: 13
+    Granada (Motril): 80
+    Huelva: 87
+    León: 65
+    Lérida: 29
+    Madrid (Loeches): 56
+    Madrid (Torrejón): 57
+    Madrid (Villaverde): 61
+    Málaga: 81
+    Navarra: 25
+    Salamanca: 72
+    Sevilla: 89
+    Sevilla (El Arahal): null
+    Tarragona: 42
+    Valencia (Albuixech): 47
+    Valladolid (Santovenia): 70
+    Vigo (Puxeiros): 9
+    Vizcaya (El Calero): 19
+    Vizcaya (Ziérbana): 19
+    Zaragoza (Monzalbarba): 27
+  "CHANE TERMINAL SANTANDER, S.A.":
+    Santander: 16
+  ATLAS:
+    Ceuta: 127
+    Melilla: 136
+  DBA BILBAO PORT:
+    Bilbao: 151
+  HAXX MOTRIL TERMINAL:
+    Motril: 79
+  DECAL:
+    Barcelona: 37
+    Huelva: 88
+  DEPÓSITOS PORTUARIOS:
+    Bilbao: null
+  DISA Grupo:
+    Gran Canaria (Salinetas): 118
+    Lanzarote: 112
+    Fuerteventura (Puerto Rosario): 114
+    La Gomera: 104
+    El Hierro: 103
+    La Palma: 105
+    # En el PDF figura «Cierre temporal de la instalación», sin cifra.
+    Melilla (DISA RETAIL ATLÁNTICO): null
+  ESERGUI:
+    Zierbana: 18
+  EUROENERGO:
+    Tarragona: 43
+  EVOS ALGECIRAS:
+    Algeciras (Cádiz): 129
+  FORESA:
+    Pontevedra: 150
+  FORESTAL DEL ATLANTICO:
+    A Coruña (Mugardos): 1
+  GALP ENERGÍA ESPAÑA:
+    Valencia: null
+  GRUPO ENERGÉTICO ENERPLÚS EUROPA:
+    Córdoba: null
+  HIDROCARBUROS GUADARRAMA:
+    Guadarrama: 161
+  MEROIL:
+    Barcelona: 133
+  MILADERTO:
+    Barcelona: null
+  MINERVA COMBUSTIBLES LAS PALMAS:
+    Las Palmas de Gran Canaria: null
+  MOEVE TERMINALS CANARIAS:
+    Tenerife (La Jurada): 109
+    Las Palmas: 123
+  HAXX MALAGA TERMINAL:
+    Málaga: 145
+  OLIVIA PETROLEUM:
+    Cádiz: null
+  OP TRADE:
+    Cádiz: null
+  ORYX IBERIA:
+    Las Palmas: null
+  PETROALACANT:
+    Alicante: null
+  PETRÓLEOS ASTURIANOS:
+    Gijón: null
+  PETROLIFERA DÚCAR:
+    Dúcar I (Ceuta): 128
+    Dúcar II (Ceuta): 128
+  PETROLOGIS CANARIAS:
+    Las Palmas de Gran Canaria: 121
+  PETRONOVA:
+    Badajoz (Calamonte): 158
+  RECEPTORA DE LÍQUIDOS:
+    Barcelona: 38
+  SEVITRADE:
+    Sevilla: null
+  HAXX CARTAGENA TERMINAL:
+    Cartagena: 75
+  TERMINAL LOGISTICA DE CARTAGENA:
+    Cartagena: 74
+  TERMINALES CANARIOS:
+    Sta.Cruz de Tenerife: 110
+    Las Palmas de Gran Canaria: 119
+  TEPSA IBERIA:
+    Barcelona: 34
+    Zierbana: 17
+    Valencia: 48
+  TERQUIMSA:
+    Tarragona: 41
+  TRADEBE PORT SERVICES:
+    Barcelona: 138
+  VISTA ENERGÍA:
+    Alpicat (Lérida): 152
+
+aeroportuaria:
+  CMD AEROPUERTOS CANARIOS:
+    Gran Canaria: 116
+    Lanzarote: 113
+    Fuerteventura: 115
+  EXOLUM AVIATION:
+    Alicante: 51
+    Almería: 78
+    Asturias: 11
+    Badajoz: 94
+    Baleares (Palma-Son Bonet): 97
+    Baleares (Palma-Son San Joan): 99
+    Baleares (Mahón): 95
+    Barcelona: 39
+    Bilbao: 20
+    Burgos: 66
+    Cádiz (Jerez): 86
+    Córdoba: 92
+    Coruña: 3
+    Girona: 32
+    Granada: 83
+    León: 64
+    Madrid (Barajas): 59
+    Madrid (Cuatro Vientos): 60
+    Málaga: 82
+    Melilla: 125
+    Pamplona: 24
+    Reus: 40
+    Rioja: 26
+    Sabadell: 36
+    Salamanca: 71
+    Santander: 15
+    San Sebastián: 21
+    Sevilla: 90
+    Tenerife Sur: 107
+    Valladolid: 69
+    Vigo: 10
+    Zaragoza: 28
+  MOEVE AVIATION:
+    Tenerife Norte: 111
+    La Palma: 106
+  SKYTANKING SPAIN:
+    Lérida: 159
+  SLCA:
+    Albacete: 53
+    Murcia: 73
+    Ibiza: 157
+    Valencia: 160
+    Vitoria: 22
+    Coruña (Santiago): 5

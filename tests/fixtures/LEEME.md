@@ -6,3 +6,6 @@ Páginas reales del portal de la CNMC, copiadas sin modificar de `raw/2026-11-11
 - `fichas/`: 1 (dos productos), 16 (sin productos), 59 (Barajas).
 - `mapas/`: Madrid y Canarias (instalaciones de almacenamiento y aeroportuarias).
 - `buscador/`: formulario y resultados (una página y paginados).
+- `origen_destino/`: 17 (gasolinas y gasóleos, destino Puxeiros) y 123 (querosenos, destino Barajas).
+- `pdf/`: 24 y 32 (tablas origen-destino de Exolum), 7 (precios de DISA Gran Canaria) y el PDF
+  global de capacidades.

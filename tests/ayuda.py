@@ -33,10 +33,19 @@ def _resultados(comunidad: str, ids: list[int]) -> str:
     return f"<div>{len(ids)} filas encontradas.</div><table>{filas}</table>"
 
 
-def crear_foto(dir_raw: Path, fecha: str, cambiar=None, sin_detalles: tuple[int, ...] = ()):
+def crear_foto(
+    dir_raw: Path,
+    fecha: str,
+    cambiar=None,
+    sin_detalles: tuple[int, ...] = (),
+    cambiar_od=None,
+    pdfs_extra: tuple = (),
+):
     """Foto con 3 instalaciones y 4 detalles reales (17, 33, 123 y 124).
 
-    `cambiar(id_detalle, html) -> html` permite simular un cambio en el portal.
+    Incluye las páginas origen-destino de 17 y 123, sus PDF (24 y 32) y el PDF de
+    capacidades. `cambiar(id_detalle, html) -> html` y `cambiar_od` permiten
+    simular un cambio en el portal; `pdfs_extra` añade (bytes, recurso, nombre).
     """
     from cnmc_logistica import portal
     from cnmc_logistica.almacen import AlmacenCrudo
@@ -70,4 +79,18 @@ def crear_foto(dir_raw: Path, fecha: str, cambiar=None, sin_detalles: tuple[int,
             continue
         html = leer(f"detalles/{id_ti}.html")
         guardar(portal.detalle(id_ti), cambiar(id_ti, html) if cambiar else html)
+    for id_ti in (17, 123):  # los dos detalles con página origen-destino
+        html = leer(f"origen_destino/{id_ti}.html")
+        guardar(portal.origen_destino(id_ti), cambiar_od(id_ti, html) if cambiar_od else html)
+    for clave, recurso, nombre in (
+        ("24", portal.pdf(24), "EXOLUM 2026 precios SSLL GG.pdf"),
+        ("32", portal.pdf(32), "EXOLUM 2026 precios_SLB_JET_Aeroportuarias.pdf"),
+        ("capacidades", portal.pdf_capacidades(), None),
+        *pdfs_extra,
+    ):
+        datos = clave if isinstance(clave, bytes) else (FIXTURES / f"pdf/{clave}.pdf").read_bytes()
+        cabeceras = {"content-type": "application/octet-stream"}
+        if nombre:
+            cabeceras["content-disposition"] = f'attachment;filename="{nombre}"'
+        almacen.guardar(recurso, datos, url_final=recurso.url, estado_http=200, cabeceras=cabeceras)
     return almacen

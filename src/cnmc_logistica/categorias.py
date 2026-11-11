@@ -2,6 +2,7 @@
 
 - categorias_servicio.yaml: etiqueta (+ tipo de instalación) → categoría.
 - indicadores_incluye.yaml: texto de «Incluye:» → indicadores del servicio.
+- capacidades_equivalencias.yaml: instalación del PDF de capacidades → idTanque.
 
 En ambos casos la correspondencia es exacta y revisable; el código no deduce
 nada con expresiones regulares. Lo que no está en el fichero se marca y avisa.
@@ -10,6 +11,7 @@ nada con expresiones regulares. Lo que no está en el fichero se marca y avisa.
 from __future__ import annotations
 
 import re
+from dataclasses import dataclass
 from pathlib import Path
 
 import yaml
@@ -82,3 +84,40 @@ class Indicadores:
             else:
                 desconocidos.append(texto)
         return {i: int(i in activos) for i in INDICADORES}, desconocidos
+
+
+class Equivalencias:
+    """Instalación del PDF de capacidades → idTanque (tabla curada a mano)."""
+
+    def __init__(self, datos: dict):
+        self._tabla: dict[tuple[str, str, str], int | None] = {}
+        for ambito, companias in (datos or {}).items():
+            for compania, instalaciones in (companias or {}).items():
+                for instalacion, id_tanque in (instalaciones or {}).items():
+                    self._tabla[ambito, _clave(compania), _clave(instalacion)] = id_tanque
+
+    @classmethod
+    def de_fichero(cls, ruta: Path) -> Equivalencias:
+        return cls(yaml.safe_load(ruta.read_text(encoding="utf-8")) or {})
+
+    def id_tanque(self, ambito: str, compania: str, instalacion: str) -> tuple[int | None, bool]:
+        """(idTanque, revisada). `revisada` es False si la instalación no está en la tabla."""
+        clave = (ambito, _clave(compania), _clave(instalacion))
+        return self._tabla.get(clave), clave in self._tabla
+
+
+@dataclass(frozen=True)
+class Configuracion:
+    """Los tres ficheros de correspondencias de config/, ya leídos."""
+
+    categorias: Categorizador
+    indicadores: Indicadores
+    equivalencias: Equivalencias
+
+    @classmethod
+    def de_directorio(cls, config: Path) -> Configuracion:
+        return cls(
+            Categorizador.de_fichero(config / "categorias_servicio.yaml"),
+            Indicadores.de_fichero(config / "indicadores_incluye.yaml"),
+            Equivalencias.de_fichero(config / "capacidades_equivalencias.yaml"),
+        )

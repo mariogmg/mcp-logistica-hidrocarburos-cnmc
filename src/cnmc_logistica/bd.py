@@ -122,7 +122,8 @@ TABLAS: dict[str, tuple[tuple[str, ...], tuple[str, ...], str]] = {
         compania TEXT NOT NULL, instalacion TEXT NOT NULL,
         producto TEXT NOT NULL,           -- 'TOTAL' para la suma de la instalación
         id_tanque INTEGER,                -- NULL si el nombre no está en las equivalencias
-        capacidad_miles_m3 REAL NOT NULL, anio INTEGER, documento TEXT NOT NULL""",
+        capacidad_miles_m3 REAL,          -- NULL: el PDF lista el producto sin desglosar cifra
+        anio INTEGER, documento TEXT NOT NULL""",
     ),
     "documentos": (
         ("clave",),

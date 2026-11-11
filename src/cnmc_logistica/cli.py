@@ -92,7 +92,7 @@ def _actualizar(args: argparse.Namespace) -> int:
 
     conn = conectar(rutas.base_datos)
     try:
-        resumen = cargar_foto(conn, almacen, *leer_config(rutas), avisos_previos=avisos)
+        resumen = cargar_foto(conn, almacen, leer_config(rutas), avisos_previos=avisos)
     except (FotoYaCargada, FotoFueraDeOrden) as exc:
         print(f"ERROR {exc}", file=sys.stderr)
         return SALIDA_CON_ERRORES

@@ -1,5 +1,6 @@
 """Historial SCD2: altas, cambios, desapariciones, triggers e idempotencia."""
 
+import dataclasses
 import sqlite3
 
 import pytest
@@ -17,7 +18,7 @@ from cnmc_logistica.categorias import Categorizador
 from cnmc_logistica.config import Rutas
 
 F1, F2, F3 = "2026-11-11", "2026-12-11", "2027-01-11"
-CAT, IND = leer_config(Rutas(RAIZ))
+CFG = leer_config(Rutas(RAIZ))
 
 
 @pytest.fixture
@@ -28,7 +29,7 @@ def conn(tmp_path):
 
 
 def cargar(conn, tmp_path, fecha, **kw):
-    return cargar_foto(conn, crear_foto(tmp_path / "raw", fecha, **kw), CAT, IND)
+    return cargar_foto(conn, crear_foto(tmp_path / "raw", fecha, **kw), CFG)
 
 
 def filas(conn) -> dict[str, int]:
@@ -138,7 +139,7 @@ def test_segunda_carga_inmediata_no_crea_filas(conn, tmp_path):
     cargar(conn, tmp_path, F1)
     antes = filas(conn)
     almacen = crear_foto(tmp_path / "otra", F1)
-    r = cargar_foto(conn, almacen, CAT, IND)
+    r = cargar_foto(conn, almacen, CFG)
     assert filas(conn) == antes
     assert (r.altas, r.cambios, r.desapariciones) == (0, 0, 0)
     assert conn.execute("SELECT COUNT(*) FROM ejecuciones").fetchone()[0] == 2
@@ -212,7 +213,7 @@ def test_cambio_de_nombre_de_un_operador_queda_en_el_historial(conn, tmp_path):
         portal.formulario_buscador(), renombrado.encode(), url_final="u", estado_http=200,
         cabeceras={"content-type": "text/html;charset=UTF-8"},
     )  # fmt: skip
-    cargar_foto(conn, almacen, CAT, IND)
+    cargar_foto(conn, almacen, CFG)
     nombres = conn.execute(
         "SELECT nombre, primera_vez_visto, ultima_vez_visto FROM operadores_nombres "
         "WHERE codigo = 'VISTA' ORDER BY id"
@@ -229,7 +230,7 @@ def test_misma_foto_con_otro_contenido_se_rechaza(conn, tmp_path):
     antes = filas(conn)
     almacen = crear_foto(tmp_path / "otra", F1, cambiar=subir_precio)
     with pytest.raises(FotoYaCargada):
-        cargar_foto(conn, almacen, CAT, IND)
+        cargar_foto(conn, almacen, CFG)
     assert filas(conn) == antes  # la transacción se deshace entera
     assert conn.execute("SELECT COUNT(*) FROM ejecuciones").fetchone()[0] == 1
 
@@ -288,7 +289,7 @@ def test_etiqueta_sin_categoria_se_carga_y_queda_en_incidencias(conn, tmp_path):
     solo_una = Categorizador(
         {"categorias": {"transferencias": "x"}, "etiquetas": {"Transferencias": "transferencias"}}
     )
-    r = cargar_foto(conn, almacen, solo_una, IND)
+    r = cargar_foto(conn, almacen, dataclasses.replace(CFG, categorias=solo_una))
     assert r.errores == 0  # es un aviso: no pone el workflow en rojo
     cats = dict(conn.execute("SELECT categoria_servicio, COUNT(*) FROM precios GROUP BY 1"))
     assert set(cats) == {"transferencias", "sin_categoria"}
@@ -319,7 +320,11 @@ def test_bloque_desconocido_queda_registrado_con_id_operador_y_texto(conn, tmp_p
 def test_reconstruir_da_lo_mismo_que_la_carga_incremental(tmp_path):
     raiz = tmp_path / "proyecto"
     (raiz / "config").mkdir(parents=True)
-    for nombre in ("categorias_servicio.yaml", "indicadores_incluye.yaml"):
+    for nombre in (
+        "categorias_servicio.yaml",
+        "indicadores_incluye.yaml",
+        "capacidades_equivalencias.yaml",
+    ):
         (raiz / "config" / nombre).write_bytes((RAIZ / "config" / nombre).read_bytes())
     crear_foto(raiz / "raw", F1)
     crear_foto(raiz / "raw", F2, cambiar=subir_precio)
@@ -328,7 +333,7 @@ def test_reconstruir_da_lo_mismo_que_la_carga_incremental(tmp_path):
     for fecha in (F1, F2):
         from cnmc_logistica.almacen import AlmacenCrudo
 
-        cargar_foto(incremental, AlmacenCrudo(raiz / "raw", fecha), CAT, IND)
+        cargar_foto(incremental, AlmacenCrudo(raiz / "raw", fecha), CFG)
 
     resumenes = reconstruir(Rutas(raiz), tmp_path / "nueva.db")
     assert [r.fecha for r in resumenes] == [F1, F2]

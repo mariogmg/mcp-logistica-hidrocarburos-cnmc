@@ -28,3 +28,4 @@ verificacion/
 .env
 datos/
 !.env.example
+exportacion/

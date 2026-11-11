@@ -18,6 +18,7 @@ dependencies = [
 
 [project.optional-dependencies]
 ocr = ["pytesseract>=0.3.10"]
+exportar = ["pyarrow>=17"]  # Parquet de la Release de datos
 
 [project.scripts]
 cnmc-logistica = "cnmc_logistica.cli:main"
@@ -51,5 +52,7 @@ ignore = ["RUF001", "RUF002", "RUF003"]  # textos en español: tildes y símbolo
 "src/cnmc_logistica/parsers/pdf_precios.py" = ["E501", "B023", "RUF007", "SIM102"]
 "src/cnmc_logistica/parsers/pdf.py" = ["E501"]
 "src/cnmc_logistica/consultas.py" = ["E501"]
+"src/cnmc_logistica/exportar.py" = ["E501"]
 "src/cnmc_logistica/api.py" = ["E501", "B008", "UP046"]
 "tests/test_api.py" = ["E501"]
+"tests/test_exportar.py" = ["E501"]

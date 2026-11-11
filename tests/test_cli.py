@@ -7,7 +7,8 @@ from cnmc_logistica.config import USER_AGENT
 
 def test_ordenes_previstas():
     assert set(ORDENES) == {
-        "descubrir", "actualizar", "reconstruir", "descargar-releases", "servir", "info",
+        "descubrir", "actualizar", "reconstruir", "descargar-releases", "exportar", "servir",
+        "info",
     }  # fmt: skip
 
 

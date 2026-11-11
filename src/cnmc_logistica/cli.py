@@ -166,6 +166,17 @@ def _descargar_releases(args: argparse.Namespace) -> int:
     return SALIDA_OK
 
 
+def _exportar(args: argparse.Namespace) -> int:
+    from .exportar import exportar
+
+    rutas = Rutas(args.raiz)
+    r = exportar(rutas.base_datos, args.salida, con_parquet=not args.sin_parquet)
+    print(
+        f"foto {r['foto']} · {len(r['tablas'])} tablas · sha256 {r['sha256'][:16]}… → {args.salida}"
+    )
+    return SALIDA_OK
+
+
 def _info(args: argparse.Namespace) -> int:
     rutas = Rutas(args.raiz)
     print(f"versión:     {__version__}")
@@ -200,6 +211,7 @@ ORDENES: dict[str, tuple[str, Callable[[argparse.Namespace], int]]] = {
     "descubrir": ("Mapas + buscador → config/inventario.json", _descubrir),
     "actualizar": ("Descarga todo el inventario a raw/ y carga la base", _actualizar),
     "reconstruir": ("Crea una base nueva a partir de raw/", _reconstruir),
+    "exportar": ("Exporta la base a CSV, Parquet y diccionario de datos", _exportar),
     "descargar-releases": ("Baja a raw/ el crudo publicado en las Releases", _descargar_releases),
     "servir": ("Arranca el servidor MCP (solo lectura)", _servir),
     "info": ("Muestra versión, rutas y estado local", _info),
@@ -225,6 +237,9 @@ def crear_parser() -> argparse.ArgumentParser:
             )
             orden.add_argument("--host", default="127.0.0.1")
             orden.add_argument("--puerto", type=int, default=8000)
+        if nombre == "exportar":
+            orden.add_argument("--salida", type=Path, default=Path("exportacion"))
+            orden.add_argument("--sin-parquet", action="store_true", help="Solo CSV (sin pyarrow)")
         if nombre == "descargar-releases":
             orden.add_argument("--repo", default=REPO, help="Repositorio (usuario/nombre)")
         if nombre == "reconstruir":

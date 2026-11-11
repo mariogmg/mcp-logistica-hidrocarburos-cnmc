@@ -33,7 +33,7 @@ jobs:
         timeout-minutes: 4
         continue-on-error: true
         run: sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-spa
-      - run: uv sync --locked --no-dev --extra ocr
+      - run: uv sync --locked --no-dev --extra ocr --extra exportar
 
       - name: Fecha de la foto
         id: foto
@@ -75,6 +75,22 @@ jobs:
               --title "Crudo del portal CNMC ($FECHA)" \
               --notes "Foto de hidrocarburos.cnmc.es descargada el $FECHA. Contiene raw/$FECHA con su manifiesto (sha256 de cada fichero)."
           fi
+
+      - name: Publicar la Release de datos
+        if: steps.actualizar.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FECHA: ${{ steps.foto.outputs.fecha }}
+        run: |
+          # Solo si la carga terminó sin errores. Una Release por foto: no se sobrescribe.
+          if gh release view "datos-$FECHA" > /dev/null 2>&1; then
+            echo "La Release datos-$FECHA ya existe"; exit 0
+          fi
+          uv run cnmc-logistica exportar --salida exportacion
+          cd exportacion
+          gh release create "datos-$FECHA" cnmc_logistica.db cnmc_logistica.db.sha256 csv.zip parquet.zip DICCIONARIO.md \
+            --title "Datos de logística de hidrocarburos (CNMC) · $FECHA" \
+            --notes "Base SQLite con todo el historial, su sha256, las tablas vigentes en CSV y Parquet (un fichero por tabla) y el diccionario de datos. Foto del portal del $FECHA. Proyecto no oficial; datos públicos publicados por la CNMC."
 
       - name: Commit de la base de datos y del inventario
         if: always()

@@ -345,6 +345,7 @@ def test_buscar_precios_incluye_los_del_pdf_indicando_la_fuente(ruta_bd):
     }
     assert all(p["anio_tabla"] == 2026 and p["fecha_precio"] is None for p in del_pdf)
     assert "Torrejón" in del_pdf[0]["observacion"]
+    assert del_pdf[0]["aplica_a"]["detalles"] == 1 and "lista" not in del_pdf[0]["aplica_a"]
     # La línea de la página que remite al PDF sigue ahí, como puntero ya resuelto.
     punteros = [p for p in r["precios"] if p["fuente"] == "html" and p["tipo_precio"] == "pdf"]
     assert punteros and all("precios_pdf" in p["resuelto_en"] for p in punteros)
@@ -379,7 +380,9 @@ def test_reconsignaciones(ruta_bd):
     assert (fila["origen"], fila["destino"]) == ("HUELVA", "Pontevedra (Puxeiros)")
     assert fila["precio"] > 0 and fila["unidad"] == "€/m3" and fila["anio_tabla"] == 2026
     assert (fila["documento"], fila["pagina"], fila["id_tanque_destino"]) == ("27", 2, 9)
-    assert r["fuente"] == "pdf" and any("recargo" in n["texto"] for n in r["notas"])
+    assert r["fuente"] == "pdf" and any("aceptación" in n["texto"] for n in r["notas"])
+    # La nota con cantidad («almacenamiento reducido de 3 días») es ahora una condición.
+    assert [(c["valor"], c["unidad"]) for c in r["condiciones"]] == [(3.0, "días")]
     todas = ok(ruta_bd, "reconsignaciones", destino="Zaragoza", limite=500)
     assert 25 <= todas["total"] <= 40
     od = ok(ruta_bd, "reconsignaciones", tipo="origen_destino", destino="barajas", origen="huelva")
@@ -403,3 +406,24 @@ def test_bonificaciones(ruta_bd):
     assert [d["documento"] for d in jet["documentos"]] == ["34"]
     mensaje, es_error = llamar(ruta_bd, "bonificaciones", producto="hidrógeno")
     assert es_error and "hidrógeno" in mensaje
+
+
+def test_precios_de_pdf_comunes_a_varios_detalles_salen_una_vez(ruta_bd):
+    # Las bonificaciones no, pero los suplementos del PDF 24 valen para su detalle; el
+    # recargo de 0,4652 €/m3 aparece en dos PDF (24 y 27) del mismo detalle: dos resultados.
+    r = ok(ruta_bd, "buscar_precios", categoria="suplemento", limite=500)
+    por_doc = {(p["documentos"], p["subetiqueta"], p["valor"]) for p in r["precios"]}
+    assert len(por_doc) == len(r["precios"])  # ningún (documento, concepto, valor) repetido
+    assert all(p["aplica_a"]["detalles"] >= 1 for p in r["precios"])
+    con_lista = ok(ruta_bd, "buscar_precios", categoria="suplemento", detallar_aplicacion=True)
+    caso = con_lista["precios"][0]
+    assert caso["aplica_a"]["lista"][0]["id_tanque_instalacion"] == 17
+    assert caso["aplica_a"]["instalaciones"] == 1 and caso["instalacion"] == "EXOLUM - Puxeiros"
+
+
+def test_ver_instalacion_incluye_condiciones_con_cantidad_de_los_pdf(ruta_bd):
+    r = ok(ruta_bd, "ver_instalacion", id_tanque=9)
+    cantidades = {
+        (c["documento"], c["valor"], c["unidad"]) for c in r["detalles"][0]["condiciones_pdf"]
+    }
+    assert ("27", 3.0, "días") in cantidades and ("24", 3.0, "días") in cantidades

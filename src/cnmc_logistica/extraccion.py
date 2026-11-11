@@ -221,6 +221,7 @@ class _Documentos:
         self.filas: Filas = {
             "documentos": [], "filas_documento": [], "capacidades": [], "precios_pdf": [],
             "matrices_pdf": [], "bonificaciones": [], "notas_pdf": [], "cobertura_pdf": [],
+            "condiciones_pdf": [],
         }  # fmt: skip
 
     def anio_comun(self, claves: list[str]) -> int | None:
@@ -377,6 +378,19 @@ def _filas_de_extraccion(
                 "anio": anio,
                 **_coordenadas(b.palabra),
                 "texto_original": b.texto_original,
+            }
+        )
+    veces_cond: Counter = Counter()
+    for c in ext.condiciones:
+        veces_cond[c.texto, c.unidad] += 1
+        docs.filas["condiciones_pdf"].append(
+            {
+                "documento": clave,
+                "texto": c.texto,
+                "unidad": c.unidad,
+                "ocurrencia": veces_cond[c.texto, c.unidad],
+                "valor": c.valor,
+                **_coordenadas(c.palabra),
             }
         )
     for orden, n in enumerate(ext.notas, start=1):

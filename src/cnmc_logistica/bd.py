@@ -18,7 +18,7 @@ import sqlite3
 from dataclasses import dataclass, field
 from pathlib import Path
 
-VERSION_ESQUEMA = 2
+VERSION_ESQUEMA = 3
 
 # tabla → (columnas clave, columnas de valor, DDL de las columnas)
 # La clave identifica «el mismo hecho» entre fotos; si cambia un valor con la
@@ -190,6 +190,16 @@ TABLAS: dict[str, tuple[tuple[str, ...], tuple[str, ...], str]] = {
         pagina INTEGER NOT NULL, x0 REAL NOT NULL, top REAL NOT NULL, x1 REAL NOT NULL,
         bottom REAL NOT NULL, texto_original TEXT NOT NULL""",
     ),
+    "condiciones_pdf": (
+        ("documento", "texto", "unidad", "ocurrencia"),
+        ("valor", "metodo", "pagina", "x0", "top", "x1", "bottom"),
+        """documento TEXT NOT NULL,
+        texto TEXT NOT NULL,              -- la nota completa de la que sale la cantidad
+        unidad TEXT NOT NULL, ocurrencia INTEGER NOT NULL, valor REAL NOT NULL,
+        metodo TEXT NOT NULL CHECK (metodo IN ('texto', 'ocr')),
+        pagina INTEGER NOT NULL, x0 REAL NOT NULL, top REAL NOT NULL, x1 REAL NOT NULL,
+        bottom REAL NOT NULL""",
+    ),
     "notas_pdf": (
         ("documento", "pagina", "orden"),
         ("texto", "metodo"),
@@ -214,6 +224,10 @@ CREATE TABLE IF NOT EXISTS ejecuciones (
     fecha TEXT NOT NULL,              -- fecha de la foto de raw/ cargada
     registrada_en TEXT NOT NULL,
     version TEXT NOT NULL,
+    tipo TEXT NOT NULL DEFAULT 'actualizacion'
+        CHECK (tipo IN ('actualizacion', 'reconstruccion')),
+    -- 'carga': registrada al ejecutarse; 'registro': recuperada de raw/FECHA/ejecuciones.jsonl
+    origen TEXT NOT NULL DEFAULT 'carga' CHECK (origen IN ('carga', 'registro')),
     recursos INTEGER NOT NULL,        -- ficheros de la foto
     altas INTEGER NOT NULL, cambios INTEGER NOT NULL, desapariciones INTEGER NOT NULL,
     errores INTEGER NOT NULL, avisos INTEGER NOT NULL,
@@ -236,7 +250,7 @@ _VISTAS = (
     "instalaciones", "detalles", "detalle_productos", "precios", "condiciones",
     "servicios_incluidos", "precios_origen_destino", "notas_origen_destino", "capacidades",
     "documentos", "filas_documento", "operadores_nombres", "enlaces_documento", "precios_pdf",
-    "matrices_pdf", "bonificaciones", "notas_pdf", "cobertura_pdf",
+    "matrices_pdf", "bonificaciones", "notas_pdf", "cobertura_pdf", "condiciones_pdf",
 )  # fmt: skip
 
 
@@ -299,6 +313,12 @@ def crear_esquema(conn: sqlite3.Connection) -> None:
     )
     conn.executescript(
         """
+        -- Condiciones con cantidad de los PDF, vistas desde cada detalle que los enlaza.
+        CREATE VIEW IF NOT EXISTS condiciones_pdf_por_detalle AS
+            SELECT DISTINCT e.id_tanque_instalacion, c.documento, c.texto, c.valor, c.unidad,
+                   c.pagina
+            FROM enlaces_documento_vigentes e
+            JOIN condiciones_pdf_vigentes c ON c.documento = e.documento;
         CREATE VIEW IF NOT EXISTS reconsignaciones AS
             SELECT * FROM matrices_pdf_vigentes WHERE tipo = 'reconsignacion';
         -- Precios de PDF vistos desde cada detalle que remite al documento.

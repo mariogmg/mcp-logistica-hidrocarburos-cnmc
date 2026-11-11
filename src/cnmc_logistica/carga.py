@@ -50,6 +50,9 @@ def cargar_foto(
     almacen: AlmacenCrudo,
     cfg: Configuracion,
     avisos_previos: list[Aviso] | None = None,
+    *,
+    tipo: str = "actualizacion",
+    registradas: list[dict] | None = None,
 ) -> Resumen:
     """Carga una foto en una sola transacción y deja constancia en `ejecuciones`.
 
@@ -67,6 +70,23 @@ def cargar_foto(
     previa = conn.execute(
         "SELECT MAX(fecha) FROM ejecuciones WHERE fecha < ?", (fecha,)
     ).fetchone()[0]
+
+    # Ejecuciones reales de esta foto recuperadas de su registro (solo al reconstruir).
+    for r in registradas or []:
+        cur = conn.execute(
+            """INSERT INTO ejecuciones (fecha, registrada_en, version, tipo, origen, recursos,
+                   altas, cambios, desapariciones, errores, avisos, por_tabla)
+               VALUES (?, ?, ?, 'actualizacion', 'registro', ?, ?, ?, ?, ?, ?, ?)""",
+            (fecha, r["registrada_en"], r["version"], r.get("recursos", 0), r["altas"],
+             r["cambios"], r["desapariciones"], r["errores"], r["avisos"],
+             json.dumps(r.get("por_tabla", {}), ensure_ascii=False)),
+        )  # fmt: skip
+        conn.executemany(
+            "INSERT INTO incidencias (ejecucion_id, nivel, tipo, recurso, operador, texto) "
+            "VALUES (?, ?, ?, ?, ?, ?)",
+            [(cur.lastrowid, i["nivel"], i["tipo"], i["recurso"], i.get("operador"), i["texto"])
+             for i in r.get("incidencias", [])],
+        )  # fmt: skip
 
     filas, avisos, _ = extraer_foto(almacen, cfg)
     avisos = list(avisos_previos or []) + avisos
@@ -89,13 +109,14 @@ def cargar_foto(
                 "(¿cambió un parser o un fichero de config?). Usa «reconstruir»."
             )
         cur = conn.execute(
-            """INSERT INTO ejecuciones (fecha, registrada_en, version, recursos, altas, cambios,
-                   desapariciones, errores, avisos, por_tabla)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            """INSERT INTO ejecuciones (fecha, registrada_en, version, tipo, recursos, altas,
+                   cambios, desapariciones, errores, avisos, por_tabla)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
             (
                 fecha,
                 datetime.now(UTC).isoformat(timespec="seconds"),
                 __version__,
+                tipo,
                 len({(e.tipo, e.clave) for e in almacen.entradas() if e.ok}),
                 resumen.altas,
                 resumen.cambios,
@@ -119,16 +140,68 @@ def cargar_foto(
     return resumen
 
 
+NOMBRE_REGISTRO = "ejecuciones.jsonl"
+
+
+def registrar_ejecucion(almacen: AlmacenCrudo, conn: sqlite3.Connection, resumen: Resumen) -> None:
+    """Deja constancia de una actualización real dentro de su foto de raw/.
+
+    La base se puede reconstruir desde raw/; sin este registro, reconstruir
+    perdería cuándo se ejecutó cada actualización y qué incidencias tuvo. Es
+    un fichero de solo añadir (una línea por ejecución), como el manifiesto.
+    """
+    fila = conn.execute(
+        "SELECT * FROM ejecuciones WHERE id = ?", (resumen.ejecucion_id,)
+    ).fetchone()
+    registro = {
+        "fecha": fila["fecha"],
+        "registrada_en": fila["registrada_en"],
+        "version": fila["version"],
+        "recursos": fila["recursos"],
+        "altas": fila["altas"],
+        "cambios": fila["cambios"],
+        "desapariciones": fila["desapariciones"],
+        "errores": fila["errores"],
+        "avisos": fila["avisos"],
+        "por_tabla": json.loads(fila["por_tabla"]),
+        "incidencias": [
+            {"nivel": a.nivel, "tipo": a.tipo, "recurso": a.recurso, "operador": a.operador,
+             "texto": a.texto}
+            for a in resumen.avisos
+        ],
+    }  # fmt: skip
+    almacen.dir.mkdir(parents=True, exist_ok=True)
+    with (almacen.dir / NOMBRE_REGISTRO).open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(registro, ensure_ascii=False) + "\n")
+
+
+def leer_registro(almacen: AlmacenCrudo) -> list[dict]:
+    ruta = almacen.dir / NOMBRE_REGISTRO
+    if not ruta.exists():
+        return []
+    with ruta.open(encoding="utf-8") as fh:
+        return [json.loads(linea) for linea in fh if linea.strip()]
+
+
 def reconstruir(rutas: Rutas, destino: Path) -> list[Resumen]:
-    """Crea en `destino` una base nueva cargando todas las fotos de raw/ en orden."""
+    """Crea en `destino` una base nueva cargando todas las fotos de raw/ en orden.
+
+    De cada foto recupera las actualizaciones reales de su registro
+    (ejecuciones.jsonl) y añade la reconstrucción como un evento propio.
+    """
     if destino.exists():
         raise FileExistsError(destino)
     cfg = leer_config(rutas)
     conn = conectar(destino)
     try:
-        return [
-            cargar_foto(conn, AlmacenCrudo(rutas.raw, fecha), cfg)
-            for fecha in AlmacenCrudo.fechas(rutas.raw)
-        ]
+        resumenes = []
+        for fecha in AlmacenCrudo.fechas(rutas.raw):
+            almacen = AlmacenCrudo(rutas.raw, fecha)
+            resumenes.append(
+                cargar_foto(
+                    conn, almacen, cfg, tipo="reconstruccion", registradas=leer_registro(almacen)
+                )
+            )
+        return resumenes
     finally:
         conn.close()

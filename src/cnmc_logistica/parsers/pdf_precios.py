@@ -77,6 +77,22 @@ class Nota:
 
 
 @dataclass
+class CondicionPdf:
+    """Una cantidad dentro de una nota: «Facturación mínima 500 toneladas» → 500 toneladas."""
+
+    texto: str
+    valor: float
+    unidad: str
+    palabra: Palabra
+
+
+# Unidades que convierten una cifra de una nota en una condición con cantidad.
+_UNIDADES_CONDICION = {
+    "días": "días", "día": "días", "toneladas": "toneladas", "ºc": "ºC", "m3": "m3", "%": "%",
+}  # fmt: skip
+
+
+@dataclass
 class Extraccion:
     parser: str
     anio: int | None = None
@@ -85,6 +101,7 @@ class Extraccion:
     celdas: list[CeldaMatriz] = field(default_factory=list)
     bonificaciones: list[Bonificacion] = field(default_factory=list)
     notas: list[Nota] = field(default_factory=list)
+    condiciones: list[CondicionPdf] = field(default_factory=list)
     usadas: dict[tuple, str] = field(default_factory=dict)  # clave de palabra → clase
     avisos: list[tuple[str, str]] = field(default_factory=list)  # (tipo, texto)
 
@@ -106,7 +123,9 @@ class Extraccion:
     def nota(self, linea: list[Palabra]) -> None:
         """Guarda una nota o condición y extrae los importes en €/m3 que contenga."""
         texto = texto_de(linea)
-        self.notas.append(Nota(linea[0].pagina, texto, linea[0].metodo))
+        cantidades = self._cantidades(linea, texto)
+        if not cantidades:  # solo explicativa: se queda como nota
+            self.notas.append(Nota(linea[0].pagina, texto, linea[0].metodo))
         self.marcar(linea, "nota")
         for i, p in enumerate(linea):
             siguiente = linea[i + 1].texto if i + 1 < len(linea) else ""
@@ -115,6 +134,34 @@ class Extraccion:
                     ValorPdf(None, "Suplemento o recargo (nota)", texto, numero(p.texto),
                              "€/m3", p, texto)
                 )  # fmt: skip
+
+
+def _cantidades_de(self: Extraccion, linea: list[Palabra], texto: str) -> int:
+    """Pasa a `condiciones` las cantidades con unidad de una nota (días, toneladas, %…)."""
+    encontradas = 0
+    for i, p in enumerate(linea):
+        if self.usadas.get(p.clave) == "valor":
+            continue  # ya es un precio o un umbral
+        cifra, pegada = p.texto.rstrip(".,;)"), ""
+        if cifra.endswith("%"):
+            cifra, pegada = cifra[:-1], "%"
+        siguientes = [q.texto.rstrip(".,;)").casefold() for q in linea[i + 1 : i + 3]]
+        if not pegada and siguientes:
+            pegada = "m3" if siguientes[:2] == ["m", "3"] else siguientes[0]
+        unidad = _UNIDADES_CONDICION.get(pegada)
+        if unidad is None or not (NUM.fullmatch(cifra) or ENTERO.fullmatch(cifra)):
+            continue
+        valor = float(cifra.replace(".", "").replace(",", "."))
+        encontradas += 1
+        self.usadas[p.clave] = "valor"
+        if not any(
+            (c.texto, c.valor, c.unidad) == (texto, valor, unidad) for c in self.condiciones
+        ):
+            self.condiciones.append(CondicionPdf(texto, valor, unidad, p))
+    return encontradas
+
+
+Extraccion._cantidades = _cantidades_de
 
 
 def numero(texto: str) -> float | None:
@@ -489,7 +536,6 @@ def _bonificaciones(paginas: tuple[Pagina, ...], ext: Extraccion) -> None:
             )  # fmt: skip
             ext.usadas[importes[0].clave] = "valor"
         else:
-            ext.nota(linea)
             # Umbrales en porcentaje dentro del texto: también son datos.
             for patron, tramo in (
                 (r"equivalente al (\d+)%", "Umbral mínimo para aplicar la bonificación"),
@@ -507,6 +553,7 @@ def _bonificaciones(paginas: tuple[Pagina, ...], ext: Extraccion) -> None:
                         condicion_compensacion = (
                             f"volúmenes inferiores al {m.group(1)}% de las cantidades garantizadas"
                         )
+            ext.nota(linea)  # después: los umbrales ya extraídos no se duplican
 
 
 # --- matrices origen × destino -----------------------------------------------------------

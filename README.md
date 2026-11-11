@@ -32,7 +32,8 @@ Este proyecto:
 Con la foto del 11/11/2026: 115 instalaciones (71 de almacenamiento y 44 aeroportuarias),
 258 detalles (un producto en una instalación), 31 operadores con instalaciones, 1.579 precios
 de las páginas, 2.163 rutas origen-destino y 27 PDF leídos por completo (66 precios de
-tarifas, 2.495 celdas de matrices, 18 bonificaciones y 365 capacidades).
+tarifas, 2.495 celdas de matrices, 18 bonificaciones, 21 condiciones con cantidad y 365
+capacidades).
 
 ## Cómo funciona
 
@@ -165,9 +166,14 @@ del detalle, y cada detalle tiene su propio titular.
 | `precios_pdf` | Tarifas de los PDF (concepto → precio), con categoría, unidad y año |
 | `matrices_pdf` | Matrices origen × destino de los PDF (vista `reconsignaciones`) |
 | `bonificaciones` | Bonificaciones y compensaciones: tramo, condición, valor y unidad |
-| `notas_pdf` | Texto íntegro de las notas y condiciones de cada PDF |
+| `condiciones_pdf` | Cantidades con unidad dentro de las notas (plazos en días, mínimos en toneladas…) |
+| `notas_pdf` | Texto íntegro de las notas solo explicativas de cada PDF |
 | `cobertura_pdf` | Por PDF: cifras totales, guardadas, descartadas y sin cubrir |
 | `ejecuciones`, `incidencias` | Registro de cada carga: altas, cambios, desapariciones y avisos |
+
+Cada `actualizar` deja además su resumen (fecha y hora, versión, cifras e incidencias) en
+`raw/AAAA-MM-DD/ejecuciones.jsonl`. Así `reconstruir` recupera el historial de ejecuciones
+reales (`origen = 'registro'`) y se anota a sí misma como un evento `tipo = 'reconstruccion'`.
 
 ### Historial (SCD tipo 2)
 
@@ -210,6 +216,9 @@ coordenadas, y cada valor guarda página, posición y texto original para poder 
 - **OCR solo de respaldo.** Si una página no tiene capa de texto se lee con Tesseract
   (`uv sync --extra ocr`); esos valores llevan `metodo = 'ocr'` y generan un aviso para
   revisarlos. Nunca se pasa OCR a una página que ya tiene texto.
+- **Sin repeticiones.** Una tarifa en PDF vale para todos los detalles que remiten a ella:
+  `buscar_precios` y `comparar_servicio` la devuelven una sola vez, con `aplica_a` (nº de
+  detalles e instalaciones, y la lista con `detallar_aplicacion=true`).
 - **Enlace por datos, no por nombres.** Cada fila de las tablas origen-destino del PDF se une
   al detalle cuyos precios en la página web son exactamente los mismos; las matrices de
   reconsignación heredan esa identificación por nombre exacto.

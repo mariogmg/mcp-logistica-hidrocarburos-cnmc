@@ -356,6 +356,11 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
                     id_ti,
                 )
             ]  # fmt: skip
+            d["condiciones_pdf"] = consultar(
+                "SELECT documento, texto, valor, unidad, pagina FROM condiciones_pdf_por_detalle "
+                "WHERE id_tanque_instalacion = ? ORDER BY documento, pagina",
+                id_ti,
+            )
             d["documentos_pdf"] = consultar(
                 """SELECT DISTINCT e.documento, e.etiqueta, doc.nombre_archivo, doc.anio,
                           (SELECT COUNT(*) FROM matrices_pdf_vigentes m
@@ -480,6 +485,49 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
             )
         return salida
 
+    def agrupar_pdf(filas: list[dict], con_lista: bool) -> list[dict]:
+        """Une en un solo resultado los precios de PDF que son el mismo dato.
+
+        Una tarifa en PDF vale para todos los detalles que remiten a ella; en vez de
+        repetirla por detalle se devuelve una vez con `aplica_a` (nº de detalles e
+        instalaciones, y la lista si se pide).
+        """
+        salida: list[dict] = []
+        grupos: dict[tuple, dict] = {}
+        for p in filas:
+            if p["fuente"] != "pdf":
+                salida.append(p)
+                continue
+            llave = (p["documentos"], p["pagina_pdf"], p["etiqueta"], p["subetiqueta"],
+                     p["categoria_servicio"], p["valor"], p["unidad"],
+                     *(p[i] for i in INDICADORES))  # fmt: skip
+            g = grupos.get(llave)
+            if g is None:
+                g = grupos[llave] = {**p, "_a": []}
+                salida.append(g)
+            g["_a"].append(p)
+        for g in grupos.values():
+            casos = g.pop("_a")
+            unico = casos[0] if len(casos) == 1 else None
+            for campo in ("id_tanque_instalacion", "id_tanque", "instalacion", "comunidad"):
+                g[campo] = unico[campo] if unico else None
+            for campo in ("operador", "operador_nombre", "tipo_instalacion", "productos"):
+                valores = sorted({c[campo] for c in casos if c[campo]})
+                g[campo] = valores[0] if len(valores) == 1 else None
+            g["aplica_a"] = {
+                "detalles": len(casos),
+                "instalaciones": len({c["id_tanque"] for c in casos}),
+                "operadores": sorted({c["operador"] for c in casos if c["operador"]}),
+                "productos": sorted({c["productos"] for c in casos}),
+            }
+            if con_lista:
+                g["aplica_a"]["lista"] = [
+                    {k: c[k] for k in ("id_tanque_instalacion", "id_tanque", "instalacion",
+                                       "comunidad", "productos")}
+                    for c in casos
+                ]  # fmt: skip
+        return salida
+
     @servidor.tool()
     def buscar_precios(
         operador: str | None = None,
@@ -489,6 +537,7 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
         tipo_instalacion: str | None = None,
         texto: str | None = None,
         solo_numericos: bool = False,
+        detallar_aplicacion: bool = False,
         limite: int = 100,
     ) -> dict[str, Any]:
         """Precios vigentes con filtros. No agrupa: para comparar usa `comparar_servicio`.
@@ -496,7 +545,9 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
         Cada precio dice su `fuente`: «html» (la página del detalle) o «pdf» (una tarifa
         en PDF a la que remite el detalle; `documentos` es el PDF y `pagina_pdf` la
         página). Una línea «html» con tipo_precio «pdf» es solo el puntero al documento;
-        `resuelto_en` dice en qué tablas están sus datos.
+        `resuelto_en` dice en qué tablas están sus datos. Un precio de PDF que vale
+        para varios detalles sale una sola vez, con `aplica_a` (nº de detalles e
+        instalaciones); con detallar_aplicacion=true incluye la lista.
 
         categoria: categoria_servicio exacta (p. ej. «almacenamiento»). texto: parte de
         la etiqueta o subetiqueta del servicio. tipo_precio puede ser numerico, regla
@@ -513,6 +564,7 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
             if solo_numericos and p["tipo_precio"] != "numerico":
                 continue
             filas.append(p)
+        filas = agrupar_pdf(filas, detallar_aplicacion)
         categorias = sorted({p["categoria_servicio"] for p in filas})
         return {"total": len(filas), "categorias": categorias, "precios": filas[: _limite(limite)]}
 
@@ -523,6 +575,7 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
         tipo_instalacion: str | None = None,
         comunidad: str | None = None,
         operador: str | None = None,
+        detallar_aplicacion: bool = False,
     ) -> dict[str, Any]:
         """Compara el precio de una categoría de servicio entre instalaciones y operadores.
 
@@ -531,15 +584,20 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
         expedición, puesta a bordo) y misma unidad. Si salen varios grupos, la
         respuesta lo avisa: no mezcles sus cifras. Incluye los precios de las tarifas
         en PDF (fuente «pdf», con su documento y página; solo tienen año, no fecha).
+        Un precio de PDF común a varios detalles aparece una vez, con `aplica_a`
+        (detallar_aplicacion=true añade la lista de detalles).
         Los servicios sin precio numérico se listan aparte con `resuelto_en`.
         """
-        candidatos = [
-            p
-            for p in precios_con_contexto(
-                filtrar_detalles(operador, tipo_instalacion, comunidad, producto)
-            )
-            if _plano(p["categoria_servicio"]) == _plano(categoria)
-        ]
+        candidatos = agrupar_pdf(
+            [
+                p
+                for p in precios_con_contexto(
+                    filtrar_detalles(operador, tipo_instalacion, comunidad, producto)
+                )
+                if _plano(p["categoria_servicio"]) == _plano(categoria)
+            ],
+            detallar_aplicacion,
+        )
         if not candidatos:
             existentes = consultar(
                 "SELECT DISTINCT categoria_servicio AS c FROM precios_vigentes ORDER BY 1"
@@ -569,6 +627,7 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
                                    "subetiqueta", "tipo_valor", "valor", "fecha_precio",
                                    "anio_tabla", "observacion", "fuente", "documentos",
                                    "pagina_pdf")}
+                | ({"aplica_a": p["aplica_a"]} if "aplica_a" in p else {})
             )  # fmt: skip
         salida = []
         for g in grupos.values():
@@ -577,7 +636,10 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
                 "precios": len(valores),
                 "servicios": len({(f["id_tanque_instalacion"], f["etiqueta"], f["subetiqueta"])
                                   for f in g["filas"]}),
-                "operadores": sorted({f["operador"] for f in g["filas"] if f["operador"]}),
+                "operadores": sorted(
+                    {f["operador"] for f in g["filas"] if f["operador"]}
+                    | {o for f in g["filas"] for o in f.get("aplica_a", {}).get("operadores", [])}
+                ),
                 "minimo": min(valores),
                 "mediana": round(statistics.median(valores), 4),
                 "maximo": max(valores),
@@ -779,6 +841,11 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
                 f"WHERE documento IN ({marcas}) ORDER BY documento, pagina, orden",
                 tuple(documentos),
             ),
+            "condiciones": consultar(
+                f"SELECT documento, texto, valor, unidad FROM condiciones_pdf_vigentes "
+                f"WHERE documento IN ({marcas}) ORDER BY documento, id",
+                tuple(documentos),
+            ),
             "fuente": "pdf",
         }
 
@@ -843,7 +910,7 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
         operadores_nombres, precios, condiciones, servicios_incluidos,
         precios_origen_destino, notas_origen_destino, capacidades, documentos,
         filas_documento, enlaces_documento, precios_pdf, matrices_pdf, bonificaciones,
-        notas_pdf, cobertura_pdf, ejecuciones, incidencias. Vistas útiles:
+        notas_pdf, condiciones_pdf, cobertura_pdf, ejecuciones, incidencias. Vistas útiles:
         precios_pdf_por_detalle, reconsignaciones, lineas_pdf_sin_resolver. Cada tabla
         con historial tiene una vista <tabla>_vigentes con lo visto en la última foto.
         La función plano(texto) quita tildes y mayúsculas. Usa `estado` para ver las

@@ -81,11 +81,18 @@ def _actualizar(args: argparse.Namespace) -> int:
     print(f"{len(almacen.entradas())} líneas de manifiesto en {almacen.dir}")
 
     from .bd import conectar
-    from .carga import FotoFueraDeOrden, FotoYaCargada, cargar_foto, leer_config
+    from .carga import (
+        FotoFueraDeOrden,
+        FotoYaCargada,
+        cargar_foto,
+        leer_config,
+        registrar_ejecucion,
+    )
 
     conn = conectar(rutas.base_datos)
     try:
         resumen = cargar_foto(conn, almacen, leer_config(rutas), avisos_previos=avisos)
+        registrar_ejecucion(almacen, conn, resumen)
     except (FotoYaCargada, FotoFueraDeOrden) as exc:
         print(f"ERROR {exc}", file=sys.stderr)
         return SALIDA_CON_ERRORES

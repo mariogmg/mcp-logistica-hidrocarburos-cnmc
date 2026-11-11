@@ -480,3 +480,66 @@ def test_un_numero_que_el_ocr_lee_mal_no_se_guarda_y_queda_en_incidencias(
         f[0] for f in conn.execute("SELECT valor FROM precios_pdf WHERE documento = '999'")
     ]
     assert 21.244 in guardados and not any(v and 19 <= v < 20 for v in guardados)
+
+
+# --- condiciones con cantidad y registro de ejecuciones -----------------------------------
+
+
+def test_las_notas_con_cantidad_pasan_a_condiciones():
+    bunker = extraer_pdf(pdf("13"))
+    assert [(c.valor, c.unidad, c.texto) for c in bunker.condiciones] == [
+        (500.0, "toneladas", "(Facturación mínima 500 toneladas)")
+    ]
+    assert bunker.notas == []  # ya no es una nota: es una condición
+    assert [(c.valor, c.unidad) for c in extraer_pdf(pdf("7")).condiciones] == [(15.0, "ºC")]
+    ester = extraer_pdf(pdf("22"))
+    assert [(c.valor, c.unidad) for c in ester.condiciones] == [(1000.0, "m3")]
+    assert [n.texto for n in ester.notas] == ["precio anterior el siguiente descuento:"]
+    jet = extraer_pdf(pdf("29"))
+    assert sorted({(c.valor, c.unidad) for c in jet.condiciones}) == [
+        (14.0, "días"),
+        (15.0, "días"),
+        (19.0, "días"),
+    ]
+    # Una nota solo explicativa sigue siendo nota; un precio o un umbral no se duplica.
+    assert any("puertos alternativos" in n.texto for n in jet.notas)
+    bonif = extraer_pdf(pdf("25"))
+    assert bonif.condiciones == [] and len(bonif.bonificaciones) == 9
+    assert [(c.valor, c.unidad) for c in extraer_pdf(pdf("27")).condiciones] == [(3.0, "días")]
+
+
+def test_reconstruir_recupera_las_ejecuciones_reales_y_se_anota_a_si_misma(tmp_path):
+    from cnmc_logistica.carga import leer_registro, reconstruir, registrar_ejecucion
+
+    raiz = tmp_path / "proyecto"
+    (raiz / "config").mkdir(parents=True)
+    for fichero in (RAIZ / "config").glob("*.yaml"):
+        (raiz / "config" / fichero.name).write_bytes(fichero.read_bytes())
+    almacen = crear_foto(raiz / "raw", F1)
+    conn = conectar(tmp_path / "original.db")
+    for _ in range(2):  # dos actualizaciones reales el mismo día
+        resumen = cargar_foto(conn, almacen, CFG)
+        registrar_ejecucion(almacen, conn, resumen)
+    conn.close()
+    registro = leer_registro(almacen)
+    assert [(r["altas"] > 0, r["fecha"]) for r in registro] == [(True, F1), (False, F1)]
+    assert registro[0]["version"] and registro[0]["registrada_en"] and registro[0]["por_tabla"]
+    assert {i["tipo"] for i in registro[0]["incidencias"]} == {a.tipo for a in resumen.avisos}
+
+    reconstruir(Rutas(raiz), tmp_path / "nueva.db")
+    nueva = conectar(tmp_path / "nueva.db")
+    filas = nueva.execute(
+        "SELECT tipo, origen, registrada_en, altas FROM ejecuciones ORDER BY id"
+    ).fetchall()
+    assert [(f["tipo"], f["origen"]) for f in filas] == [
+        ("actualizacion", "registro"),
+        ("actualizacion", "registro"),
+        ("reconstruccion", "carga"),
+    ]
+    assert [f["registrada_en"] for f in filas[:2]] == [r["registrada_en"] for r in registro]
+    assert filas[0]["altas"] == registro[0]["altas"] and filas[2]["altas"] > 0
+    por_ejecucion = dict(nueva.execute("SELECT ejecucion_id, COUNT(*) FROM incidencias GROUP BY 1"))
+    assert por_ejecucion.get(1, 0) == len(registro[0]["incidencias"])
+    # Los datos son los mismos que en la base original.
+    assert nueva.execute("SELECT COUNT(*) FROM precios").fetchone()[0] > 40
+    nueva.close()

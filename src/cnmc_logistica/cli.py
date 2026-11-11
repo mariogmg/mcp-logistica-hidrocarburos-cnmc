@@ -218,7 +218,10 @@ def crear_parser() -> argparse.ArgumentParser:
         orden.set_defaults(funcion=funcion)
         if nombre == "servir":
             orden.add_argument(
-                "--transporte", choices=("stdio", "streamable-http"), default="stdio"
+                "--transporte",
+                choices=("stdio", "http", "streamable-http"),
+                default="stdio",
+                help="stdio (Claude Desktop) o http: MCP en /mcp y API REST en /api/v1",
             )
             orden.add_argument("--host", default="127.0.0.1")
             orden.add_argument("--puerto", type=int, default=8000)

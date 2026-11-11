@@ -23,4 +23,4 @@ EXPOSE 8000
 # Fuera de localhost hay que declarar los Host admitidos y conviene un token:
 #   docker run -p 8000:8000 -e CNMC_MCP_HOSTS_PERMITIDOS=mi.dominio:8000 -e CNMC_MCP_TOKEN=... imagen
 ENV CNMC_MCP_HOSTS_PERMITIDOS="localhost:8000,127.0.0.1:8000"
-CMD ["cnmc-logistica", "servir", "--transporte", "streamable-http", "--host", "0.0.0.0", "--puerto", "8000"]
+CMD ["cnmc-logistica", "servir", "--transporte", "http", "--host", "0.0.0.0", "--puerto", "8000"]

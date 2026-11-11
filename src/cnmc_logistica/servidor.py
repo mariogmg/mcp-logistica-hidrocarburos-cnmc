@@ -219,12 +219,13 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
 class _SoloConToken:
     """Middleware ASGI mínimo: exige «Authorization: Bearer <token>»."""
 
-    def __init__(self, app: Any, token: str):
+    def __init__(self, app: Any, token: str, prefijo: str = "/mcp"):
+        self.prefijo = prefijo  # solo se protege el MCP; la API REST es pública
         self.app = app
         self._esperado = f"Bearer {token}".encode()
 
     async def __call__(self, scope: dict, receive: Any, send: Any) -> None:
-        if scope["type"] == "http":
+        if scope["type"] == "http" and scope.get("path", "").startswith(self.prefijo):
             recibido = dict(scope.get("headers") or {}).get(b"authorization", b"")
             # Comparación en tiempo constante: no filtra el token por tiempos de respuesta.
             if not hmac.compare_digest(recibido, self._esperado):
@@ -256,6 +257,13 @@ def app_http(ruta_bd: Path, host: str, puerto: int) -> Any:
         allowed_origins=[f"{esquema}://{h}" for h in permitidos for esquema in ("http", "https")],
     )
     app = crear_servidor(ruta_bd).streamable_http_app(transport_security=seguridad, host=host)
+    # Una sola aplicación: /mcp lo atiende el MCP (con su ciclo de vida y sus
+    # protecciones) y todo lo demás (/api/v1, /docs, /salud) la API REST.
+    from starlette.routing import Mount
+
+    from .api import crear_api
+
+    app.router.routes.append(Mount("/", app=crear_api(ruta_bd)))
     token = os.environ.get("CNMC_MCP_TOKEN", "").strip()
     return _SoloConToken(app, token) if token else app
 

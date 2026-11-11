@@ -13,6 +13,7 @@ dependencies = [
     "pyyaml>=6.0",
     # El SDK MCP v2 cambió los imports (MCPServer, Client): se fija la versión comprobada.
     "mcp==2.3.0",
+    "fastapi>=0.115",
 ]
 
 [project.optional-dependencies]
@@ -49,3 +50,6 @@ ignore = ["RUF001", "RUF002", "RUF003"]  # textos en español: tildes y símbolo
 # Parsers de PDF: expresiones largas sobre coordenadas y cierres dentro de bucles por página.
 "src/cnmc_logistica/parsers/pdf_precios.py" = ["E501", "B023", "RUF007", "SIM102"]
 "src/cnmc_logistica/parsers/pdf.py" = ["E501"]
+"src/cnmc_logistica/consultas.py" = ["E501"]
+"src/cnmc_logistica/api.py" = ["E501", "B008", "UP046"]
+"tests/test_api.py" = ["E501"]

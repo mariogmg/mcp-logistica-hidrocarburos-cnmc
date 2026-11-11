@@ -94,7 +94,10 @@ def abrir_solo_lectura(ruta: Path) -> sqlite3.Connection:
     return conn
 
 
-def _limite(limite: int) -> int:
+def _limite(limite: int | None) -> int | None:
+    """Tope de filas. None = sin tope (lo usa la API, que pagina por su cuenta)."""
+    if limite is None:
+        return None
     return max(1, min(int(limite), LIMITE_MAXIMO))
 
 
@@ -967,3 +970,158 @@ def consulta_sql(conn: sqlite3.Connection, sql: str, limite: int = 200) -> dict[
         "truncado": len(filas) > tope,
         "limite": tope,
     }
+
+
+# --- consultas que solo usa la API REST ---------------------------------------------------
+
+
+def operador(conn: sqlite3.Connection, codigo: str) -> dict[str, Any]:
+    """Un operador: nombre vigente, nombres anteriores y sus instalaciones."""
+    todos = listar_operadores(conn, solo_con_instalaciones=False)["operadores"]
+    encontrado = next((o for o in todos if _plano(o["codigo"]) == _plano(codigo)), None)
+    if encontrado is None:
+        raise NoEncontrado(f"No hay ningún operador con el código «{codigo}».")
+    instalaciones = listar_instalaciones(conn, operador=encontrado["codigo"], limite=None)
+    return {**encontrado, "lista_instalaciones": instalaciones["instalaciones"]}
+
+
+def detalle(conn: sqlite3.Connection, id_tanque_instalacion: int) -> dict[str, Any]:
+    """Un detalle (un producto en una instalación) con todo lo que cuelga de él."""
+    fila = consultar(
+        conn,
+        "SELECT id_tanque FROM detalles_vigentes WHERE id_tanque_instalacion = ?",
+        (id_tanque_instalacion,),
+    )
+    if not fila:
+        raise NoEncontrado(
+            f"No hay ningún detalle vigente con id_tanque_instalacion = {id_tanque_instalacion}."
+        )
+    ficha = ver_instalacion(conn, id_tanque=fila[0]["id_tanque"])
+    propio = next(
+        d for d in ficha["detalles"] if d["id_tanque_instalacion"] == id_tanque_instalacion
+    )
+    return {**propio, "instalacion_ficha": ficha["instalacion"]}
+
+
+def precios(
+    conn: sqlite3.Connection,
+    categoria: str | None = None,
+    operador: str | None = None,
+    producto: str | None = None,
+    comunidad: str | None = None,
+    tipo_instalacion: str | None = None,
+    tipo_precio: str | None = None,
+    fuente: str | None = None,
+    historico: bool = False,
+) -> list[dict]:
+    """Precios con filtros. Vigentes por defecto; con `historico`, todas las versiones.
+
+    Los precios de PDF comunes a varios detalles salen una vez, con `aplica_a`.
+    En modo histórico cada fila lleva primera_vez_visto, ultima_vez_visto y vigente.
+    """
+    detalles = filtrar_detalles(conn, operador, tipo_instalacion, comunidad, producto)
+    filas = precios_con_contexto(conn, detalles)
+    if historico:
+        ultima = consultar(conn, "SELECT MAX(fecha) AS f FROM ejecuciones")[0]["f"]
+        vistos: dict[tuple, tuple[str, str]] = {}
+        for p in consultar(conn, "SELECT * FROM precios ORDER BY id"):
+            llave = (p["id_tanque_instalacion"], p["seccion"], p["etiqueta"], p["subetiqueta"],
+                     p["tipo_valor"], p["valor"], p["fecha_precio"], p["texto"])  # fmt: skip
+            vistos[llave] = (p["primera_vez_visto"], p["ultima_vez_visto"])
+        por_detalle = {d["id_tanque_instalacion"]: d for d in detalles}
+        vigentes = set()
+        for p in filas:
+            if p["fuente"] == "html":
+                llave = (p["id_tanque_instalacion"], p["seccion"], p["etiqueta"], p["subetiqueta"],
+                         p["tipo_valor"], p["valor"], p["fecha_precio"], p["texto"])  # fmt: skip
+                vigentes.add(llave)
+                p["primera_vez_visto"], p["ultima_vez_visto"] = vistos.get(llave, (None, None))
+            else:
+                p["primera_vez_visto"], p["ultima_vez_visto"] = None, ultima
+            p["vigente"] = True
+        for p in consultar(
+            conn, "SELECT * FROM precios WHERE ultima_vez_visto < ? ORDER BY id", (ultima,)
+        ):
+            d = por_detalle.get(p["id_tanque_instalacion"])
+            if d is None:
+                continue
+            filas.append(
+                {
+                    "fuente": "html", "pagina_pdf": None, "resuelto_en": None,
+                    "id_tanque_instalacion": p["id_tanque_instalacion"],
+                    "id_tanque": d["id_tanque"], "instalacion": d["instalacion"],
+                    "tipo_instalacion": d["tipo"],
+                    "comunidad": d["comunidad_nombre"] or d["comunidad"],
+                    "operador": d["operador"], "operador_nombre": d["operador_nombre"],
+                    "productos": d["productos_texto"],
+                    **{k: p[k] for k in ("seccion", "etiqueta", "subetiqueta", "categoria_servicio",
+                                         *INDICADORES, "tipo_precio", "tipo_valor", "valor",
+                                         "unidad", "fecha_precio", "anio_tabla", "observacion",
+                                         "texto", "documentos", "primera_vez_visto",
+                                         "ultima_vez_visto")},
+                    "vigente": False,
+                }
+            )  # fmt: skip
+    salida = []
+    quiere = {"web": "html"}.get(fuente or "", fuente)
+    for p in filas:
+        if categoria and _plano(categoria) != _plano(p["categoria_servicio"]):
+            continue
+        if tipo_precio and p["tipo_precio"] != tipo_precio:
+            continue
+        if quiere and p["fuente"] != quiere:
+            continue
+        salida.append(p)
+    return agrupar_pdf(salida, False)
+
+
+def condiciones(
+    conn: sqlite3.Connection,
+    operador: str | None = None,
+    comunidad: str | None = None,
+    producto: str | None = None,
+    etiqueta: str | None = None,
+    fuente: str | None = None,
+) -> list[dict]:
+    """Condiciones vigentes: las de las páginas (mermas, plazos…) y las de los PDF."""
+    detalles = {d["id_tanque_instalacion"]: d
+                for d in filtrar_detalles(conn, operador, None, comunidad, producto)}  # fmt: skip
+    quiere = {"web": "html"}.get(fuente or "", fuente)
+    salida: list[dict] = []
+    if quiere in (None, "html"):
+        for c in consultar(conn, "SELECT * FROM condiciones_vigentes ORDER BY id"):
+            d = detalles.get(c["id_tanque_instalacion"])
+            if d is None or not _contiene(c["etiqueta"], etiqueta):
+                continue
+            salida.append(
+                {"fuente": "html", "documento": None,
+                 "id_tanque_instalacion": c["id_tanque_instalacion"], "id_tanque": d["id_tanque"],
+                 "instalacion": d["instalacion"], "operador": d["operador"],
+                 "productos": d["productos_texto"], "etiqueta": c["etiqueta"],
+                 "subetiqueta": c["subetiqueta"], "tipo_valor": c["tipo_valor"],
+                 "valor": c["valor"], "unidad": c["unidad"], "texto": c["texto"],
+                 "aplica_a": None}
+            )  # fmt: skip
+    if quiere in (None, "pdf"):
+        enlazan: dict[str, set[int]] = {}
+        for e in consultar(
+            conn, "SELECT documento, id_tanque_instalacion FROM enlaces_documento_vigentes"
+        ):
+            if e["id_tanque_instalacion"] in detalles:
+                enlazan.setdefault(e["documento"], set()).add(e["id_tanque_instalacion"])
+        for c in consultar(conn, "SELECT * FROM condiciones_pdf_vigentes ORDER BY id"):
+            ids = enlazan.get(c["documento"], set())
+            if not ids or not _contiene(c["texto"], etiqueta):
+                continue
+            casos = [detalles[i] for i in sorted(ids)]
+            salida.append(
+                {"fuente": "pdf", "documento": c["documento"], "id_tanque_instalacion": None,
+                 "id_tanque": None, "instalacion": None,
+                 "operador": casos[0]["operador"] if len({x["operador"] for x in casos}) == 1 else None,
+                 "productos": None, "etiqueta": "Condición del PDF", "subetiqueta": None,
+                 "tipo_valor": "unico", "valor": c["valor"], "unidad": c["unidad"],
+                 "texto": c["texto"],
+                 "aplica_a": {"detalles": len(casos),
+                              "instalaciones": len({x["id_tanque"] for x in casos})}}
+            )  # fmt: skip
+    return salida

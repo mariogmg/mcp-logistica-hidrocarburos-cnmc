@@ -8,7 +8,6 @@ servidor solo lee la base de datos.
 from __future__ import annotations
 
 import argparse
-import os
 import sys
 from collections.abc import Callable, Sequence
 from datetime import date
@@ -137,12 +136,19 @@ def _reconstruir(args: argparse.Namespace) -> int:
 
 def _servir(args: argparse.Namespace) -> int:
     # Único import del servidor: no arrastra descargador ni parsers.
+    from .actualizacion import actualizar_si_procede, elegir_base
     from .servidor import servir
 
-    rutas = Rutas(args.raiz)
-    ruta_bd = Path(os.environ.get("CNMC_BD") or rutas.base_datos)
+    ruta_bd, gestionada = elegir_base(args.raiz)
+    if gestionada:
+        # Base del usuario (instalación con uvx/pip): se trae o se pone al día sola.
+        actualizar_si_procede(ruta_bd)
     if not ruta_bd.exists():
-        print(f"No existe {ruta_bd}: ejecuta antes «actualizar».", file=sys.stderr)
+        print(
+            f"No hay base de datos en {ruta_bd}. Hace falta conexión en el primer arranque "
+            "para descargarla (o indica una con CNMC_BD).",
+            file=sys.stderr,
+        )
         return SALIDA_USO
     servir(ruta_bd, args.transporte, args.host, args.puerto)
     return SALIDA_OK
@@ -257,6 +263,12 @@ def crear_parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     args = crear_parser().parse_args(argv)
     return args.funcion(args)
+
+
+def main_mcp(argv: Sequence[str] | None = None) -> int:
+    """Punto de entrada con el nombre del paquete: sin argumentos, arranca el MCP por stdio."""
+    argumentos = list(sys.argv[1:] if argv is None else argv)
+    return main(argumentos or ["servir"])
 
 
 if __name__ == "__main__":

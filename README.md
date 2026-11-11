@@ -11,6 +11,55 @@ lenguaje natural a través de un servidor [MCP](https://modelcontextprotocol.io)
 > Este repositorio los copia y los estructura tal cual, sin garantía de exactitud ni de
 > actualización. Para cualquier decisión, consulte la fuente original.
 
+<!-- mcp-name: io.github.mariogmg/mcp-logistica-hidrocarburos-cnmc -->
+
+## Cómo usarlo
+
+### En tu ordenador
+
+Con [uv](https://docs.astral.sh/uv/) instalado, una sola orden arranca el servidor MCP:
+
+```bash
+uvx mcp-logistica-hidrocarburos-cnmc
+```
+
+No hay que clonar nada ni descargar datos a mano: en el primer arranque el servidor baja la
+base de la última Release de datos, comprueba su sha256 y su integridad, y a partir de ahí
+mira una vez al día si hay una más reciente (`CNMC_SIN_ACTUALIZAR=1` lo desactiva). Nunca hace
+scraping: solo lee esa base.
+
+Para **Claude Desktop**, añade esto a su fichero de configuración y reinícialo:
+
+```json
+{
+  "mcpServers": {
+    "logistica-hidrocarburos-cnmc": {
+      "command": "uvx",
+      "args": ["mcp-logistica-hidrocarburos-cnmc"]
+    }
+  }
+}
+```
+
+El mismo paquete arranca también la **API REST** en local, con su documentación interactiva en
+<http://localhost:8000/docs>:
+
+```bash
+uvx mcp-logistica-hidrocarburos-cnmc servir --transporte http
+curl "http://localhost:8000/api/v1/precios?categoria=almacenamiento&limit=5"
+```
+
+### Solo los datos
+
+Cada mes se publica una Release
+[`datos-AAAA-MM-DD`](https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc/releases)
+con la base SQLite completa (`cnmc_logistica.db` y su sha256), las tablas vigentes en CSV y en
+Parquet (un fichero por tabla, en `csv.zip` y `parquet.zip`) y `DICCIONARIO.md`, que explica
+cada tabla, cada columna y sus unidades. No hace falta instalar nada del proyecto para usarlos.
+
+Desplegarlo en un servidor propio (MCP + API detrás de Caddy con HTTPS) es opcional y está
+documentado en [despliegue/LEEME.md](despliegue/LEEME.md); no hay ninguna instancia pública.
+
 ## Qué es
 
 La CNMC publica las condiciones de acceso a las instalaciones de almacenamiento y transporte de
@@ -71,7 +120,7 @@ Requiere [uv](https://docs.astral.sh/uv/) (instala Python 3.12 por su cuenta).
 ```bash
 git clone https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc
 cd mcp-logistica-hidrocarburos-cnmc
-uv sync
+uv sync --extra etl      # las dependencias del ETL solo hacen falta para generar la base
 uv run cnmc-logistica info
 ```
 
@@ -93,7 +142,9 @@ reinicia. Más detalles, incluido el transporte HTTP, en [ejemplos/LEEME.md](eje
 | `descubrir` | Mapas + buscador → `config/inventario.json`, con control cruzado | Sí |
 | `actualizar` | Descarga todo el inventario a `raw/` y carga la foto en la base | Sí |
 | `reconstruir` | Crea una base nueva a partir de todas las fotos de `raw/` | No |
-| `servir` | Arranca el servidor MCP (`--transporte stdio` o `streamable-http`) | No |
+| `exportar` | Exporta la base a CSV, Parquet y diccionario (lo que lleva la Release de datos) | No |
+| `descargar-releases` | Baja a `raw/` todo el crudo publicado en las Releases | Solo GitHub |
+| `servir` | Arranca el MCP (`--transporte stdio`) o MCP + API REST (`--transporte http`) | Solo GitHub (datos) |
 | `info` | Versión, fotos disponibles y filas de cada tabla | No |
 
 ```bash
@@ -275,7 +326,7 @@ así todas las actualizaciones reales y añade la reconstrucción como un evento
 ## Desarrollo
 
 ```bash
-uv sync
+uv sync --extra etl --extra ocr --extra exportar   # todo: ETL, OCR y exportación
 uv run ruff check . && uv run ruff format --check .
 uv run pytest
 ```

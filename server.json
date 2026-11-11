@@ -1,0 +1,20 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "name": "io.github.mariogmg/mcp-logistica-hidrocarburos-cnmc",
+  "description": "Logística de productos petrolíferos de la CNMC (España): precios, rutas y capacidades.",
+  "version": "0.3.0",
+  "repository": {
+    "url": "https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "mcp-logistica-hidrocarburos-cnmc",
+      "version": "0.3.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}

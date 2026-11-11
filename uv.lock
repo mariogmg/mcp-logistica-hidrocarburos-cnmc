@@ -641,19 +641,21 @@ wheels = [
 
 [[package]]
 name = "mcp-logistica-hidrocarburos-cnmc"
-version = "0.2.0"
+version = "0.3.0"
 source = { editable = "." }
 dependencies = [
-    { name = "beautifulsoup4" },
     { name = "fastapi" },
     { name = "httpx" },
-    { name = "lxml" },
     { name = "mcp" },
-    { name = "pdfplumber" },
-    { name = "pyyaml" },
 ]
 
 [package.optional-dependencies]
+etl = [
+    { name = "beautifulsoup4" },
+    { name = "lxml" },
+    { name = "pdfplumber" },
+    { name = "pyyaml" },
+]
 exportar = [
     { name = "pyarrow" },
 ]
@@ -669,17 +671,17 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "beautifulsoup4", specifier = ">=4.12" },
+    { name = "beautifulsoup4", marker = "extra == 'etl'", specifier = ">=4.12" },
     { name = "fastapi", specifier = ">=0.115" },
     { name = "httpx", specifier = ">=0.27" },
-    { name = "lxml", specifier = ">=5.2" },
+    { name = "lxml", marker = "extra == 'etl'", specifier = ">=5.2" },
     { name = "mcp", specifier = "==2.3.0" },
-    { name = "pdfplumber", specifier = ">=0.11" },
+    { name = "pdfplumber", marker = "extra == 'etl'", specifier = ">=0.11" },
     { name = "pyarrow", marker = "extra == 'exportar'", specifier = ">=17" },
     { name = "pytesseract", marker = "extra == 'ocr'", specifier = ">=0.3.10" },
-    { name = "pyyaml", specifier = ">=6.0" },
+    { name = "pyyaml", marker = "extra == 'etl'", specifier = ">=6.0" },
 ]
-provides-extras = ["ocr", "exportar"]
+provides-extras = ["etl", "ocr", "exportar"]
 
 [package.metadata.requires-dev]
 dev = [

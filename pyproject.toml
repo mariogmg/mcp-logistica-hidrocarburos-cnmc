@@ -1,27 +1,39 @@
 [project]
 name = "mcp-logistica-hidrocarburos-cnmc"
-version = "0.2.0"
+version = "0.3.0"
 description = "Histórico de la logística de productos petrolíferos publicada por la CNMC, consultable mediante un servidor MCP de solo lectura. Proyecto no oficial."
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.12"
 dependencies = [
-    "httpx>=0.27",
-    "beautifulsoup4>=4.12",
-    "lxml>=5.2",
-    "pdfplumber>=0.11",
-    "pyyaml>=6.0",
+    # Lo que necesita quien solo consulta los datos (MCP y API REST).
     # El SDK MCP v2 cambió los imports (MCPServer, Client): se fija la versión comprobada.
     "mcp==2.3.0",
     "fastapi>=0.115",
+    "httpx>=0.27",
+]
+keywords = ["mcp", "cnmc", "hidrocarburos", "logistica", "open-data"]
+classifiers = [
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: Spanish",
+    "Topic :: Scientific/Engineering :: Information Analysis",
 ]
 
+[project.urls]
+Repositorio = "https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc"
+Datos = "https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc/releases"
+
 [project.optional-dependencies]
+# El ETL (descarga del portal y lectura de páginas y PDF) solo hace falta para generar la base.
+etl = ["beautifulsoup4>=4.12", "lxml>=5.2", "pdfplumber>=0.11", "pyyaml>=6.0"]
 ocr = ["pytesseract>=0.3.10"]
 exportar = ["pyarrow>=17"]  # Parquet de la Release de datos
 
 [project.scripts]
 cnmc-logistica = "cnmc_logistica.cli:main"
+# Con el nombre del paquete, para `uvx mcp-logistica-hidrocarburos-cnmc`: sin argumentos, MCP por stdio.
+mcp-logistica-hidrocarburos-cnmc = "cnmc_logistica.cli:main_mcp"
 
 [dependency-groups]
 dev = ["pytest>=8", "ruff>=0.6"]
@@ -32,6 +44,10 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/cnmc_logistica"]
+
+[tool.hatch.build.targets.sdist]
+# El paquete publicado lleva solo el código: ni la base, ni las fixtures, ni el despliegue.
+include = ["src", "README.md", "LICENSE", "pyproject.toml"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -56,3 +72,5 @@ ignore = ["RUF001", "RUF002", "RUF003"]  # textos en español: tildes y símbolo
 "src/cnmc_logistica/api.py" = ["E501", "B008", "UP046"]
 "tests/test_api.py" = ["E501"]
 "tests/test_exportar.py" = ["E501"]
+"tests/test_actualizacion.py" = ["E501"]
+"src/cnmc_logistica/actualizacion.py" = ["E501"]

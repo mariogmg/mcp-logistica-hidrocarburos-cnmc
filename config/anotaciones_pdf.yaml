@@ -1,0 +1,15 @@
+# Anotaciones propias sobre un PDF: cosas que el documento NO dice y que se
+# deducen de otros datos. Se guardan en notas_pdf con metodo = 'inferido' y el
+# texto empieza por «[INFERIDO]», para que nadie las confunda con un dato publicado.
+# Nunca rellenan un valor: la columna correspondiente sigue nula.
+#
+# `titulo_contiene`: texto del título del PDF (no su número, que puede cambiar).
+
+anotaciones:
+  - titulo_contiene: SERVICIOS DE BÚNKER
+    texto: >-
+      El PDF no indica la unidad de sus precios y por eso se guarda nula. Probablemente
+      es €/Tm. Indicios: (1) la nota «Facturación mínima 500 toneladas» del propio PDF;
+      (2) las mermas de los detalles de búnker se expresan «en peso»; (3) el detalle de
+      Algeciras/San Roque publica «Puesta a bordo: 2,0128 €/Tm mediante tubería», la
+      misma cifra que «Camión ajeno 2,0128» de este PDF. Ninguno lo confirma.

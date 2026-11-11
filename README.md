@@ -246,14 +246,17 @@ coordenadas, y cada valor guarda página, posición y texto original para poder 
   [Release](https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc/releases). Si hubo
   errores, el trabajo queda en rojo después de conservar todo lo descargado.
 
-Para reconstruir la base desde cero se descargan los crudos de las Releases:
+Para reconstruir la base desde cero en cualquier máquina bastan dos órdenes:
 
 ```bash
-gh release list --json tagName --jq '.[].tagName | select(startswith("raw-"))' |
-  while read -r etiqueta; do gh release download "$etiqueta" --pattern "$etiqueta.tar.gz" --dir /tmp/raw; done
-mkdir -p raw && for f in /tmp/raw/*.tar.gz; do tar -xzf "$f" -C raw; done
+uv run cnmc-logistica descargar-releases     # baja a raw/ todo el crudo publicado
 uv run cnmc-logistica reconstruir --reemplazar
 ```
+
+`descargar-releases` baja todos los ficheros de todas las Releases `raw-*`, comprueba su
+sha256, deja cada foto en `raw/AAAA-MM-DD/` (las descargas adicionales de un mismo día, en
+`_ejecuciones/N/`) y une sus `ejecuciones.jsonl` sin duplicar líneas. `reconstruir` recupera
+así todas las actualizaciones reales y añade la reconstrucción como un evento propio.
 
 ## Limitaciones conocidas
 

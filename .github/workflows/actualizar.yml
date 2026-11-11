@@ -55,6 +55,8 @@ jobs:
           FECHA: ${{ steps.foto.outputs.fecha }}
         run: |
           test -d "raw/$FECHA" || { echo "No hay crudo que subir"; exit 0; }
+          # El tarball lleva dentro ejecuciones.jsonl (lo escribe «actualizar»): con
+          # «descargar-releases» + «reconstruir» se recupera el historial completo.
           tar -czf "raw-$FECHA.tar.gz" -C raw "$FECHA"
           sha256sum "raw-$FECHA.tar.gz" > "raw-$FECHA.tar.gz.sha256"
           if gh release view "raw-$FECHA" > /dev/null 2>&1; then

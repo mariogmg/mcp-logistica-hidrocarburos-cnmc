@@ -20,3 +20,6 @@ build/
 .DS_Store
 .vscode/
 .idea/
+
+# Muestras para verificación manual (no se versionan)
+verificacion/

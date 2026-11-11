@@ -17,7 +17,7 @@ from pathlib import Path
 from . import __version__
 from .almacen import AlmacenCrudo
 from .avisos import Aviso
-from .config import USER_AGENT, Rutas
+from .config import REPO, USER_AGENT, Rutas
 
 # Códigos de salida: 0 correcto, 1 terminó pero con errores registrados
 # (el workflow se marca en rojo), 2 uso incorrecto u orden no disponible.
@@ -148,6 +148,24 @@ def _servir(args: argparse.Namespace) -> int:
     return SALIDA_OK
 
 
+def _descargar_releases(args: argparse.Namespace) -> int:
+    from .releases import ErrorReleases, descargar_releases
+
+    rutas = Rutas(args.raiz)
+    try:
+        r = descargar_releases(rutas.raw, args.repo)
+    except ErrorReleases as exc:
+        print(f"ERROR {exc}", file=sys.stderr)
+        return SALIDA_CON_ERRORES
+    print(
+        f"{len(r.fotos_nuevas)} fotos nuevas, {len(r.fotos_ya_presentes)} ya presentes, "
+        f"{len(r.descargas_adicionales)} descargas adicionales, "
+        f"{r.lineas_de_registro} ejecuciones añadidas al registro "
+        f"({r.ficheros_descargados} ficheros descargados) → {rutas.raw}"
+    )
+    return SALIDA_OK
+
+
 def _info(args: argparse.Namespace) -> int:
     rutas = Rutas(args.raiz)
     print(f"versión:     {__version__}")
@@ -182,6 +200,7 @@ ORDENES: dict[str, tuple[str, Callable[[argparse.Namespace], int]]] = {
     "descubrir": ("Mapas + buscador → config/inventario.json", _descubrir),
     "actualizar": ("Descarga todo el inventario a raw/ y carga la base", _actualizar),
     "reconstruir": ("Crea una base nueva a partir de raw/", _reconstruir),
+    "descargar-releases": ("Baja a raw/ el crudo publicado en las Releases", _descargar_releases),
     "servir": ("Arranca el servidor MCP (solo lectura)", _servir),
     "info": ("Muestra versión, rutas y estado local", _info),
 }
@@ -203,6 +222,8 @@ def crear_parser() -> argparse.ArgumentParser:
             )
             orden.add_argument("--host", default="127.0.0.1")
             orden.add_argument("--puerto", type=int, default=8000)
+        if nombre == "descargar-releases":
+            orden.add_argument("--repo", default=REPO, help="Repositorio (usuario/nombre)")
         if nombre == "reconstruir":
             orden.add_argument("--salida", type=Path, help="Fichero de la base nueva")
             orden.add_argument(

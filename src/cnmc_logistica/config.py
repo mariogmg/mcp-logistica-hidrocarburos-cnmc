@@ -12,7 +12,8 @@ from pathlib import Path
 from . import __version__
 
 NOMBRE = "mcp-logistica-hidrocarburos-cnmc"
-URL_REPO = "https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc"
+REPO = "mariogmg/mcp-logistica-hidrocarburos-cnmc"
+URL_REPO = f"https://github.com/{REPO}"
 # Identifica al proyecto y da una vía de contacto (el repo) sin datos personales.
 USER_AGENT = f"{NOMBRE}/{__version__} (+{URL_REPO})"
 

@@ -6,7 +6,9 @@ from cnmc_logistica.config import USER_AGENT
 
 
 def test_ordenes_previstas():
-    assert set(ORDENES) == {"descubrir", "actualizar", "reconstruir", "servir", "info"}
+    assert set(ORDENES) == {
+        "descubrir", "actualizar", "reconstruir", "descargar-releases", "servir", "info",
+    }  # fmt: skip
 
 
 def test_user_agent_sin_datos_personales():

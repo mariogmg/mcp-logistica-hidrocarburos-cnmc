@@ -281,6 +281,14 @@ def _extraer_documentos(
             docs.extracciones[entrada.clave] = ext
             usadas, parser = ext.usadas, ext.parser
             _filas_de_extraccion(entrada.clave, ext, doc.anio, docs, avisos)
+            titulo = " ".join(doc.lineas[:3]).upper()
+            for n, (marca, texto) in enumerate(cfg.anotaciones_pdf, start=1):
+                if marca.upper() in titulo:
+                    # Deducción propia, no dato del PDF: página 0 y método «inferido».
+                    docs.filas["notas_pdf"].append(
+                        {"documento": entrada.clave, "pagina": 0, "orden": n,
+                         "texto": f"[INFERIDO] {texto}", "metodo": "inferido"}
+                    )  # fmt: skip
         paginas = leer_paginas(datos)
         por_ocr = [str(pag.numero) for pag in paginas if pag.metodo == "ocr"]
         if por_ocr:

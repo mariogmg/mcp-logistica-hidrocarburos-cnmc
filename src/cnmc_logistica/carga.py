@@ -180,7 +180,9 @@ def leer_registro(almacen: AlmacenCrudo) -> list[dict]:
     if not ruta.exists():
         return []
     with ruta.open(encoding="utf-8") as fh:
-        return [json.loads(linea) for linea in fh if linea.strip()]
+        registro = [json.loads(linea) for linea in fh if linea.strip()]
+    # Al unir registros de varias descargas las líneas pueden no estar en orden.
+    return sorted(registro, key=lambda r: r["registrada_en"])
 
 
 def reconstruir(rutas: Rutas, destino: Path) -> list[Resumen]:

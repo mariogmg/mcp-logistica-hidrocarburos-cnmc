@@ -109,6 +109,13 @@ class Indicadores:
         return {i: int(i in activos) for i in INDICADORES}, desconocidos
 
 
+def _anotaciones(ruta: Path) -> tuple[tuple[str, str], ...]:
+    if not ruta.exists():
+        return ()
+    datos = (yaml.safe_load(ruta.read_text(encoding="utf-8")) or {}).get("anotaciones") or []
+    return tuple((a["titulo_contiene"], a["texto"]) for a in datos)
+
+
 class Equivalencias:
     """Instalación del PDF de capacidades → idTanque (tabla curada a mano)."""
 
@@ -138,6 +145,7 @@ class Configuracion:
     equivalencias: Equivalencias
     descartes: Descartes
     alias_pdf: dict[str, str]  # nombre abreviado en un PDF → nombre completo
+    anotaciones_pdf: tuple[tuple[str, str], ...] = ()  # (título contiene, texto inferido)
 
     @classmethod
     def de_directorio(cls, config: Path) -> Configuracion:
@@ -150,4 +158,5 @@ class Configuracion:
                 yaml.safe_load((config / "alias_instalaciones_pdf.yaml").read_text("utf-8")) or {}
             ).get("alias")
             or {},
+            _anotaciones(config / "anotaciones_pdf.yaml"),
         )

@@ -71,6 +71,21 @@ def _contiene(campo: Any, buscado: str | None) -> bool:
     return not buscado or _plano(buscado) in _plano(campo)
 
 
+def _coincide(buscado: str | None, codigo: Any, *nombres: Any) -> bool:
+    """Filtro por código o por nombre.
+
+    Un texto corto (hasta 4 letras) solo puede ser un código y debe coincidir
+    entero: así «CAN» es Canarias y no también Cantabria. Un texto más largo
+    coincide con el código exacto o con parte del nombre.
+    """
+    if not buscado:
+        return True
+    b = _plano(buscado)
+    if b == _plano(codigo) or any(b == _plano(n) for n in nombres):
+        return True
+    return len(b) > 4 and any(b in _plano(n) for n in nombres)
+
+
 def _autorizador(accion: int, *_: Any) -> int:
     return sqlite3.SQLITE_OK if accion in _ACCIONES_PERMITIDAS else sqlite3.SQLITE_DENY
 
@@ -134,18 +149,11 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
     ) -> list[dict]:
         salida = []
         for d in detalles_vigentes():
-            if operador and not (
-                _plano(operador) == _plano(d["operador"])
-                or _contiene(d["operador_nombre"], operador)
-                or _contiene(d["titular"], operador)
-            ):
+            if not _coincide(operador, d["operador"], d["operador_nombre"], d["titular"]):
                 continue
             if tipo and _plano(tipo) != _plano(d["tipo"]):
                 continue
-            if comunidad and not (
-                _plano(comunidad) == _plano(d["comunidad"])
-                or _contiene(d["comunidad_nombre"], comunidad)
-            ):
+            if not _coincide(comunidad, d["comunidad"], d["comunidad_nombre"]):
                 continue
             if producto and not _contiene(d["productos_texto"], producto):
                 continue
@@ -282,10 +290,7 @@ def crear_servidor(ruta_bd: Path) -> MCPServer:
                     continue
                 if tipo and _plano(tipo) != _plano(i["tipo"]):
                     continue
-                if comunidad and not (
-                    _plano(comunidad) == _plano(i["comunidad"])
-                    or _contiene(i["comunidad_nombre"], comunidad)
-                ):
+                if not _coincide(comunidad, i["comunidad"], i["comunidad_nombre"]):
                     continue
                 agrupadas[i["id_tanque"]] = {
                     "id_tanque": i["id_tanque"],

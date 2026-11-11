@@ -307,3 +307,17 @@ def test_app_http_exige_token_solo_si_esta_configurado(ruta_bd, monkeypatch):
     monkeypatch.setenv("CNMC_MCP_TOKEN", "secreto")
     monkeypatch.setenv("CNMC_MCP_HOSTS_PERMITIDOS", "mcp.ejemplo.org, localhost:8000")
     assert isinstance(app_http(ruta_bd, "0.0.0.0", 8000), _SoloConToken)
+
+
+def test_un_codigo_corto_no_casa_por_parecido():
+    from cnmc_logistica.servidor import _coincide
+
+    # «CAN» es Canarias; no debe arrastrar Cantabria (código CANT).
+    assert _coincide("CAN", "CAN", "CANARIAS")
+    assert not _coincide("CAN", "CANT", "CANTABRIA")
+    assert _coincide("canarias", "CAN", "CANARIAS")
+    assert _coincide("Castilla", "LEO", "CASTILLA Y LEÓN")
+    assert _coincide("tepsa", "TEPSA", "TEPSA IBERIA, S.L.U.")
+    assert _coincide("exolum aviation", "CLHAV", "EXOLUM AVIATION, S.A.")
+    assert not _coincide("CLH", "CLHAV", "EXOLUM AVIATION, S.A.")
+    assert _coincide(None, "X", "Y")

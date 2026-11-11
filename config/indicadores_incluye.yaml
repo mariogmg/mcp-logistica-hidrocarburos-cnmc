@@ -1,0 +1,132 @@
+# Correspondencia texto de «Incluye:» → indicadores del servicio.
+#
+# Para qué sirve: dos servicios con la misma categoría pueden no ser comparables
+# si uno incluye transporte y el otro no. De la lista «Incluye:» de cada servicio
+# principal se derivan cuatro indicadores, y `comparar_servicio` solo compara
+# servicios con la misma categoría y los mismos indicadores.
+#
+# Reglas (las mismas que en categorias_servicio.yaml):
+# - Clave: el texto tal como aparece en el portal (se ignoran mayúsculas y
+#   espacios repetidos; las tildes sí cuentan). No hay expresiones regulares.
+# - Lista vacía = texto revisado que no activa ningún indicador.
+# - Un texto que no esté aquí no activa nada y genera el aviso
+#   «incluye_sin_clasificar» en `ejecuciones`.
+#
+# Criterios:
+# - incluye_transporte: llevar el PRODUCTO a otra instalación (no el aditivo).
+# - incluye_almacenamiento: almacenar, custodiar o arrendar capacidad.
+# - incluye_expedicion: salida del producto de la instalación (camión, buque,
+#   tubería, transferencia o carga en unidad repostadora).
+# - incluye_puesta_a_bordo: suministro a la aeronave.
+
+indicadores: [incluye_transporte, incluye_almacenamiento, incluye_expedicion, incluye_puesta_a_bordo]
+
+textos:
+  # --- transporte del producto ---
+  Transporte: [incluye_transporte]
+  Transporte hasta instalación aeroportuaria de destino: [incluye_transporte]
+  Transporte por camión cisterna hasta instalación aeroportuaria de destino: [incluye_transporte]
+  # El aditivo no es el producto: no cuenta como transporte.
+  Transporte y entrega del aditivo antiestático: []
+  Transporte y entrega del aditivo antiestático en la instalación de destino: []
+
+  # --- almacenamiento ---
+  Almacenamiento: [incluye_almacenamiento]
+  Almacenamiento en régimen indiferenciado: [incluye_almacenamiento]
+  Almacenamiento gasolina BOB: [incluye_almacenamiento]
+  Almacenamiento operativo: [incluye_almacenamiento]
+  Almacenamiento operativo (máximo 15 días): [incluye_almacenamiento]
+  Almacenamiento operativo (máximo 6 días): [incluye_almacenamiento]
+  Almacenamiento operativo básico: [incluye_almacenamiento]
+  Almacenamiento operativo básico (15 días) y manipulación: [incluye_almacenamiento]
+  Almacenamiento y conservación de los productos: [incluye_almacenamiento]
+  Almacenamiento y custodia: [incluye_almacenamiento]
+  Arrendamiento capacidad de almacenamiento en instalación portuaria: [incluye_almacenamiento]
+  Arrendamiento de capacidad de almacenamiento: [incluye_almacenamiento]
+  Custodia: [incluye_almacenamiento]
+  Guarda y custodia: [incluye_almacenamiento]
+  Guarda y custodia de productos: [incluye_almacenamiento]
+  Guarda, custodia y control de stocks: [incluye_almacenamiento]
+
+  # --- expedición ---
+  Expedición: [incluye_expedicion]
+  Expedición de producto: [incluye_expedicion]
+  Expedición de productos: [incluye_expedicion]
+  Expedición en la misma instalación de entrega: [incluye_expedicion]
+  Expedición mezclas por camión cisterna: [incluye_expedicion]
+  Expedición por B/T: [incluye_expedicion]
+  Expedición por buque: [incluye_expedicion]
+  Expedición por buque tanque: [incluye_expedicion]
+  Expedición por camión cisterna: [incluye_expedicion]
+  Expedición por transferencia: [incluye_expedicion]
+  Expedición por tubería: [incluye_expedicion]
+  Manipulación y expedición: [incluye_expedicion]
+  Reexpedición mediante B/T: [incluye_expedicion]
+  Reexpedición mediante CC: [incluye_expedicion]
+  Retirada en la misma instalación de entrega: [incluye_expedicion]
+  Carga a CC/CC: [incluye_expedicion]
+  Carga de CC/CC: [incluye_expedicion]
+  Carga en camión-cisterna: [incluye_expedicion]
+  Carga en unidad repostadora: [incluye_expedicion]
+  Puesta a disposición: [incluye_expedicion]
+
+  # --- puesta a bordo ---
+  Puesta a bordo: [incluye_puesta_a_bordo]
+  Servicio de puesta a bordo: [incluye_puesta_a_bordo]
+
+  # --- DUDOSOS: revisados y dejados sin indicador a propósito ---
+  # No queda claro si «suministro» es entrega en la instalación o a la aeronave.
+  Suministro: []
+  Entrega o suministro: []
+  # Cambio de titularidad dentro de la instalación: no sale producto.
+  Transferencias: []
+
+  # --- sin indicador: recepción ---
+  Aceptación y recepción: []
+  Aceptación y recepción de producto: []
+  Aceptación y recepción de producto en instalación de TERQUIMSA (Tarragona): []
+  Aceptación y recepción de productos: []
+  Recepción: []
+  Recepción de productos: []
+  Recepción desde B/T: []
+  Recepción desde buque tanque: []
+  Recepción desde buque-tanque: []
+  Recepción en instalación aeroportuaria: []
+  Recepción por B/T: []
+  Recepción por buque tanque: []
+  Recepción por camión cisterna: []
+  Recepción por transferencia: []
+  Recepción por tubería: []
+  Recepción según medio de entrega: []
+  Recepción y descarga de producto a través de BB/TT: []
+  Recepción y descarga de producto a través de BB/TT en instalación portuaria: []
+  Recepción, descarga y manipulación: []
+
+  # --- sin indicador: manipulación, control, mezclas y otros ---
+  Manipulación: []
+  Manipulación, control y aseguramiento de la calidad: []
+  Mezcla y manipulación: []
+  Control cantidad y calidad: []
+  Control de calidad: []
+  Control de calidad y cantidad: []
+  Control de cantidad y calidad: []
+  Control de existencias: []
+  Control de stocks: []
+  Información sobre existencias: []
+  Mantenimiento de cantidad y calidad: []
+  Mantenimiento y control de calidad: []
+  Mantenimiento temperatura (fuelóleos): []
+  Mantenimiento temperatura a 45ºC: []
+  Aditivación HVO: []
+  Blending: []
+  Formulación de mezclas: []
+  Mezcla con GOA hasta el 7% vv: []
+  Mezcla con gasolina en brazo de carga: []
+  Mezcla con gasóleo de automoción: []
+  Mezcla con gasóleo de automoción en brazo de carga: []
+  Administración y gestión aduanera/fiscal: []
+  Pesaje de camiones: []
+  Seguro a terceros: []
+  Tasa de aprovechamiento especial, en su caso: []
+  Tasa de ocupación: []
+  Tasa de ocupación, en su caso: []

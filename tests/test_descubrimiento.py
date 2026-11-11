@@ -3,7 +3,7 @@
 from ayuda import RAIZ, leer
 from cnmc_logistica import portal
 from cnmc_logistica.almacen import AlmacenCrudo, Recurso
-from cnmc_logistica.categorias import SIN_CATEGORIA, Categorizador
+from cnmc_logistica.categorias import SIN_CATEGORIA, Categorizador, Indicadores
 from cnmc_logistica.config import BASE_PORTAL
 from cnmc_logistica.inventario import construir_inventario
 from cnmc_logistica.parsers.buscador import parsear_formulario, parsear_resultados
@@ -106,16 +106,37 @@ def test_etiqueta_desconocida_queda_sin_categoria():
     assert cat.categoria("Servicio inventado") == (SIN_CATEGORIA, False)
 
 
-def test_excepcion_por_operador():
-    cat = Categorizador(
-        {
-            "categorias": {"a": "x", "b": "y"},
-            "etiquetas": {"Servicio": "a"},
-            "por_operador": {"OP": {"Servicio": "b"}},
-        }
+def test_el_tipo_de_instalacion_entra_en_la_categoria():
+    cat = Categorizador.de_fichero(RAIZ / "config" / "categorias_servicio.yaml")
+    assert cat.categoria("Servicios logísticos", "almacenamiento")[0] == "logistica_basica"
+    assert cat.categoria("Servicios logísticos", "aeroportuaria")[0] == "logistica_aeroportuaria"
+    # Las etiquetas específicas no cambian con el tipo.
+    assert cat.categoria("Transferencias", "aeroportuaria")[0] == "transferencias"
+
+
+def test_indicadores_a_partir_de_incluye():
+    ind = Indicadores.de_fichero(RAIZ / "config" / "indicadores_incluye.yaml")
+    flags, desconocidos = ind.de_servicio(
+        ["Aceptación y recepción de productos", "Transporte", "Expedición por camión cisterna"]
     )
-    assert cat.categoria("Servicio", "OP")[0] == "b"
-    assert cat.categoria("Servicio", "OTRO")[0] == "a"
+    assert flags == {
+        "incluye_transporte": 1,
+        "incluye_almacenamiento": 0,
+        "incluye_expedicion": 1,
+        "incluye_puesta_a_bordo": 0,
+    }
+    assert desconocidos == []
+    # Transportar el aditivo no es transportar el producto.
+    assert (
+        ind.de_servicio(["Transporte y entrega del aditivo antiestático"])[0]["incluye_transporte"]
+        == 0
+    )
+
+
+def test_texto_de_incluye_desconocido_se_devuelve_para_avisar():
+    ind = Indicadores.de_fichero(RAIZ / "config" / "indicadores_incluye.yaml")
+    flags, desconocidos = ind.de_servicio(["Teletransporte"])
+    assert sum(flags.values()) == 0 and desconocidos == ["Teletransporte"]
 
 
 # --- inventario y control cruzado ----------------------------------------------

@@ -25,6 +25,22 @@ CONEXIONES = {
 }
 
 
+# Un precio sin número es una «regla» (dice cómo se calcula) si empieza por
+# «Precio…» o contiene una de estas expresiones; si no, es «texto» libre.
+# «IPC» se busca como palabra en mayúsculas para no casar dentro de otra.
+MARCAS_DE_REGLA = ("coste real", "según contrato", "según tarifa")
+_IPC = re.compile(r"\bIPC\b")
+
+
+def es_regla(texto: str) -> bool:
+    plano = texto.casefold()
+    return (
+        plano.startswith("precio")
+        or any(marca in plano for marca in MARCAS_DE_REGLA)
+        or bool(_IPC.search(texto))
+    )
+
+
 class PaginaNoReconocida(Exception):
     """La página no tiene la estructura mínima de un detalle."""
 
@@ -146,9 +162,7 @@ def _clasificar(valores: list[Valor], pdfs: list[str], texto: str) -> str:
         return "numerico"
     if pdfs:
         return "pdf"
-    # «Precio según contrato», «Precios vigentes hasta…»: el portal usa la
-    # propia palabra «Precio» para marcar un precio que es una regla.
-    if texto.casefold().startswith("precio"):
+    if es_regla(texto):
         return "regla"
     return "texto"
 

@@ -172,12 +172,12 @@ def test_disa_sin_subtitulo_y_padre_con_texto_e_hijos():
     assert precio(d, etiqueta, "Gasóleos").valores[0].valor == 0.391
 
 
-def test_decal_unidad_semanal_y_precio_descrito_con_texto():
+def test_decal_unidad_semanal_y_precio_descrito_como_regla():
     d = detalle(79)
     c = precio(d, "Almacenamiento complementario")
     assert {v.unidad for v in c.valores} == {"€/m3 y semana"}
     limpieza = precio(d, "Limpieza de tanques")
-    assert limpieza.tipo_precio == "texto" and "coste real" in limpieza.texto
+    assert limpieza.tipo_precio == "regla" and "coste real" in limpieza.texto
 
 
 def test_cmd_sin_bloque_de_otros_servicios():
@@ -265,3 +265,22 @@ def test_fixtures_son_copia_fiel_del_crudo():
         assert (
             Path(crudo / f"{i}.html").read_bytes() == (FIXTURES / f"detalles/{i}.html").read_bytes()
         )
+
+
+@pytest.mark.parametrize(
+    ("texto", "esperado"),
+    [
+        ("Precio según contrato", True),
+        ("Precios vigentes hasta aprobación tarifas", True),
+        ("Según contrato (€/operación)", True),
+        ("Se repercutirá el coste real incrementado en un 3%", True),
+        ("Revisión anual, máximo IPC", True),
+        ("Posibilidad de contratación", False),
+        ("Servicio adicional no incluido en precio", False),
+        ("Almacenamiento en instalaciones identificadas", False),
+    ],
+)
+def test_regla_frente_a_texto(texto, esperado):
+    from cnmc_logistica.parsers.detalle import es_regla
+
+    assert es_regla(texto) is esperado

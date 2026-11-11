@@ -141,7 +141,9 @@ class Descargador:
 
     # --- recursos ----------------------------------------------------------
 
-    def obtener(self, recurso: Recurso, *, forzar: bool = False) -> Entrada:
+    def obtener(
+        self, recurso: Recurso, *, forzar: bool = False, motivo: str | None = None
+    ) -> Entrada:
         """Descarga un recurso al almacén, o devuelve el ya guardado en esta foto.
 
         No repetir lo ya descargado hace la ejecución reanudable y evita
@@ -167,4 +169,5 @@ class Descargador:
             url_final=str(respuesta.url),
             estado_http=respuesta.status_code,
             cabeceras=dict(respuesta.headers),
+            motivo=motivo,
         )

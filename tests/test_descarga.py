@@ -279,3 +279,31 @@ def test_no_conserva_cookies_entre_peticiones(tmp_path):
     for i, u in enumerate(urls):
         d.obtener(Recurso("ficha", str(i), u))
     assert all("cookie" not in r.headers for r in vistos)
+
+
+def test_raw_es_inmutable_una_nueva_descarga_no_sobrescribe(tmp_path):
+    url = f"{BASE}/x.htm"
+    cuerpos = iter(["página equivocada", "página buena", "página buena"])
+    pagina = lambda _: httpx.Response(200, text=next(cuerpos))  # noqa: E731
+    d, almacen, _ = crear(tmp_path, portal(paginas={url: pagina}))
+    d.comprobar_robots()
+    r = Recurso("buscador", "almacenista_CLH_p1", url)
+    v1 = d.obtener(r)
+    v2 = d.obtener(r, forzar=True, motivo="página equivocada")
+    v3 = d.obtener(r, forzar=True)
+
+    assert (v1.ruta, v1.version) == ("buscador/almacenista_CLH_p1.html", 1)
+    assert (v2.ruta, v2.version) == ("buscador/almacenista_CLH_p1.v2.html", 2)
+    assert v2.motivo == "página equivocada"
+    # Los dos ficheros siguen en disco, cada uno con su contenido.
+    assert (almacen.dir / v1.ruta).read_text() == "página equivocada"
+    assert (almacen.dir / v2.ruta).read_text() == "página buena"
+    # Mismo contenido que una versión existente: se reutiliza, no se crea .v3.
+    assert (v3.ruta, v3.version) == (v2.ruta, 2)
+    assert sorted(p.name for p in (almacen.dir / "buscador").iterdir()) == [
+        "almacenista_CLH_p1.html",
+        "almacenista_CLH_p1.v2.html",
+    ]
+    # La versión válida es la última línea correcta del manifiesto.
+    assert almacen.buscar("buscador", "almacenista_CLH_p1").ruta == v2.ruta
+    assert AlmacenCrudo(almacen.dir.parent, almacen.fecha).buscar(*r.tipo_clave).ruta == v2.ruta

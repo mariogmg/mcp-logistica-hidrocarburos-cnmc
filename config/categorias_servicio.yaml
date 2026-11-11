@@ -10,14 +10,17 @@
 #   mayúsculas/minúsculas y espacios repetidos; las tildes SÍ cuentan).
 # - Una etiqueta que no esté aquí se carga como «sin_categoria» y genera un
 #   aviso en `ejecuciones`. Se arregla añadiéndola aquí y ejecutando `reconstruir`.
-# - `por_operador` permite que una misma etiqueta signifique otra cosa para un
-#   operador concreto (clave: código del buscador). Hoy no se usa.
+# - `por_tipo_instalacion` tiene prioridad: una etiqueta genérica («Servicios
+#   logísticos») no es el mismo servicio en un aeropuerto que en una terminal.
+#   No hay excepciones por operador: la categoría depende solo de la etiqueta
+#   y del tipo de instalación.
 
 categorias:
   almacenamiento: Solo almacenamiento (capacidad o volumen almacenado)
   almacenamiento_y_manipulacion: Almacenamiento con la manipulación incluida en el mismo precio
   manipulacion: Manipulación facturada aparte
-  logistica_basica: Paquete logístico (recepción + almacenamiento operativo + transporte y/o expedición)
+  logistica_basica: Paquete logístico en instalación de almacenamiento (recepción + almacenamiento operativo + transporte y/o expedición)
+  logistica_aeroportuaria: Paquete logístico con destino o prestación en una instalación aeroportuaria
   servicios_aeroportuarios: Recepción, almacenamiento y control en la instalación aeroportuaria
   bunker: Servicio de búnker (suministro a buques)
   recepcion: Entrada de producto (buque, camión, tubería, tren, gabarra)
@@ -174,4 +177,11 @@ etiquetas:
   JET A-1: otros
   Almacenamiento y suministro AV GAS 100 LL: otros
 
-por_operador: {}
+por_tipo_instalacion:
+  aeroportuaria:
+    Servicios logísticos básicos: logistica_aeroportuaria
+    Servicios logísticos: logistica_aeroportuaria
+    Servicio logístico: logistica_aeroportuaria
+    Servicio logístico integrado: logistica_aeroportuaria
+    Servicios de logística primaria: logistica_aeroportuaria
+    Servicios logísticos integrales: logistica_aeroportuaria

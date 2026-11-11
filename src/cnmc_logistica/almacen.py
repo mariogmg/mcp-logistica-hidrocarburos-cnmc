@@ -7,6 +7,11 @@ Decisiones:
   ejecución se corta, lo ya descargado queda registrado y se puede reanudar.
 - Cada recurso tiene (tipo, clave), que fija su ruta: el crudo de dos fechas
   distintas es comparable fichero a fichero.
+- raw/ es inmutable: nunca se sobrescribe un fichero. Si el mismo recurso se
+  vuelve a descargar el mismo día y el contenido cambia, se guarda como
+  «nombre.v2.ext», «nombre.v3.ext»… La versión válida es siempre la última
+  línea correcta del manifiesto para ese (tipo, clave); las anteriores se
+  conservan en disco y en el manifiesto.
 """
 
 from __future__ import annotations
@@ -45,6 +50,10 @@ class Recurso:
     url: str
 
     @property
+    def tipo_clave(self) -> tuple[str, str]:
+        return self.tipo, self.clave
+
+    @property
     def ruta(self) -> str:
         if self.tipo not in _DISPOSICION:
             raise ValueError(f"tipo de recurso desconocido: {self.tipo}")
@@ -72,6 +81,8 @@ class Entrada:
     descargado_en: str
     origen: str = "descarga"
     error: str | None = None
+    version: int = 1  # 1 = primera descarga del día; >1 = nueva descarga con otro contenido
+    motivo: str | None = None  # por qué existe una versión nueva o se anuló una anterior
 
     @property
     def ok(self) -> bool:
@@ -171,12 +182,18 @@ class AlmacenCrudo:
         url_final: str,
         estado_http: int,
         cabeceras: dict[str, str],
+        motivo: str | None = None,
     ) -> Entrada:
         cabeceras = {k.lower(): v for k, v in cabeceras.items()}
         cabeceras = {k: v for k, v in cabeceras.items() if k not in _CABECERAS_EXCLUIDAS}
-        destino = self.dir / recurso.ruta
+        sha = hashlib.sha256(contenido).hexdigest()
+        ruta, version = self._ruta_libre(recurso, sha)
+        destino = self.dir / ruta
         destino.parent.mkdir(parents=True, exist_ok=True)
-        destino.write_bytes(contenido)
+        if not destino.exists():
+            # Modo «x»: si el fichero existiera, falla en vez de sobrescribir.
+            with destino.open("xb") as fh:
+                fh.write(contenido)
         entrada = Entrada(
             tipo=recurso.tipo,
             clave=recurso.clave,
@@ -186,13 +203,30 @@ class AlmacenCrudo:
             content_type=cabeceras.get("content-type"),
             cabeceras=cabeceras,
             nombre_archivo=nombre_de_content_disposition(cabeceras.get("content-disposition")),
-            ruta=recurso.ruta,
+            ruta=ruta,
             bytes=len(contenido),
-            sha256=hashlib.sha256(contenido).hexdigest(),
+            sha256=sha,
             descargado_en=_ahora(),
+            version=version,
+            motivo=motivo,
         )
         self._anotar(entrada)
         return entrada
+
+    def _ruta_libre(self, recurso: Recurso, sha: str) -> tuple[str, int]:
+        """Ruta donde guardar este contenido sin pisar nada, y su número de versión.
+
+        Si ya hay una versión con exactamente los mismos bytes se reutiliza su
+        fichero (p. ej. robots.txt, que se consulta en cada ejecución).
+        """
+        base = Path(recurso.ruta)
+        version = 1
+        while True:
+            ruta = base if version == 1 else base.with_name(f"{base.stem}.v{version}{base.suffix}")
+            destino = self.dir / ruta
+            if not destino.exists() or hashlib.sha256(destino.read_bytes()).hexdigest() == sha:
+                return ruta.as_posix(), version
+            version += 1
 
     def registrar_fallo(self, recurso: Recurso, estado_http: int | None, error: str) -> Entrada:
         entrada = Entrada(

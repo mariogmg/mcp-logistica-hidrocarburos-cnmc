@@ -1,0 +1,10 @@
+#!/bin/sh
+# Hook commit-msg: quita del mensaje cualquier línea de coautoría de Claude/Anthropic
+# y la línea «Generated with Claude Code», por si alguna herramienta las añade.
+# Se activa una vez por copia del repo:  git config core.hooksPath .githooks
+mensaje="$1"
+temporal="$(mktemp)"
+grep -v -i -E '^[[:space:]]*co-authored-by:.*(claude|anthropic)|generated with .*claude code' "$mensaje" > "$temporal" || true
+# Quita las líneas en blanco que queden al final.
+awk '{ lineas[NR] = $0 } END { n = NR; while (n > 0 && lineas[n] ~ /^[[:space:]]*$/) n--; for (i = 1; i <= n; i++) print lineas[i] }' "$temporal" > "$mensaje"
+rm -f "$temporal"

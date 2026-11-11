@@ -280,6 +280,15 @@ uv run ruff check . && uv run ruff format --check .
 uv run pytest
 ```
 
+Tras clonar, activa los *hooks* del repositorio (una sola vez):
+
+```bash
+git config core.hooksPath .githooks
+```
+
+El hook `commit-msg` elimina de los mensajes de commit cualquier línea de coautoría añadida por
+asistentes de IA, para que el historial solo refleje al autor.
+
 ## Licencia
 
 Código bajo licencia [MIT](LICENSE). Los datos son de la CNMC y de los operadores que los

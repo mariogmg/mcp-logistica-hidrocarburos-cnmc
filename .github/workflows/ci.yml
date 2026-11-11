@@ -23,7 +23,8 @@ jobs:
         continue-on-error: true
         run: sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-spa
       - name: ¿Hay Tesseract?
-        run: command -v tesseract || echo "::warning::Tesseract no se pudo instalar: los tests de OCR se omiten en esta ejecución"
+        run: |
+          command -v tesseract || echo "::warning::Tesseract no se pudo instalar; los tests de OCR se omiten en esta ejecución"
       - name: Instalar dependencias (versiones fijadas en uv.lock)
         run: uv sync --locked --extra ocr
       - name: Ruff (errores)

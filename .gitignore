@@ -1,0 +1,22 @@
+# Crudo: se publica como .tar.gz en una Release, no en git
+raw/
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+# Secretos y entorno local
+.env
+.env.*
+# SQLite temporales
+*.db-journal
+*.db-wal
+*.db-shm
+# Sistema / editor
+.DS_Store
+.vscode/
+.idea/

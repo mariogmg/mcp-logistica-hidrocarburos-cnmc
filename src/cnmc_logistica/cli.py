@@ -85,7 +85,53 @@ def _actualizar(args: argparse.Namespace) -> int:
             print(f"{desc.peticiones} peticiones", file=sys.stderr)
     except ErrorDescarga as exc:
         return _resumir([Aviso("error", "descarga", "robots/robots", str(exc))])
-    print(f"{len(almacen.entradas())} recursos en {almacen.dir}")
+    print(f"{len(almacen.entradas())} líneas de manifiesto en {almacen.dir}")
+
+    from .bd import conectar
+    from .carga import FotoFueraDeOrden, FotoYaCargada, cargar_foto, leer_config
+
+    conn = conectar(rutas.base_datos)
+    try:
+        resumen = cargar_foto(conn, almacen, *leer_config(rutas), avisos_previos=avisos)
+    except (FotoYaCargada, FotoFueraDeOrden) as exc:
+        print(f"ERROR {exc}", file=sys.stderr)
+        return SALIDA_CON_ERRORES
+    finally:
+        conn.close()
+    _imprimir_resumen(resumen)
+    return _resumir(resumen.avisos)
+
+
+def _imprimir_resumen(resumen) -> None:
+    print(
+        f"foto {resumen.fecha}: {resumen.altas} altas, {resumen.cambios} cambios, "
+        f"{resumen.desapariciones} desapariciones"
+    )
+    for tabla, (altas, cambios, bajas) in resumen.por_tabla.items():
+        if altas or cambios or bajas:
+            print(f"  {tabla:24s} +{altas}  ~{cambios}  -{bajas}")
+    for ejemplo in resumen.ejemplos[:10]:
+        print(f"  · {ejemplo}")
+
+
+def _reconstruir(args: argparse.Namespace) -> int:
+    from .carga import reconstruir
+
+    rutas = Rutas(args.raiz)
+    destino = args.salida or rutas.base_datos
+    temporal = destino.with_name(destino.name + ".nueva")
+    temporal.unlink(missing_ok=True)  # resto de una reconstrucción interrumpida
+    if destino.exists() and not args.reemplazar:
+        print(f"{destino} ya existe: usa --reemplazar o --salida.", file=sys.stderr)
+        return SALIDA_USO
+    # Se construye aparte y se cambia de golpe: la base nunca queda a medias.
+    resumenes = reconstruir(rutas, temporal)
+    temporal.replace(destino)
+    avisos: list[Aviso] = []
+    for resumen in resumenes:
+        _imprimir_resumen(resumen)
+        avisos += resumen.avisos
+    print(f"{len(resumenes)} fotos → {destino}")
     return _resumir(avisos)
 
 
@@ -97,14 +143,32 @@ def _info(args: argparse.Namespace) -> int:
     fotos = sorted(p.name for p in rutas.raw.glob("????-??-??") if p.is_dir())
     print(f"fotos raw:   {len(fotos)}" + (f" ({fotos[0]} … {fotos[-1]})" if fotos else ""))
     print(f"inventario:  {'sí' if rutas.inventario.exists() else 'no'}")
-    print(f"base datos:  {'sí' if rutas.base_datos.exists() else 'no'}")
+    if not rutas.base_datos.exists():
+        print("base datos:  no")
+        return SALIDA_OK
+    import sqlite3
+
+    from .bd import TABLAS
+
+    conn = sqlite3.connect(f"file:{rutas.base_datos}?mode=ro", uri=True)
+    n, primera, ultima = conn.execute(
+        "SELECT COUNT(*), MIN(fecha), MAX(fecha) FROM ejecuciones"
+    ).fetchone()
+    print(f"base datos:  {rutas.base_datos} ({n} ejecuciones, fotos {primera} … {ultima})")
+    for tabla in TABLAS:
+        total = conn.execute(f"SELECT COUNT(*) FROM {tabla}").fetchone()[0]
+        vigentes = conn.execute(
+            f"SELECT COUNT(*) FROM {tabla} WHERE ultima_vez_visto = ?", (ultima,)
+        ).fetchone()[0]
+        print(f"  {tabla:24s} {vigentes:6d} vigentes / {total:6d} filas")
+    conn.close()
     return SALIDA_OK
 
 
 ORDENES: dict[str, tuple[str, Callable[[argparse.Namespace], int]]] = {
     "descubrir": ("Mapas + buscador → config/inventario.json", _descubrir),
     "actualizar": ("Descarga todo el inventario a raw/ y carga la base", _actualizar),
-    "reconstruir": ("Crea una base nueva a partir de raw/", _pendiente("reconstruir")),
+    "reconstruir": ("Crea una base nueva a partir de raw/", _reconstruir),
     "servir": ("Arranca el servidor MCP (solo lectura)", _pendiente("servir")),
     "info": ("Muestra versión, rutas y estado local", _info),
 }
@@ -120,6 +184,11 @@ def crear_parser() -> argparse.ArgumentParser:
     for nombre, (ayuda, funcion) in ORDENES.items():
         orden = sub.add_parser(nombre, help=ayuda)
         orden.set_defaults(funcion=funcion)
+        if nombre == "reconstruir":
+            orden.add_argument("--salida", type=Path, help="Fichero de la base nueva")
+            orden.add_argument(
+                "--reemplazar", action="store_true", help="Sustituye la base si ya existe"
+            )
         if nombre in ("descubrir", "actualizar"):
             orden.add_argument(
                 "--fecha", default=_hoy(), help="Foto de raw/ en la que se guarda (AAAA-MM-DD)"

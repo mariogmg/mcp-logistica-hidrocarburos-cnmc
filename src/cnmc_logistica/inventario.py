@@ -126,8 +126,9 @@ def construir_inventario(almacen: AlmacenCrudo) -> tuple[dict, list[Aviso]]:
             detalles[id_ti] = {
                 "id_tanque_instalacion": id_ti,
                 "id_tanque": id_tanque,
-                "operador": None,
+                "operador": None,  # código bajo el que lo lista el buscador
                 "producto": producto,
+                "producto_buscador": None,
             }
 
     # --- buscador: operadores y control cruzado ---
@@ -169,6 +170,7 @@ def construir_inventario(almacen: AlmacenCrudo) -> tuple[dict, list[Aviso]]:
             if id_ti in detalles:
                 det = detalles[id_ti]
                 det["operador"] = codigo
+                det["producto_buscador"] = fila.producto
                 det["producto"] = det["producto"] or fila.producto
                 esperada = instalaciones[det["id_tanque"]]["comunidad"]
                 vista = comunidad_por_nombre.get(fila.comunidad.casefold())

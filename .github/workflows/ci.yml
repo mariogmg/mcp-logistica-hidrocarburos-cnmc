@@ -37,7 +37,7 @@ jobs:
         run: |
           uv build
           uv run --isolated --no-project --with dist/*.whl cnmc-logistica info
-          uv run --isolated --no-project --with dist/*.whl python -c "import cnmc_logistica.servidor, cnmc_logistica.api, cnmc_logistica.actualizacion; print('MCP y API importan sin el ETL')"
+          uv run --isolated --no-project --with dist/*.whl python -c "import cnmc_logistica.servidor, cnmc_logistica.api; print('MCP y API importan sin el ETL')"
 
   docker:
     # Construye la imagen del servidor (sin publicarla) y comprueba que arranca.

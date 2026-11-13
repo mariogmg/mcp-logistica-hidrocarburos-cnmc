@@ -142,7 +142,7 @@ requiere además `--extra exportar` para generar Parquet.
 | `reconstruir` | Crea una base nueva a partir de todas las fotos de `raw/` | No |
 | `exportar` | Genera los ficheros de la Release `datos-*`: base, sha256, CSV, Parquet y diccionario | No |
 | `descargar-releases` | Descarga a `raw/` el crudo publicado en las Releases `raw-*` | Solo GitHub |
-| `servir` | Arranca el MCP (`--transporte stdio`) o el MCP y la API REST (`--transporte http`) | No, si existe `data/cnmc_logistica.db`; en otro caso descarga la base de la última Release `datos-*` |
+| `servir` | Arranca el MCP (`--transporte stdio`) o el MCP y la API REST (`--transporte http`) | No |
 | `info` | Versión, fotos disponibles y filas de cada tabla | No |
 
 ```bash
@@ -157,11 +157,9 @@ Variables de entorno del servidor:
 
 | Variable | Efecto |
 |---|---|
-| `CNMC_BD` | Ruta de la base que se sirve |
+| `CNMC_BD` | Ruta de la base que se sirve. Por defecto, `data/cnmc_logistica.db` |
 | `CNMC_MCP_TOKEN` | Si se define, `/mcp` exige ese token Bearer. No afecta a la API REST |
 | `CNMC_MCP_HOSTS_PERMITIDOS` | Cabeceras `Host` admitidas en `/mcp`, separadas por comas. Por defecto, solo las locales |
-| `CNMC_DIR_DATOS` | Carpeta de la base cuando se ejecuta fuera del repositorio |
-| `CNMC_SIN_ACTUALIZAR` | Con valor `1`, desactiva la comprobación diaria de una Release `datos-*` más reciente fuera del repositorio |
 
 ### Docker
 

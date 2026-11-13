@@ -1,6 +1,6 @@
-# mcp-logistica-hidrocarburos-cnmc
+# logistica-hidrocarburos-cnmc
 
-[![CI](https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc/actions/workflows/ci.yml/badge.svg)](https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc/actions/workflows/ci.yml)
+[![CI](https://github.com/mariogmg/logistica-hidrocarburos-cnmc/actions/workflows/ci.yml/badge.svg)](https://github.com/mariogmg/logistica-hidrocarburos-cnmc/actions/workflows/ci.yml)
 
 Pipeline de ingeniería de datos que convierte la información pública de logística de hidrocarburos de la CNMC en un dataset histórico, verificado y actualizado cada mes.
 
@@ -20,7 +20,7 @@ repositorio y consultarlos con un cliente MCP o con la API REST local.
 ### 1. Descargar los datos
 
 Cada mes se publica una Release
-[`datos-AAAA-MM-DD`](https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc/releases)
+[`datos-AAAA-MM-DD`](https://github.com/mariogmg/logistica-hidrocarburos-cnmc/releases)
 con la capa gold y la capa silver completa. Su uso no requiere instalar el proyecto. Contiene
 seis ficheros:
 
@@ -47,8 +47,8 @@ base cargada (`data/cnmc_logistica.db`). El servidor solo lee esa base; no hace 
 portal de la CNMC.
 
 ```bash
-git clone https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc
-cd mcp-logistica-hidrocarburos-cnmc
+git clone https://github.com/mariogmg/logistica-hidrocarburos-cnmc
+cd logistica-hidrocarburos-cnmc
 uv sync
 uv run cnmc-logistica info
 ```
@@ -64,7 +64,7 @@ fichero de configuración y el transporte HTTP están en [ejemplos/LEEME.md](eje
   "mcpServers": {
     "logistica-hidrocarburos-cnmc": {
       "command": "uv",
-      "args": ["run", "--directory", "/RUTA/A/mcp-logistica-hidrocarburos-cnmc", "cnmc-logistica", "servir"]
+      "args": ["run", "--directory", "/RUTA/A/logistica-hidrocarburos-cnmc", "cnmc-logistica", "servir"]
     }
   }
 }

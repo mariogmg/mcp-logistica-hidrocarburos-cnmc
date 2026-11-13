@@ -13,7 +13,7 @@ def test_ordenes_previstas():
 
 
 def test_user_agent_sin_datos_personales():
-    assert USER_AGENT.startswith(f"mcp-logistica-hidrocarburos-cnmc/{__version__} (+https://")
+    assert USER_AGENT.startswith(f"logistica-hidrocarburos-cnmc/{__version__} (+https://")
     assert "@" not in USER_AGENT
 
 

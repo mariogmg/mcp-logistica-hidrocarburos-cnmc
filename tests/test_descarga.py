@@ -78,7 +78,7 @@ def test_user_agent_en_todas_las_peticiones(tmp_path):
     d.comprobar_robots()
     d.obtener(Recurso("portada", "portada", url))
     assert {r.headers["user-agent"] for r in vistos} == {d.user_agent}
-    assert d.user_agent.startswith("mcp-logistica-hidrocarburos-cnmc/")
+    assert d.user_agent.startswith("logistica-hidrocarburos-cnmc/")
 
 
 def test_al_menos_un_segundo_entre_peticiones(tmp_path):

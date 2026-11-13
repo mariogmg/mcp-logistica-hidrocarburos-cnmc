@@ -1,5 +1,5 @@
 [project]
-name = "mcp-logistica-hidrocarburos-cnmc"
+name = "logistica-hidrocarburos-cnmc"
 version = "0.3.0"
 description = "Histórico de la logística de productos petrolíferos publicada por la CNMC, consultable mediante un servidor MCP de solo lectura. Proyecto no oficial."
 readme = "README.md"
@@ -21,8 +21,8 @@ classifiers = [
 ]
 
 [project.urls]
-Repositorio = "https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc"
-Datos = "https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc/releases"
+Repositorio = "https://github.com/mariogmg/logistica-hidrocarburos-cnmc"
+Datos = "https://github.com/mariogmg/logistica-hidrocarburos-cnmc/releases"
 
 [project.optional-dependencies]
 # El ETL (descarga del portal y lectura de páginas y PDF) solo hace falta para generar la base.

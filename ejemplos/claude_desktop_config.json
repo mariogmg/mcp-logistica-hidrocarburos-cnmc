@@ -5,7 +5,7 @@
       "args": [
         "run",
         "--directory",
-        "/RUTA/A/mcp-logistica-hidrocarburos-cnmc",
+        "/RUTA/A/logistica-hidrocarburos-cnmc",
         "cnmc-logistica",
         "servir"
       ]

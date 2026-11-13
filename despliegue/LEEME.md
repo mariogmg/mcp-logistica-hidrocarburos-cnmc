@@ -50,7 +50,7 @@ acceso con clave funciona. En caso contrario se pierde el acceso al servidor.
 ```bash
 sudo -u cnmc -H bash
 cd /opt/cnmc
-git clone https://github.com/mariogmg/mcp-logistica-hidrocarburos-cnmc.git repo
+git clone https://github.com/mariogmg/logistica-hidrocarburos-cnmc.git repo
 ln -s repo/despliegue despliegue
 
 # Configuración (no se versiona)

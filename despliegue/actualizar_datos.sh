@@ -14,7 +14,7 @@
 set -euo pipefail
 
 DIR_DATOS="${DIR_DATOS:-/opt/cnmc/datos}"
-URL_BD="${URL_BD:-https://raw.githubusercontent.com/mariogmg/mcp-logistica-hidrocarburos-cnmc/main/data/cnmc_logistica.db}"
+URL_BD="${URL_BD:-https://raw.githubusercontent.com/mariogmg/logistica-hidrocarburos-cnmc/main/data/cnmc_logistica.db}"
 DESTINO="$DIR_DATOS/cnmc_logistica.db"
 EN_SECO=0
 FORZAR=0
